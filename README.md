@@ -1112,6 +1112,23 @@ public class WebConfig implements WebMvcConfigurer {
 
 ## Annotated Controllers
 
+- 스프링 MVC는 어노테이션 기반의 프로그래밍 모델을 제공하는데, 이를 통해 `@Controller`와 `@RestController` 컴포넌트에서 어노테이션을 사용하여 요청 매핑, 요청 입력, 예외 처리 등을 표현할 수 있음.
+- 어노테이션 기반의 컨트롤러는 유연한 메서드 시그니처를 가지며, 특정 기본 클래스를 상속하거나 인터페이스를 구현할 필요가 없음.
+- 어노테이션 기반의 컨트롤러를 사용하면 코드의 가독성과 유지보수성이 좋아지며, 요청 매핑과 처리 로직을 명확하게 표현할 수 있음. 또한 컨트롤러 클래스를 간결하게 작성할 수 있어 생산성을 높일 수 있음.
+- 예제 코드
+
+```java
+@Controller
+public class HelloController {
+
+	@GetMapping("/hello")
+	public String handle(Model model) {
+		model.addAttribute("message", "Hello World!");
+		return "index";
+	}
+}
+```
+
 ## Annotated Controllers - Declaration
 
 ## Annotated Controllers - Mapping Requests
