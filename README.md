@@ -240,7 +240,7 @@
 - Web on Servlet Stack
 
   > - [DispatcherServlet](#dispatcherservlet)
-  > - Context Hierarchy
+  > - [Context Hierarchy](#context-hierarchy)
   > - Special Bean Types
   > - Web MVC Config
   > - Servlet Config
@@ -938,6 +938,47 @@ public class MyWebApplicationInitializer implements WebApplicationInitializer {
   > - `@Configuration`: 해당 클래스를 설정 클래스로 지정함. 설정 클래스 내에서 @Bean 어노테이션을 사용하여 수동으로 Bean을 등록할 수 있음.
 
 ## Context Hierarchy
+
+![mvc_context_hierarchy](description_img/mvc_context_hierarchy.png)
+
+- **단일 WebApplicationContext**
+  > - 많은 애플리케이션에서는 단일 WebApplicationContext로 충분함.
+  > - 이 경우 DispatcherServlet은 하나의 WebApplicationContext를 사용하여 설정되며, 모든 빈과 설정이 해당 컨텍스트에 포함됨.
+- **컨텍스트 계층 구조**
+  > - Spring은 컨텍스트 계층 구조를 지원하여 여러 WebApplicationContext를 계층적으로 구성할 수 있음.
+  > - 루트 WebApplicationContext는 여러 DispatcherServlet 인스턴스에서 공유되는 공통의 상위 컨텍스트.
+  > - 각 DispatcherServlet은 자체적인 자식 WebApplicationContext를 가질 수 있음.
+  > - 자식 WebApplicationContext는 해당 DispatcherServlet에 특화된 설정을 포함함.
+- **컨텍스트 계층 구조 예제 코드**
+
+```java
+public class MyWebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+
+	@Override
+	protected Class<?>[] getRootConfigClasses() {
+		return new Class<?>[] { RootConfig.class };
+	}
+
+	@Override
+	protected Class<?>[] getServletConfigClasses() {
+		return new Class<?>[] { App1Config.class };
+	}
+
+	@Override
+	protected String[] getServletMappings() {
+		return new String[] { "/app1/*" };
+	}
+}
+```
+
+- **루트 WebApplicationContext의 역할**
+  > - 루트 WebApplicationContext는 일반적으로 인프라스트럭처 빈들을 포함함.
+  > - 여기에는 데이터 저장소, 비즈니스 서비스 등 여러 Servlet 인스턴스에서 공유되어야 하는 빈들이 있음.
+  > - 이러한 빈들은 효과적으로 상속되며, 자식 WebApplicationContext에서 재정의(오버라이드)할 수 있음.
+- **자식 WebApplicationContext의 역할**
+  > - 자식 WebApplicationContext는 특정 Servlet에 국한된 빈들을 포함함.
+  > - 이 컨텍스트는 해당 Servlet에 특화된 설정과 빈들을 정의함.
+  > - 자식 WebApplicationContext에서는 루트 WebApplicationContext의 빈들을 상속받고, 필요한 경우 재정의할 수 있음.
 
 ## Special Bean Types
 
