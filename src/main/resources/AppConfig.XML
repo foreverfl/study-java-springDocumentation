@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="myBean1" class="com.example.springDocumentation.bean.MyBean1">
+        <property name="innerBean" ref="myInnerBean"/>
+    </bean>
+    <bean id="myInnerBean" class="com.example.springDocumentation.bean.MyBean1$MyInnerBean">
+        <property name="message" value="Hello, Inner Bean!"/>
+    </bean>
+    <bean id="myBean2" class="com.example.springDocumentation.bean.MyBean2"/>
+</beans>
