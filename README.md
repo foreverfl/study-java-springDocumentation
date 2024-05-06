@@ -1,6 +1,14 @@
 # Spring Documentation
 
 - Spring 공식 문서 및 Claude Opus/ChatGPT4를 사용해서 만들었습니다.
+- application.properties 구성: 적절하게 고쳐쓰시면 됩니다.
+
+```properties
+spring.application.name=springDocumentation
+spring.datasource.url=jdbc=jdbc:postgresql://127.0.0.1:5432/spring_documentation
+spring.datasource.username=***
+spring.datasource.password=***
+```
 
 ## 목차
 
@@ -241,7 +249,7 @@
 
   > - [DispatcherServlet](#dispatcherservlet)
   > - [Context Hierarchy](#context-hierarchy)
-  > - Special Bean Types
+  > - [Special Bean Types](#special-bean-types)
   > - Web MVC Config
   > - Servlet Config
   > - Processing
@@ -981,6 +989,63 @@ public class MyWebAppInitializer extends AbstractAnnotationConfigDispatcherServl
   > - 자식 WebApplicationContext에서는 루트 WebApplicationContext의 빈들을 상속받고, 필요한 경우 재정의할 수 있음.
 
 ## Special Bean Types
+
+### 개요
+
+- 이러한 특별한 빈들은 DispatcherServlet이 요청을 처리하고 적절한 응답을 렌더링하는 데 도움을 줌. 대부분의 경우 기본적인 내장 구현체를 사용하지만, 필요에 따라 속성을 커스터마이징하거나 확장 또는 교체할 수 있음.
+
+### 종류
+
+- **HandlerMapping**
+
+  > - 요청을 처리할 핸들러와 인터셉터 목록을 매핑함.
+  > - 주로 사용되는 구현체로는 `@RequestMapping` 어노테이션을 지원하는 `RequestMappingHandlerMapping`과 명시적으로 URI 패턴과 핸들러를 등록하는 `SimpleUrlHandlerMapping`이 있음.
+
+- **HandlerAdapter**
+
+  > - `DispatcherServlet`이 매핑된 핸들러를 실제로 어떻게 호출할지 도와주는 역할을 함.
+  > - 예를 들어, 어노테이션이 적용된 컨트롤러를 호출하려면 어노테이션을 해석해야 함.
+  > - `HandlerAdapter`의 주된 목적은 `DispatcherServlet`이 이러한 세부 사항으로부터 분리되도록 하는 것.
+
+- **HandlerExceptionResolver**
+
+  > - 예외를 해결하고 핸들러, HTML 오류 뷰 또는 다른 대상으로 매핑하는 전략.
+  > - 예외 처리에 사용됨.
+
+- **ViewResolver**
+
+  > - 핸들러에서 반환된 논리적인 문자열 기반의 뷰 이름을 실제로 렌더링할 View 객체로 해석함.
+  > - 뷰 해석 및 뷰 기술과 관련이 있음.
+
+- **LocaleResolver, LocaleContextResolver**
+
+  > - 클라이언트가 사용하는 Locale과 시간대를 결정하여 국제화된 뷰를 제공할 수 있도록 함.
+
+- **ThemeResolver**
+
+  > - 웹 애플리케이션에서 사용할 수 있는 테마를 해석함.
+  > - 예를 들어, 개인화된 레이아웃을 제공하는 데 사용될 수 있음.
+
+- **MultipartResolver**
+
+  > - 멀티파트 요청(예: 브라우저 폼 파일 업로드)을 파싱하기 위한 추상화 계층.
+  > - 멀티파트 파싱 라이브러리의 도움을 받아 처리함.
+
+- **FlashMapManager**
+  > - 한 요청에서 다른 요청으로 속성을 전달할 때 사용할 수 있는 "input" 및 "output" FlashMap을 저장하고 검색함.
+  > - 주로 리다이렉트 시 속성을 유지하는 데 사용됨.
+
+### 예제 코드
+
+1. `WebConfig`는 `WebMvcConfigurer`을 구현해서 `Thymeleaf`의 `ViewResolver` 설정을 함.
+2. Spring Boot는 `Thymeleaf`를 포함한 여러 기술에 대해 '자동 설정'을 제공함. 이 자동 설정은 application.properties 또는 application.yml 파일을 통해 설정할 수 있는 많은 기본값을 포함하고 있음. 예를 들어, Thymeleaf에 대한 기본적인 구성은 다음과 같이 제공됨.
+
+   > - `spring.thymeleaf.prefix`: 템플릿 파일들의 위치 (기본값 classpath:/templates/)
+   > - `spring.thymeleaf.suffix`: 템플릿 파일의 확장자 (기본값 .html)
+   > - `spring.thymeleaf.mode`: 템플릿 모드 (기본값 HTML)
+   > - `spring.thymeleaf.encoding`: 인코딩 방식 (기본값 UTF-8)
+
+3. 직접 Java 설정 파일 (`@Configuration` 클래스)에서 `Thymeleaf` 설정을 정의하는 경우, 이 설정들이 Spring Boot의 자동 설정보다 우선시됨. 즉, 위의 `WebConfig` 클래스처럼 직접 `ViewResolver`, `TemplateEngine`, `TemplateResolver`를 설정하면, 이 설정들이 `application.properties`에서 제공하는 기본값 또는 변경된 설정들을 오버라이드(덮어쓰기)함.
 
 ## Web MVC Config
 
