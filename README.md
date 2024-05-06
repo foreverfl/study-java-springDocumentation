@@ -8,8 +8,7 @@
 
   > - [Introduction to the Spring IoC Container and Beans](#introduction-to-the-spring-ioc-container-and-beans)
   > - [Container Overview](#container-overview)
-  > - Bean Overview
-  > - Dependencies
+  > - [Bean Overview](#bean-overview)
   > - Dependency Injection
   > - Dependencies and Configuration in Detail
   > - Using depends-on
@@ -240,7 +239,6 @@
 
 - Web on Servlet Stack
 
-  > - Spring Web MVC
   > - DispatcherServlet
   > - Context Hierarchy
   > - Special Bean Types
@@ -494,7 +492,7 @@
 - 빈 생성 → 의존성 주입 → 초기화 → 사용 → 소멸의 과정을 거침.
 - `@PostConstruct`, `@PreDestroy` 어노테이션을 사용하여 빈의 초기화와 소멸 시점에 커스텀 로직을 실행할 수 있음.
 
-### 예제 코드
+### [예제 코드](https://github.com/foreverfl/study-java-springDocumentation/blob/main/src/main/java/com/example/springDocumentation/BeanCountApplication.java)
 
 1. `bean` 패키지에 `MyBean1.java`, `MyBean2.java`를 생성.
 2. `config` 패키지에 `AppConfig.java`를 생성하고 `MyBean1.java`와 `MyBean2.java`를 각각 Bean으로 등록함.
@@ -547,7 +545,7 @@
 - 애플리케이션 코드에서는 컨테이너에 의해 관리되는 빈 객체를 사용하여 로직을 구현함.
 - 컨테이너를 사용하면 객체 생성과 의존 관계 관리를 애플리케이션 코드에서 분리할 수 있어 모듈화와 유지보수성이 향상됨.
 
-### 예제 코드
+### [예제 코드](https://github.com/foreverfl/study-java-springDocumentation/blob/main/src/main/java/com/example/springDocumentation/BeanCountApplicationInXML.java)
 
 1. `bean` 패키지에 `MyBean1.java`, `MyBean2.java`를 생성.
 2. `resources`에 `AppConfig.XML`를 생성하고 bean 패키지에 있는 파일들을 각각 Bean으로 등록함.
@@ -555,7 +553,110 @@
 
 ## Bean Overview
 
-## Dependencies
+### 개요
+
+- 빈(Bean)은 스프링 IoC 컨테이너에 의해 관리되는 객체. 스프링에서는 애플리케이션의 핵심 컴포넌트를 빈으로 정의하고, 컨테이너가 빈의 생성, 의존성 주입, 생명주기 관리 등을 담당함. 빈은 일반적으로 자바 클래스로 구현되며, POJO(Plain Old Java Object) 형태로 작성됨. 스프링 컨테이너는 빈 설정 메타데이터를 기반으로 빈 인스턴스를 생성하고, 의존성을 주입하며, 빈의 생명주기를 관리함.
+- `BeanDefinition` 객체는 스프링 컨테이너 내부에서 빈을 정의하는 데 사용되는 객체. 이 객체는 빈의 메타데이터를 포함하고 있으며, 스프링 컨테이너는 이 메타데이터를 기반으로 빈을 생성하고 관리함.
+- `@Bean`, `@Controller`, `@Service`, `@Component` 등의 어노테이션을 사용하여 클래스를 빈으로 등록하면, 스프링 컨테이너는 해당 클래스의 정보를 기반으로 BeanDefinition 객체를 생성함.
+- `BeanDefinition` 객체는 다음과 같은 메타데이터를 포함함.
+  > - **빈의 클래스 이름 (패키지 경로 포함)**: 빈으로 정의된 클래스의 실제 구현 클래스 이름.
+  > - **빈의 동작 설정**: 빈이 컨테이너에서 어떻게 동작해야 하는지에 대한 정보. 예를 들어 빈의 스코프(싱글톤, 프로토타입 등), 라이프사이클 콜백(초기화 메서드, 소멸 메서드 등) 등이 포함됨.
+  > - **의존성 참조**: 빈이 의존하는 다른 빈에 대한 참조. 이를 통해 의존성 주입(Dependency Injection)이 이루어짐.
+  > - **기타 설정**: 빈의 프로퍼티 값, 풀의 크기 제한, 커넥션 수 등 빈 생성 시 필요한 추가적인 설정 정보.
+- 기존의 메타데이터와 싱글톤 인스턴스를 오버라이드하는 것은 어느 정도 지원되지만, 런타임에 새로운 빈을 등록하는 것은 공식적으로 지원되지 않음. 런타임에 빈을 등록하면 컨테이너에 동시 접근이 발생할 수 있으며, 이로 인해 동시성 문제(concurrent access exceptions)나 빈 컨테이너의 상태 불일치(inconsistent state) 문제가 발생할 수 있음. 따라서 가능한 한 빈의 등록은 애플리케이션 초기화 시점에 이루어져야 하며, 런타임에 동적으로 빈을 등록하는 것은 피하는 것이 좋음. 스프링 컨테이너는 초기화 시점에 빈의 메타데이터를 분석하고 처리하여 일관된 상태를 유지하므로, 런타임에 새로운 빈을 등록하면 이러한 일관성이 깨질 수 있음.
+
+### Naming Beans
+
+- 모든 빈은 하나 이상의 식별자를 가져야 함. 이러한 식별자는 빈을 고유하게 식별하는 데 사용됨. 빈의 식별자는 XML 설정에서는 id 속성이나 name 속성으로 지정할 수 있음. 자바 설정에서는 `@Bean` 어노테이션의 `name` 속성을 사용하여 빈의 이름을 지정할 수 있음. 빈의 이름은 컨테이너 내에서 고유해야 하며, 일반적으로 소문자로 시작하고 카멜 케이스(camelCase) 규칙을 따름.
+- id 속성
+
+  > - 빈의 고유한 식별자를 지정하는 데 사용됨.
+  > - id 속성의 값은 빈의 유일한 이름이며, 컨테이너 내에서 고유해야 함.
+  > - id 속성은 하나의 값만 가질 수 있음.
+  > - id 속성은 XML 스키마에 의해 제약을 받음. 유효한 XML 식별자 규칙을 따라야 함. (예: 공백 문자를 포함할 수 없음)
+
+- name 속성
+
+  > - 빈의 하나 이상의 별칭을 지정하는 데 사용됨.
+  > - name 속성은 빈의 추가적인 이름을 지정할 때 사용됨.
+  > - name 속성은 여러 개의 값을 가질 수 있으며, 쉼표(,), 세미콜론(;), 공백 문자로 구분할 수 있음.
+  > - name 속성은 id 속성보다 더 유연한 명명 규칙을 허용함. (예: 공백 문자 포함 가능)
+
+- id와 name 속성이 모두 생략된 경우
+  > - 스프링 컨테이너는 클래스 이름을 기반으로 빈의 이름을 생성함.
+  > - 클래스 이름의 첫 글자를 소문자로 변환한 형태가 빈의 이름으로 사용됨.
+  > - 예를 들어, com.example.MyBean 클래스의 경우 빈의 이름은 myBean이 됨.
+  > - 이렇게 자동 생성된 빈의 이름은 컨테이너 내에서 고유해야 함.
+  > - 자동 생성된 빈의 이름을 사용하여 빈을 참조할 수 있음.
+- XML 예제
+
+```xml
+<bean id="myBean" name="alias1, alias2" class="com.example.MyBean">
+  <!-- ... -->
+</bean>
+```
+
+- 어노테이션 예제
+
+```java
+// 메소드 명인 'myBean'이 id로 사용됨
+@Bean(name = {"myBean", "alias1", "alias2"})
+public MyBean myBean() {
+  return new MyBean();
+}
+```
+
+### Aliasing a Bean outside the Bean Definition
+
+- 빈에는 별칭(alias)을 지정할 수 있음. 별칭은 빈의 실제 이름과 다른 이름으로 빈을 참조할 수 있게 해줌. 이는 같은 빈을 다른 이름으로 사용해야 하는 경우에 유용함. XML 설정에서는 `<alias>` 태그를 사용하여 빈의 별칭을 정의할 수 있음. 자바 설정에서는 `@Bean` 어노테이션의 `name` 속성에 여러 개의 이름을 지정하여 별칭을 정의할 수 있음. 별칭은 빈의 실제 이름과 동일한 방식으로 사용할 수 있음.
+- 별칭을 사용하는 것은 다음과 같은 이점이 있음.
+
+  > - 서브시스템 간의 빈 이름 충돌을 방지할 수 있음. 서브시스템마다 고유한 명명 규칙을 사용할 수 있으며, 메인 애플리케이션에서는 별칭을 사용하여 충돌을 피할 수 있음.
+  > - 서브시스템의 빈 이름을 변경하더라도 메인 애플리케이션의 설정을 변경하지 않아도 됨. 별칭을 사용하면 서브시스템의 빈 이름이 변경되어도 메인 애플리케이션에서는 별칭을 통해 동일한 빈을 참조할 수 있음.
+  > - 서로 다른 컨텍스트나 설정 파일에서 동일한 빈을 참조할 때 별칭을 사용하면 코드의 가독성과 유지보수성을 높일 수 있음.
+
+- 예제
+
+```xml
+<alias name="myApp-dataSource" alias="subsystemA-dataSource"/>
+<alias name="myApp-dataSource" alias="subsystemB-dataSource"/>
+```
+
+### Instantiating Beans
+
+- 스프링은 다양한 방법으로 빈을 인스턴스화할 수 있음. 가장 일반적인 방법은 빈 클래스의 기본 생성자를 사용하는 것. 스프링 컨테이너는 빈 클래스의 인스턴스를 생성하고, 필요한 의존성을 주입함. 또한 정적 팩토리 메서드나 인스턴스 팩토리 메서드를 사용하여 빈을 생성할 수도 있음. 이러한 방법을 사용하면 객체 생성 로직을 커스터마이즈할 수 있음.
+- 생성된 Bean을 인스턴스화 하는 것은 `new` 연산자를 쓰는 것과 동일함.
+- 일반적으로 빈은 해당 클래스의 생성자를 통해 생성되지만, 정적 팩토리 메서드를 사용하여 빈을 생성할 수도 있음. 정적 팩토리 메서드를 사용할 때는 해당 메서드가 위치한 클래스를 지정해야 함. 이 클래스는 실제로 빈을 생성하는 클래스일 수도 있고, 다른 클래스일 수도 있음. 스프링 컨테이너는 지정된 클래스의 정적 팩토리 메서드를 호출하여 빈을 생성함. 정적 팩토리 메서드가 반환하는 객체의 타입은 해당 메서드가 위치한 클래스와 동일할 수도 있고, 완전히 다른 클래스일 수도 있음. 이는 정적 팩토리 메서드를 사용하여 다양한 타입의 객체를 생성할 수 있음을 의미함.
+- 내부에 포함된 static한 클래스테임을 가져올 경우에는 `$`나 `.`을 사용함. `com.example.SomeThing$OtherThing` 또는 `com.example.SomeThing.OtherThing`와 같은 식으로 사용 가능함.
+
+### Instantiation with a Constructor
+
+- 일반적인 클래스를 사용하여 빈을 생성할 때 사용됨.
+- 클래스가 특정 인터페이스를 구현하거나 특정 방식으로 코딩될 필요는 없음.
+- 빈 클래스를 지정하는 것만으로 충분함.
+- 사용하는 IoC 유형에 따라 기본 생성자(인자가 없는 생성자)가 필요할 수 있음.
+- XML 기반 설정에서는 `<bean>` 태그의 `class` 속성을 사용하여 빈 클래스를 지정함.
+
+### Instantiation with a Static Factory Method
+
+- 정적 팩토리 메서드를 사용하여 빈을 생성할 때 사용됨.
+- `class` 속성에는 정적 팩토리 메서드가 포함된 클래스를 지정하고, `factory-method` 속성에는 팩토리 메서드의 이름을 지정함.
+- 팩토리 메서드를 호출하여 객체를 반환받고, 이를 생성자를 통해 생성된 것처럼 다룸.
+- 레거시 코드에서 정적 팩토리를 호출하는 데 사용될 수 있음.
+
+### Instantiation by Using an Instance Factory Method
+
+- 기존 빈의 인스턴스 팩토리 메서드를 사용하여 새로운 빈을 생성할 때 사용됨.
+- `class` 속성은 비워두고, `factory-bean` 속성에는 인스턴스 메서드를 포함하는 빈의 이름을 지정함.
+- `factory-method` 속성에는 호출할 인스턴스 메서드의 이름을 지정함.
+- 하나의 팩토리 클래스에 여러 개의 팩토리 메서드를 가질 수 있음.
+- 팩토리 빈 자체도 의존성 주입(DI)을 통해 관리되고 구성될 수 있음.
+
+### Determining a Bean’s Runtime Type
+
+- 스프링 문서에서 `factory bean`은 인스턴스 또는 정적 팩토리 메서드를 통해 객체를 생성하도록 스프링 컨테이너에 구성된 빈을 의미함. 반면에 `FactoryBean`은 스프링에서 제공하는 특정 인터페이스를 구현한 클래스를 의미함.
+- 빈의 실제 런타임 타입을 결정하는 것은 간단하지 않음. 빈 메타데이터 정의에 지정된 클래스는 초기 클래스 참조일 뿐이며, 팩토리 메서드나 `FactoryBean` 클래스와 결합되어 실제 런타임 타입과 다를 수 있음. 또한 AOP 프록시가 빈 인스턴스를 래핑하여 실제 타입의 노출을 제한할 수 있음.
+- 특정 빈의 실제 런타임 타입을 알아내는 권장 방법은 `BeanFactory.getType` 메서드를 사용하는 것. 이 메서드는 위의 모든 경우를 고려하여 동일한 빈 이름에 대해 `BeanFactory.getBean` 호출이 반환할 객체의 타입을 반환함.
 
 ## Dependency Injection
 
@@ -758,3 +859,221 @@
 ## XML Schema Authoring
 
 ## Application Startup Steps
+
+---
+
+## DispatcherServlet
+
+## Context Hierarchy
+
+## Special Bean Types
+
+## Web MVC Config
+
+## Servlet Config
+
+## Processing
+
+## Path Matching
+
+## Interception
+
+## Exceptions
+
+## View Resolution
+
+## Locale
+
+## Themes
+
+## Multipart Resolver
+
+## Logging
+
+## Filters
+
+## Annotated Controllers
+
+## Declaration
+
+## Mapping Requests
+
+## Handler Methods
+
+## Method Arguments
+
+## Return Values
+
+## Type Conversion
+
+## Matrix Variables
+
+## @RequestParam
+
+## @RequestHeader
+
+## @CookieValue
+
+## @ModelAttribute
+
+## @SessionAttributes
+
+## @SessionAttribute
+
+## @RequestAttribute
+
+## Redirect Attributes
+
+## Flash Attributes
+
+## Multipart
+
+## @RequestBody
+
+## HttpEntity
+
+## @ResponseBody
+
+## ResponseEntity
+
+## Jackson JSON
+
+## Model
+
+## @InitBinder
+
+## Validation
+
+## Exceptions
+
+## Controller Advice
+
+## Functional Endpoints
+
+## URI Links
+
+## Asynchronous Requests
+
+## CORS
+
+## Error Responses
+
+## Web Security
+
+## HTTP Caching
+
+## View Technologies
+
+## Thymeleaf
+
+## FreeMarker
+
+## Groovy Markup
+
+## Script Views
+
+## JSP and JSTL
+
+## RSS and Atom
+
+## PDF and Excel
+
+## Jackson
+
+## XML Marshalling
+
+## XSLT Views
+
+## MVC Config
+
+## Enable MVC Configuration
+
+## MVC Config API
+
+## Type Conversion
+
+## Validation
+
+## Interceptors
+
+## Content Types
+
+## Message Converters
+
+## View Controllers
+
+## View Resolvers
+
+## Static Resources
+
+## Default Servlet
+
+## Path Matching
+
+## Advanced Java Config
+
+## Advanced XML Config
+
+## HTTP/2
+
+## REST Clients
+
+## Testing
+
+## WebSockets
+
+## WebSocket API
+
+## SockJS Fallback
+
+## STOMP
+
+## Overview
+
+## Benefits
+
+## Enable STOMP
+
+## WebSocket Transport
+
+## Flow of Messages
+
+## Annotated Controllers
+
+## Sending Messages
+
+## Simple Broker
+
+## External Broker
+
+## Connecting to a Broker
+
+## Dots as Separators
+
+## Authentication
+
+## Token Authentication
+
+## Authorization
+
+## User Destinations
+
+## Order of Messages
+
+## Events
+
+## Interception
+
+## WebSocket Scope
+
+## STOMP Client
+
+## WebSocket Scope
+
+## Performance
+
+## Monitoring
+
+## Testing
+
+## Other Web Frameworks
