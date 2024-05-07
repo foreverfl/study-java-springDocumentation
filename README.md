@@ -17,7 +17,7 @@ spring.datasource.password=***
   > - [The IoC Container - Introduction to the Spring IoC Container and Beans](#the-ioc-container---introduction-to-the-spring-ioc-container-and-beans)
   > - [The IoC Container - Container Overview](#the-ioc-container---container-overview)
   > - [The IoC Container - Bean Overview](#the-ioc-container---bean-overview)
-  > - The IoC Container - Dependencies - Dependency Injection
+  > - [The IoC Container - Dependencies - Dependency Injection](#the-ioc-container---dependencies---dependency-injection)
   > - The IoC Container - Dependencies - Dependencies and Configuration in Detail
   > - The IoC Container - Dependencies - Using depends-on
   > - The IoC Container - Dependencies - Lazy-initialized Beans
@@ -262,9 +262,9 @@ spring.datasource.password=***
   > - DispatcherServlet - Multipart Resolver
   > - DispatcherServlet - Logging
   > - Filters
-  > - Annotated Controllers
+  > - [Annotated Controllers](#annotated-controllers)
   > - Annotated Controllers - Declaration
-  > - Annotated Controllers - Mapping Requests
+  > - [Annotated Controllers - Mapping Requests](#annotated-controllers---mapping-requests)
   > - Annotated Controllers - Handler Methods
   > - Annotated Controllers - Handler Methods - Method Arguments
   > - Annotated Controllers - Handler Methods - Return Values
@@ -666,191 +666,396 @@ public MyBean myBean() {
 - 빈의 실제 런타임 타입을 결정하는 것은 간단하지 않음. 빈 메타데이터 정의에 지정된 클래스는 초기 클래스 참조일 뿐이며, 팩토리 메서드나 `FactoryBean` 클래스와 결합되어 실제 런타임 타입과 다를 수 있음. 또한 AOP 프록시가 빈 인스턴스를 래핑하여 실제 타입의 노출을 제한할 수 있음.
 - 특정 빈의 실제 런타임 타입을 알아내는 권장 방법은 `BeanFactory.getType` 메서드를 사용하는 것. 이 메서드는 위의 모든 경우를 고려하여 동일한 빈 이름에 대해 `BeanFactory.getBean` 호출이 반환할 객체의 타입을 반환함.
 
-## Dependency Injection
+## The IoC Container - Dependencies - Dependency Injection
 
-## Dependencies and Configuration in Detail
+- 의존성 주입(Dependency Injection)은 팩토리 메서드를 향한 생성자 인자 또는 객체 인스턴스에 설정(set)되는 속성을 통해서 객체가 의존성을 주입하는 과정을 의미함.
+- 의존성 주입(Dependency Injection)을 통해서 코드는 결합도가 낮아짐.
+- 객체는 의존성을 찾지 않고 위치 또는 의존성의 클래스에 대해서도 알지 못함. 결과적으로, 클래스는 테스트하기에 용이해짐.
 
-## Using depends-on
+### 생성자 기반 의존성 주입 (Constructor-based Dependency Injection)
 
-## Lazy-initialized Beans
+- 생성자를 통해 객체의 의존성을 주입하는 방법.
+- 정적 팩토리 메서드(static factory method)를 사용하여 빈(bean)을 생성하는 것과 생성자(constructor)를 사용하여 빈을 생성하는 것이 거의 동등함.
+- 객체 생성 시점에 필요한 의존성을 모두 받아와서 객체를 초기화함.
+- 의존성이 필수적으로 필요한 경우에 적합함.
+- 스프링 4.3부터는 클래스에 생성자가 하나만 있고, 그 생성자의 매개변수가 빈으로 등록된 타입이라면 @Autowired 어노테이션을 생략할 수 있음. 따라서 @Autowired가 명시되어 있지 않아도 스프링 컨테이너는 해당 생성자를 사용하여 의존성을 주입함.
+- 예제 코드
 
-## Autowiring Collaborators
+```java
+public class SimpleMovieLister {
 
-## Method Injection
+	// the SimpleMovieLister은 MovieFinder에 대해서 의존성을 가짐
+	private final MovieFinder movieFinder;
 
-## Bean Scopes
+	// 컨테이너가 MovideFinder를 주입할 수 있도록 하는 생성자
+	public SimpleMovieLister(MovieFinder movieFinder) {
+		this.movieFinder = movieFinder;
+	}
 
-## Customizing the Nature of a Bean
+	// 주입된 MovideFinder를 사용하는 비즈니스 로직은 생략
+}
+```
 
-## Bean Definition Inheritance
+### 생성자 인자 해결 (Constructor Argument Resolution)
 
-## Container Extension Points
+- 스프링 컨테이너가 빈을 인스턴스화할 때 생성자 인수를 해석하고 매칭하는 방법.
 
-## Annotation-based Container Configuration
+#### 타입에 의한 매칭
 
-## Using @Autowired
+- 생성자 인수의 타입을 기반으로 매칭이 이루어짐.
+- 생성자 인수에 모호성이 없다면 빈 정의에서 인수를 정의한 순서대로 생성자에 전달됨.
+- 예를 들어, `ThingOne` 클래스의 생성자가 `ThingTwo`와 `ThingThree` 타입의 인수를 받고, 이 클래스들이 상속 관계가 아니라면 모호성이 없으므로 별도의 설정 없이 빈 정의에서 인수의 순서대로 생성자에 전달됨. 아래 예제에서는 확실하게 순서가 정해져 있으므로 `<constructor-arg>`을 설정할 필요는 없음.
+- 예제 코드
 
-## Fine-tuning Annotation-based Autowiring with @Primary
+```java
+package x.y;
 
-## Fine-tuning Annotation-based Autowiring with Qualifiers
+public class ThingOne {
 
-## Using Generics as Autowiring Qualifiers
+	public ThingOne(ThingTwo thingTwo, ThingThree thingThree) {
+		// ...
+	}
+}
+```
 
-## Using CustomAutowireConfigurer
+```xml
+<beans>
+	<bean id="beanOne" class="x.y.ThingOne">
+		<constructor-arg ref="beanTwo"/>
+		<constructor-arg ref="beanThree"/>
+	</bean>
 
-## Injection with @Resource
+	<bean id="beanTwo" class="x.y.ThingTwo"/>
 
-## Using @Value
+	<bean id="beanThree" class="x.y.ThingThree"/>
+</beans>
+```
 
-## Using @PostConstruct and @PreDestroy
+#### 단순 타입의 경우
 
-## Classpath Scanning and Managed Components
+- 단순 타입(예: `int`, `String` 등)을 사용할 때는 스프링이 타입을 결정할 수 없으므로 타입에 의한 매칭이 불가능함.
+- 이 경우, `type` 속성을 사용하여 명시적으로 생성자 인수의 타입을 지정해야 함.
+- 예를 들어, `ExampleBean` 클래스의 생성자가 int와 String 타입의 인수를 받는다면 `<constructor-arg>` 요소에 `type` 속성을 사용하여 타입을 명시해야 합니다.
 
-## Using JSR 330 Standard Annotations
+```java
+package examples;
 
-## Java-based Container Configuration
+public class ExampleBean {
 
-## Basic Concepts: @Bean and @Configuration
+	// Number of years to calculate the Ultimate Answer
+	private final int years;
 
-## Instantiating the Spring Container by Using AnnotationConfigApplicationContext
+	// The Answer to Life, the Universe, and Everything
+	private final String ultimateAnswer;
 
-## Using the @Bean Annotation
+	public ExampleBean(int years, String ultimateAnswer) {
+		this.years = years;
+		this.ultimateAnswer = ultimateAnswer;
+	}
+}
+```
 
-## Using the @Configuration annotation
+```xml
+<bean id="exampleBean" class="examples.ExampleBean">
+	<constructor-arg type="int" value="7500000"/>
+	<constructor-arg type="java.lang.String" value="42"/>
+</bean>
+```
 
-## Composing Java-based Configurations
+#### 인덱스를 사용한 매칭
 
-## Environment Abstraction
+- `index` 속성을 사용하여 생성자 인수의 인덱스를 명시적으로 지정할 수 있음.
+- 인덱스는 0부터 시작함.
+- 이는 단순 값의 모호성을 해결할 뿐만 아니라, 생성자에 동일한 타입의 인수가 여러 개 있을 때도 모호성을 해결할 수 있음.
+- 예제 코드
 
-## Registering a LoadTimeWeaver
+```xml
+<bean id="exampleBean" class="examples.ExampleBean">
+	<constructor-arg index="0" value="7500000"/>
+	<constructor-arg index="1" value="42"/>
+</bean>
+```
 
-## Additional Capabilities of the ApplicationContext
+#### 생성자 인수 이름을 사용한 매칭
 
-## The BeanFactory API
+- 생성자 인수의 이름을 사용하여 값의 모호성을 해결할 수 있음.
+- `name` 속성을 사용하여 생성자 인수의 이름을 지정함.
+- 이를 위해서는 코드를 디버그 플래그를 사용하여 컴파일해야 하며, 스프링이 생성자에서 인수의 이름을 찾을 수 있어야 함.
+- 디버그 플래그를 사용하여 컴파일할 수 없거나 원하지 않는 경우, `@ConstructorProperties` 어노테이션을 사용하여 명시적으로 생성자 인수의 이름을 지정할 수 있음.
+
+```xml
+<bean id="exampleBean" class="examples.ExampleBean">
+	<constructor-arg name="years" value="7500000"/>
+	<constructor-arg name="ultimateAnswer" value="42"/>
+</bean>
+```
+
+#### Bean의 사용
+
+- 기존에는 XML 설정 파일을 사용하여 빈을 정의하고 의존성을 주입했음.
+- 최근에는 어노테이션 기반의 설정을 더 많이 사용하며, `@Configuration` 클래스에서 `@Bean` 어노테이션을 사용하여 빈을 정의하고 의존성을 주입함.
+
+- 예제 코드
+
+```java
+public class User {
+    private String name;
+    private int age;
+
+    public User(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    // Getters and Setters
+}
+```
+
+```java
+@Configuration
+public class AppConfig {
+
+    @Bean
+    public User user() {
+        return new User("John Doe", 30);
+    }
+}
+```
+
+### Setter 기반 의존성 주입 (Setter-based Dependency Injection)
+
+#### 개요
+
+- Setter 기반 의존성 주입은 스프링 컨테이너가 빈의 _기본 생성자_ 또는 인자가 없는 정적 팩토리 메서드를 호출하여 빈을 인스턴스화한 후, 빈의 `setter` 메서드를 호출하여 의존성을 주입하는 방식.
+- 순수한 자바 클래스로 구현된 POJO(Plain Old Java Object)에 적용할 수 있으며, 컨테이너 관련 인터페이스, 기본 클래스, 어노테이션 등에 대한 의존성이 없음.
+
+#### 의존성 주입 방식 선택
+
+- 생성자 주입과 `Setter` 주입을 혼용할 수 있음.
+- 생성자 주입이 이루어진 후에 `Setter` 주입이 이루어질 수 있음. 의존성은 `BeanDefinition` 형태로 구성되며, `PropertyEditor` 인스턴스와 함께 사용하여 속성을 한 형식에서 다른 형식으로 변환함. 그러나 대부분의 Spring 사용자는 이러한 클래스를 직접(프로그래밍 방식으로) 사용하지 않음.
+- 필수적인 의존성은 생성자를 통해 주입하고, 선택적인 의존성은 `Setter` 메서드나 설정 메서드를 통해 주입하는 것이 좋음.
+- `@Autowired` 어노테이션을 `Setter` 메서드에 사용하면 해당 프로퍼티를 필수 의존성으로 만들 수 있지만, 생성자 주입과 인자 유효성 검사를 사용하는 것이 더 바람직함.
+
+#### 생성자 주입 vs Setter 주입
+
+- 스프링 팀은 일반적으로 생성자 주입을 권장함.
+  > - 애플리케이션 컴포넌트를 불변 객체로 구현할 수 있음.
+  > - 필수 의존성이 null이 아님을 보장함.
+  > - 생성자 주입된 컴포넌트는 항상 완전히 초기화된 상태로 클라이언트 코드에 반환됨.
+- `Setter` 주입은 주로 합리적인 기본값을 설정할 수 있는 선택적 의존성에 사용해야 함.
+  > - 그렇지 않으면 의존성을 사용하는 모든 곳에서 not-null 검사를 수행해야 함.
+  > - `Setter` 메서드를 사용하면 객체를 나중에 재구성하거나 재주입할 수 있음.
+  > - JMX MBean을 통한 관리는 `Setter` 주입의 설득력 있는 사용 사례.
+
+### 의존성 해결 과정 (Dependency Resolution Process)
+
+#### 개요
+
+- `ApplicationContext`는 모든 빈을 설명하는 구성 메타데이터를 사용하여 생성되고 초기화됨. 구성 메타데이터는 XML, Java 코드 또는 어노테이션으로 지정될 수 있음.
+- 각 빈에 대해 의존성은 속성, 생성자 인수 또는 정적 팩토리 메서드에 대한 인수의 형태로 표현됨. 이러한 의존성은 빈이 실제로 생성될 때 빈에 제공됨.
+- 각 속성 또는 생성자 인수는 설정할 값의 실제 정의이거나 컨테이너의 다른 빈에 대한 참조임.
+- 값인 각 속성 또는 생성자 인수는 지정된 형식에서 해당 속성 또는 생성자 인수의 실제 유형으로 변환됨. 기본적으로 Spring은 문자열 형식으로 제공된 값을 `int`, `long`, `String`, `boolean` 등과 같은 모든 기본 제공 유형으로 변환할 수 있음.
+- Spring 컨테이너는 컨테이너가 생성될 때 각 빈의 구성을 유효성 검사함. 그러나 빈 속성 자체는 빈이 실제로 생성될 때까지 설정되지 않음.
+- 컨테이너가 생성될 때 싱글톤 범위이고 사전 인스턴스화되도록 설정된 빈(기본값)이 생성됨. 그렇지 않으면 요청 시에만 빈이 생성됨.
+- 빈을 생성하면 해당 빈의 의존성과 의존성의 의존성이 생성되고 할당되므로 빈의 그래프가 생성될 수 있음. 이러한 의존성 간의 해결 불일치는 영향을 받는 빈이 처음 생성될 때 늦게 나타날 수 있음.
+
+#### 순환 의존성 (Circular dependencies)
+
+- 주로 생성자 주입을 사용하는 경우 해결할 수 없는 순환 의존성 시나리오가 발생할 수 있음.
+- 예를 들어, A 클래스가 생성자 주입을 통해 B 클래스의 인스턴스를 필요로 하고 B 클래스도 생성자 주입을 통해 A 클래스의 인스턴스를 필요로 하는 경우. A와 B 클래스의 빈을 서로 주입하도록 구성하면 Spring IoC 컨테이너는 런타임에 이 순환 참조를 감지하고 `BeanCurrentlyInCreationException`을 던짐.
+- 한 가지 가능한 해결책은 일부 클래스의 소스 코드를 편집하여 생성자가 아닌 setter로 구성하는 것. 또는 생성자 주입을 피하고 `setter` 주입만 사용하는 것.
+- 일반적인 경우(순환 의존성 없음)와 달리 빈 A와 빈 B 사이의 순환 의존성은 한 빈이 완전히 초기화되기 전에 다른 빈에 주입되도록 함.
+- Spring은 구성 문제(존재하지 않는 빈에 대한 참조 및 순환 의존성)를 컨테이너 로드 시점에 감지함. Spring은 빈이 실제로 생성될 때 가능한 한 늦게 속성을 설정하고 의존성을 해결함.
+- `ApplicationContext` 구현은 기본적으로 싱글톤 빈을 사전 인스턴스화함. 이는 필요한 시점보다 빨리 빈을 생성하는 데 약간의 시간과 메모리가 소요되지만, `ApplicationContext`가 생성될 때 구성 문제를 발견할 수 있음.
+- 순환 의존성이 없는 경우, 하나 이상의 협력 빈이 종속 빈에 주입될 때 각 협력 빈은 종속 빈에 주입되기 전에 완전히 구성됨.
+
+### 예제 코드
+
+- 아직 안 만들었어요... 졸려 ㅠㅠ
+
+## The IoC Container - Dependencies - Dependencies and Configuration in Detail
+
+## The IoC Container - Dependencies - Using depends-on
+
+## The IoC Container - Dependencies - Lazy-initialized Beans
+
+## The IoC Container - Dependencies - Autowiring Collaborators
+
+## The IoC Container - Dependencies - Method Injection
+
+## The IoC Container - Bean Scopes
+
+## The IoC Container - Customizing the Nature of a Bean
+
+## The IoC Container - Bean Definition Inheritance
+
+## The IoC Container - Container Extension Points
+
+## The IoC Container - Annotation-based Container Configuration
+
+## The IoC Container - Annotation-based Container Configuration - Using @Autowired
+
+## The IoC Container - Annotation-based Container Configuration - Fine-tuning Annotation-based Autowiring with @Primary
+
+## The IoC Container - Annotation-based Container Configuration - Fine-tuning Annotation-based Autowiring with Qualifiers
+
+## The IoC Container - Annotation-based Container Configuration - Using Generics as Autowiring Qualifiers
+
+## The IoC Container - Annotation-based Container Configuration - Using CustomAutowireConfigurer
+
+## The IoC Container - Annotation-based Container Configuration - Injection with @Resource
+
+## The IoC Container - Annotation-based Container Configuration - Using @Value
+
+## The IoC Container - Annotation-based Container Configuration - Using @PostConstruct and @PreDestroy
+
+## The IoC Container - Classpath Scanning and Managed Components
+
+## The IoC Container - Using JSR 330 Standard Annotations
+
+## The IoC Container - Java-based Container Configuration
+
+## The IoC Container - Java-based Container Configuration - Basic Concepts: @Bean and @Configuration
+
+## The IoC Container - Java-based Container Configuration - Instantiating the Spring Container by Using AnnotationConfigApplicationContext
+
+## The IoC Container - Java-based Container Configuration - Using the @Bean Annotation
+
+## The IoC Container - Java-based Container Configuration - Using the @Configuration annotation
+
+## The IoC Container - Java-based Container Configuration - Composing Java-based Configurations
+
+## The IoC Container - Environment Abstraction
+
+## The IoC Container - Registering a LoadTimeWeaver
+
+## The IoC Container - Additional Capabilities of the ApplicationContext
+
+## The IoC Container - The BeanFactory API
 
 ## Resources
 
 ## Validation, Data Binding, and Type Conversion
 
-## Validation by Using Spring’s Validator Interface
+## Validation, Data Binding, and Type Conversion - Validation by Using Spring’s Validator Interface
 
-## Data Binding
+## Validation, Data Binding, and Type Conversion - Data Binding
 
-## Resolving Codes to Error Messages
+## Validation, Data Binding, and Type Conversion - Resolving Codes to Error Messages
 
-## Spring Type Conversion
+## Validation, Data Binding, and Type Conversion - Spring Type Conversion
 
-## Spring Field Formatting
+## Validation, Data Binding, and Type Conversion - Spring Field Formatting
 
-## Configuring a Global Date and Time Format
+## Validation, Data Binding, and Type Conversion - Configuring a Global Date and Time Format
 
-## Java Bean Validation
+## Validation, Data Binding, and Type Conversion - Java Bean Validation
 
 ## Spring Expression Language (SpEL)
 
-## Evaluation
+## Spring Expression Language (SpEL) - Evaluation
 
-## Expressions in Bean Definitions
+## Spring Expression Language (SpEL) - Expressions in Bean Definitions
 
-## Language Reference
+## Spring Expression Language (SpEL) - Language Reference
 
-## Literal Expressions
+## Spring Expression Language (SpEL) - Language Reference - Literal Expressions
 
-## Properties, Arrays, Lists, Maps, and Indexers
+## Spring Expression Language (SpEL) - Language Reference - Properties, Arrays, Lists, Maps, and Indexers
 
-## Inline Lists
+## Spring Expression Language (SpEL) - Language Reference - Inline Lists
 
-## Inline Maps
+## Spring Expression Language (SpEL) - Language Reference - Inline Maps
 
-## Array Construction
+## Spring Expression Language (SpEL) - Language Reference - Array Construction
 
-## Methods
+## Spring Expression Language (SpEL) - Language Reference - Methods
 
-## Operators
+## Spring Expression Language (SpEL) - Language Reference - Operators
 
-## Types
+## Spring Expression Language (SpEL) - Language Reference - Types
 
-## Constructors
+## Spring Expression Language (SpEL) - Language Reference - Constructors
 
-## Variables
+## Spring Expression Language (SpEL) - Language Reference - Variables
 
-## Functions
+## Spring Expression Language (SpEL) - Language Reference - Functions
 
-## Bean References
+## Spring Expression Language (SpEL) - Language Reference - Bean References
 
-## Ternary Operator (If-Then-Else)
+## Spring Expression Language (SpEL) - Language Reference - Ternary Operator (If-Then-Else)
 
-## The Elvis Operator
+## Spring Expression Language (SpEL) - Language Reference - The Elvis Operator
 
-## Safe Navigation Operator
+## Spring Expression Language (SpEL) - Language Reference - Safe Navigation Operator
 
-## Collection Selection
+## Spring Expression Language (SpEL) - Language Reference - Collection Selection
 
-## Collection Projection
+## Spring Expression Language (SpEL) - Language Reference - Collection Projection
 
-## Expression Templating
+## Spring Expression Language (SpEL) - Language Reference - Expression Templating
 
-## Classes Used in the Examples
+## Spring Expression Language (SpEL) - Classes Used in the Examples
 
 ## Aspect Oriented Programming with Spring
 
-## AOP Concepts
+## Aspect Oriented Programming with Spring - AOP Concepts
 
-## Spring AOP Capabilities and Goals
+## Aspect Oriented Programming with Spring - Spring AOP Capabilities and Goals
 
-## AOP Proxies
+## Aspect Oriented Programming with Spring - AOP Proxies
 
-## @AspectJ support
+## Aspect Oriented Programming with Spring - @AspectJ support
 
-## Enabling @AspectJ Support
+## Aspect Oriented Programming with Spring - Enabling @AspectJ Support
 
-## Declaring an Aspect
+## Aspect Oriented Programming with Spring - Enabling @AspectJ Support - Declaring an Aspect
 
-## Declaring a Pointcut
+## Aspect Oriented Programming with Spring - Enabling @AspectJ Support - Declaring a Pointcut
 
-## Declaring Advice
+## Aspect Oriented Programming with Spring - Enabling @AspectJ Support - Declaring Advice
 
-## Introductions
+## Aspect Oriented Programming with Spring - Enabling @AspectJ Support - Introductions
 
-## Aspect Instantiation Models
+## Aspect Oriented Programming with Spring - Enabling @AspectJ Support - Aspect Instantiation Models
 
-## An AOP Example
+## Aspect Oriented Programming with Spring - Enabling @AspectJ Support - An AOP Example
 
-## Schema-based AOP Support
+## Aspect Oriented Programming with Spring - Schema-based AOP Support
 
-## Choosing which AOP Declaration Style to Use
+## Aspect Oriented Programming with Spring - Choosing which AOP Declaration Style to Use
 
-## Mixing Aspect Types
+## Aspect Oriented Programming with Spring - Mixing Aspect Types
 
-## Proxying Mechanisms
+## Aspect Oriented Programming with Spring - Proxying Mechanisms
 
-## Programmatic Creation of @AspectJ Proxies
+## Aspect Oriented Programming with Spring - Programmatic Creation of @AspectJ Proxies
 
-## Using AspectJ with Spring Applications
+## Aspect Oriented Programming with Spring - Using AspectJ with Spring Applications
 
-## Further Resources
+## Aspect Oriented Programming with Spring - Further Resources
 
 ## Spring AOP APIs
 
-## Pointcut API in Spring
+## Spring AOP APIs - Pointcut API in Spring
 
-## Advice API in Spring
+## Spring AOP APIs - Advice API in Spring
 
-## The Advisor API in Spring
+## Spring AOP APIs - The Advisor API in Spring
 
-## Using the ProxyFactoryBean to Create AOP Proxies
+## Spring AOP APIs - Using the ProxyFactoryBean to Create AOP Proxies
 
-## Concise Proxy Definitions
+## Spring AOP APIs - Concise Proxy Definitions
 
-## Creating AOP Proxies Programmatically with the ProxyFactory
+## Spring AOP APIs - Creating AOP Proxies Programmatically with the ProxyFactory
 
-## Manipulating Advised Objects
+## Spring AOP APIs - Manipulating Advised Objects
 
-## Using the "auto-proxy" facility
+## Spring AOP APIs - Using the "auto-proxy" facility
 
-## Using TargetSource Implementations
+## Spring AOP APIs - Using TargetSource Implementations
 
-## Defining New Advice Types
+## Spring AOP APIs - Defining New Advice Types
 
 ## Null-safety
 
@@ -862,11 +1067,11 @@ public MyBean myBean() {
 
 ## Appendix
 
-## XML Schemas
+## Appendix - XML Schemas
 
-## XML Schema Authoring
+## Appendix - XML Schema Authoring
 
-## Application Startup Steps
+## Appendix - Application Startup Steps
 
 ---
 
@@ -1132,6 +1337,119 @@ public class HelloController {
 ## Annotated Controllers - Declaration
 
 ## Annotated Controllers - Mapping Requests
+
+### @RequestMapping
+
+- `@RequestMapping` 어노테이션은 요청 URL을 컨트롤러의 메서드와 매핑할 때 사용됨. 클래스 레벨과 메서드 레벨에서 사용할 수 있으며, 다양한 속성을 통해 매핑을 구체화할 수 있음.
+
+```java
+@Controller
+@RequestMapping("/users")
+public class UserController {
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public String getUser(@PathVariable("id") Long id) {
+        // ...
+    }
+
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public String createUser(@RequestBody User user) {
+        // ...
+    }
+}
+```
+
+### URI patterns
+
+- URI 패턴을 사용하여 요청 URL을 매핑할 수 있습니다. 와일드카드 문자(\*, \*\*), 플레이스홀더({id}) 등을 지원함.
+
+```java
+@RequestMapping("/users/{id}")
+public String getUser(@PathVariable("id") Long id) {
+    // ...
+}
+```
+
+### Pattern Comparison
+
+- 여러 개의 URI 패턴이 요청 URL과 일치할 경우, 스프링은 가장 구체적인 패턴을 선택함. 패턴의 구체성은 URI 변수, 와일드카드의 수, 고정된 문자열의 길이 등을 기준으로 판단함.
+
+### Suffix Match
+
+- URI 패턴의 접미사를 사용하여 매핑할 수 있음. 예를 들어, `/users/{id}.\*`는 `/users/123.json`, `/users/123.xml` 등과 일치함.
+
+### Suffix Match and RFD
+
+- RFD(Reflected File Download) 공격을 방지하기 위해 접미사 패턴은 기본적으로 비활성화되어 있움. 필요한 경우 `PathMatchConfigurer`를 사용하여 활성화할 수 있음.
+
+### Consumable Media Types
+
+- consumes 속성을 사용하여 요청의 Content-Type 헤더를 기준으로 매핑할 수 있음.
+
+```java
+@PostMapping(value = "/users", consumes = "application/json")
+public void createUser(@RequestBody User user) {
+    // ...
+}
+```
+
+### Producible Media Types
+
+- produces 속성을 사용하여 응답의 Content-Type 헤더를 설정할 수 있음.
+
+```java
+@GetMapping(value = "/users/{id}", produces = "application/json")
+public User getUser(@PathVariable("id") Long id) {
+    // ...
+}
+```
+
+### Parameters, headers
+
+- params와 headers 속성을 사용하여 요청 파라미터와 헤더를 기준으로 매핑할 수 있음.
+
+```java
+@GetMapping(value = "/users", params = "sort=name")
+public List<User> getUsersSortedByName() {
+    // ...
+}
+```
+
+### HTTP HEAD, OPTIONS
+
+- `@RequestMapping`은 `HTTP HEAD`와 `OPTIONS` 메서드도 지원함. HEAD 요청은 GET 요청과 동일하게 처리되지만 응답 본문은 제외됨. `OPTIONS` 요청은 `@RequestMapping`의 method 속성에 명시된 HTTP 메서드를 응답 헤더에 포함시킴.
+
+### Custom Annotations
+
+- `@RequestMapping`을 메타 어노테이션으로 사용하여 커스텀 어노테이션을 만들 수 있음. `@GetMapping`, `@PostMapping` 등이 대표적인 예시.
+
+```java
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+@RequestMapping(method = RequestMethod.GET)
+public @interface GetMapping {
+    // ...
+}
+```
+
+### Explicit Registrations
+
+-` @RequestMapping` 어노테이션을 사용하지 않고도 명시적으로 요청 매핑을 등록할 수 있음. `RequestMappingHandlerMapping`의 `registerMapping` 메서드를 사용하여 직접 매핑을 등록할 수 있음.
+
+### @HttpExchange
+
+- `@HttpExchange` 어노테이션은 `@RequestMapping`의 모든 기능을 포함하면서도 더 간결한 문법을 제공함. @Controller 어노테이션 대신 @HttpExchange를 사용할 수 있음.
+
+```java
+@HttpExchange
+public class UserController {
+
+    @GetMapping("/users/{id}")
+    public User getUser(@PathVariable("id") Long id) {
+        // ...
+    }
+}
+```
 
 ## Annotated Controllers - Handler Methods
 
