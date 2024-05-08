@@ -248,83 +248,83 @@ spring.datasource.password=***
 
 - Web on Servlet Stack
 
-  > - [DispatcherServlet](#dispatcherservlet)
-  > - [DispatcherServlet - Context Hierarchy](#dispatcherservlet---context-hierarchy)
-  > - [DispatcherServlet - Special Bean Types](#dispatcherservlet---special-bean-types)
-  > - [DispatcherServlet - Web MVC Config](#dispatcherservlet---web-mvc-config)
-  > - DispatcherServlet - Servlet Config
-  > - DispatcherServlet - Processing
-  > - DispatcherServlet - Path Matching
-  > - DispatcherServlet - Interception
-  > - DispatcherServlet - Exceptions
-  > - DispatcherServlet - View Resolution
-  > - DispatcherServlet - Locale
-  > - DispatcherServlet - Themes
-  > - DispatcherServlet - Multipart Resolver
-  > - DispatcherServlet - Logging
-  > - Filters
-  > - [Annotated Controllers](#annotated-controllers)
-  > - Annotated Controllers - Declaration
-  > - [Annotated Controllers - Mapping Requests](#annotated-controllers---mapping-requests)
-  > - Annotated Controllers - Handler Methods
-  > - Annotated Controllers - Handler Methods - Method Arguments
-  > - Annotated Controllers - Handler Methods - Return Values
-  > - Annotated Controllers - Handler Methods - Type Conversion
-  > - Annotated Controllers - Handler Methods - Matrix Variables
-  > - Annotated Controllers - Handler Methods - @RequestParam
-  > - Annotated Controllers - Handler Methods - @RequestHeader
-  > - Annotated Controllers - Handler Methods - @CookieValue
-  > - Annotated Controllers - Handler Methods - @ModelAttribute
-  > - Annotated Controllers - Handler Methods - @SessionAttributes
-  > - Annotated Controllers - Handler Methods - @SessionAttribute
-  > - Annotated Controllers - Handler Methods - @RequestAttribute
-  > - Annotated Controllers - Handler Methods - Redirect Attributes
-  > - Annotated Controllers - Handler Methods - Flash Attributes
-  > - Annotated Controllers - Handler Methods - Multipart
-  > - Annotated Controllers - Handler Methods - @RequestBody
-  > - Annotated Controllers - Handler Methods - HttpEntity
-  > - Annotated Controllers - Handler Methods - @ResponseBody
-  > - Annotated Controllers - Handler Methods - ResponseEntity
-  > - Annotated Controllers - Handler Methods - Jackson JSON
-  > - Annotated Controllers - Model
-  > - Annotated Controllers - @InitBinder
-  > - Annotated Controllers - Validation
-  > - Annotated Controllers - Exceptions
-  > - Annotated Controllers - Controller Advice
-  > - Functional Endpoints
-  > - URI Links
-  > - Asynchronous Requests
-  > - CORS
-  > - Error Responses
-  > - Web Security
-  > - HTTP Caching
-  > - View Technologies
-  > - View Technologies - Thymeleaf
-  > - View Technologies - FreeMarker
-  > - View Technologies - Groovy Markup
-  > - View Technologies - Script Views
-  > - View Technologies - JSP and JSTL
-  > - View Technologies - RSS and Atom
-  > - View Technologies - PDF and Excel
-  > - View Technologies - Jackson
-  > - View Technologies - XML Marshalling
-  > - View Technologies - XSLT Views
-  > - MVC Config
-  > - MVC Config - Enable MVC Configuration
-  > - MVC Config - MVC Config API
-  > - MVC Config - Type Conversion
-  > - MVC Config - Validation
-  > - MVC Config - Interceptors
-  > - MVC Config - Content Types
-  > - MVC Config - Message Converters
-  > - MVC Config - View Controllers
-  > - MVC Config - View Resolvers
-  > - MVC Config - Static Resources
-  > - MVC Config - Default Servlet
-  > - MVC Config - Path Matching
-  > - MVC Config - Advanced Java Config
-  > - MVC Config - Advanced XML Config
-  > - HTTP/2
+  > - [Spring Web MVC - DispatcherServlet](#spring-web-mvc---dispatcherservlet)
+  > - [Spring Web MVC - DispatcherServlet - Context Hierarchy](#spring-web-mvc---dispatcherservlet---context-hierarchy)
+  > - [Spring Web MVC - DispatcherServlet - Special Bean Types](#spring-web-mvc---dispatcherservlet---special-bean-types)
+  > - [Spring Web MVC - DispatcherServlet - Web MVC Config](#spring-web-mvc---dispatcherservlet---web-mvc-config)
+  > - Spring Web MVC - DispatcherServlet - Servlet Config
+  > - Spring Web MVC - DispatcherServlet - Processing
+  > - Spring Web MVC - DispatcherServlet - Path Matching
+  > - Spring Web MVC - DispatcherServlet - Interception
+  > - Spring Web MVC - DispatcherServlet - Exceptions
+  > - Spring Web MVC - DispatcherServlet - View Resolution
+  > - Spring Web MVC - DispatcherServlet - Locale
+  > - Spring Web MVC - DispatcherServlet - Themes
+  > - Spring Web MVC - DispatcherServlet - Multipart Resolver
+  > - Spring Web MVC - DispatcherServlet - Logging
+  > - Spring Web MVC - Filters
+  > - [Spring Web MVC - Annotated Controllers](#spring-web-mvc---annotated-controllers)
+  > - Spring Web MVC - Annotated Controllers - Declaration
+  > - [Spring Web MVC - Annotated Controllers - Mapping Requests](#spring-web-mvc---annotated-controllers---mapping-requests)
+  > - Spring Web MVC - Annotated Controllers - Handler Methods
+  > - Spring Web MVC - Annotated Controllers - Handler Methods - Method Arguments
+  > - Spring Web MVC - Annotated Controllers - Handler Methods - Return Values
+  > - Spring Web MVC - Annotated Controllers - Handler Methods - Type Conversion
+  > - Spring Web MVC - Annotated Controllers - Handler Methods - Matrix Variables
+  > - Spring Web MVC - Annotated Controllers - Handler Methods - @RequestParam
+  > - Spring Web MVC - Annotated Controllers - Handler Methods - @RequestHeader
+  > - Spring Web MVC - Annotated Controllers - Handler Methods - @CookieValue
+  > - Spring Web MVC - Annotated Controllers - Handler Methods - @ModelAttribute
+  > - Spring Web MVC - Annotated Controllers - Handler Methods - @SessionAttributes
+  > - Spring Web MVC - Annotated Controllers - Handler Methods - @SessionAttribute
+  > - Spring Web MVC - Annotated Controllers - Handler Methods - @RequestAttribute
+  > - Spring Web MVC - Annotated Controllers - Handler Methods - Redirect Attributes
+  > - Spring Web MVC - Annotated Controllers - Handler Methods - Flash Attributes
+  > - Spring Web MVC - Annotated Controllers - Handler Methods - Multipart
+  > - Spring Web MVC - Annotated Controllers - Handler Methods - @RequestBody
+  > - Spring Web MVC - Annotated Controllers - Handler Methods - HttpEntity
+  > - Spring Web MVC - Annotated Controllers - Handler Methods - @ResponseBody
+  > - Spring Web MVC - Annotated Controllers - Handler Methods - ResponseEntity
+  > - Spring Web MVC - Annotated Controllers - Handler Methods - Jackson JSON
+  > - Spring Web MVC - Annotated Controllers - Model
+  > - Spring Web MVC - Annotated Controllers - @InitBinder
+  > - Spring Web MVC - Annotated Controllers - Validation
+  > - Spring Web MVC - Annotated Controllers - Exceptions
+  > - Spring Web MVC - Annotated Controllers - Controller Advice
+  > - Spring Web MVC - Functional Endpoints
+  > - Spring Web MVC - URI Links
+  > - Spring Web MVC - Asynchronous Requests
+  > - Spring Web MVC - CORS
+  > - Spring Web MVC - Error Responses
+  > - Spring Web MVC - Web Security
+  > - Spring Web MVC - HTTP Caching
+  > - Spring Web MVC - View Technologies
+  > - Spring Web MVC - View Technologies - Thymeleaf
+  > - Spring Web MVC - View Technologies - FreeMarker
+  > - Spring Web MVC - View Technologies - Groovy Markup
+  > - Spring Web MVC - View Technologies - Script Views
+  > - Spring Web MVC - View Technologies - JSP and JSTL
+  > - Spring Web MVC - View Technologies - RSS and Atom
+  > - Spring Web MVC - View Technologies - PDF and Excel
+  > - Spring Web MVC - View Technologies - Jackson
+  > - Spring Web MVC - View Technologies - XML Marshalling
+  > - Spring Web MVC - View Technologies - XSLT Views
+  > - Spring Web MVC - MVC Config
+  > - Spring Web MVC - MVC Config - Enable MVC Configuration
+  > - Spring Web MVC - MVC Config - MVC Config API
+  > - Spring Web MVC - MVC Config - Type Conversion
+  > - Spring Web MVC - MVC Config - Validation
+  > - Spring Web MVC - MVC Config - Interceptors
+  > - Spring Web MVC - MVC Config - Content Types
+  > - Spring Web MVC - MVC Config - Message Converters
+  > - Spring Web MVC - MVC Config - View Controllers
+  > - Spring Web MVC - MVC Config - View Resolvers
+  > - Spring Web MVC - MVC Config - Static Resources
+  > - Spring Web MVC - MVC Config - Default Servlet
+  > - Spring Web MVC - MVC Config - Path Matching
+  > - Spring Web MVC - MVC Config - Advanced Java Config
+  > - Spring Web MVC - MVC Config - Advanced XML Config
+  > - Spring Web MVC - HTTP/2
   > - REST Clients
   > - Testing
   > - WebSockets
@@ -1246,7 +1246,7 @@ Object payload = expr.getValue(message);
 
 ---
 
-## DispatcherServlet
+## Spring Web MVC - DispatcherServlet
 
 - `DispatcherServlet`은 Spring MVC의 핵심 컴포넌트로, Front Controller 패턴을 구현한 서블릿. `DispatcherServlet`은 요청 처리를 위한 공유 알고리즘을 제공하며, 실제 작업은 설정 가능한 delegate 컴포넌트에 의해 수행됨. 이러한 모델은 유연하며 다양한 워크플로우를 지원함.
 
@@ -1364,7 +1364,9 @@ public class MyWebAppInitializer extends AbstractAnnotationConfigDispatcherServl
   > - 이 컨텍스트는 해당 Servlet에 특화된 설정과 빈들을 정의함.
   > - 자식 WebApplicationContext에서는 루트 WebApplicationContext의 빈들을 상속받고, 필요한 경우 재정의할 수 있음.
 
-## DispatcherServlet - Special Bean Types
+## Spring Web MVC - DispatcherServlet - Context Hierarchy
+
+## Spring Web MVC - DispatcherServlet - Special Bean Types
 
 ### 개요
 
@@ -1423,7 +1425,7 @@ public class MyWebAppInitializer extends AbstractAnnotationConfigDispatcherServl
 
 3. 직접 Java 설정 파일 (`@Configuration` 클래스)에서 `Thymeleaf` 설정을 정의하는 경우, 이 설정들이 Spring Boot의 자동 설정보다 우선시됨. 즉, 위의 `WebConfig` 클래스처럼 직접 `ViewResolver`, `TemplateEngine`, `TemplateResolver`를 설정하면, 이 설정들이 `application.properties`에서 제공하는 기본값 또는 변경된 설정들을 오버라이드(덮어쓰기)함.
 
-## DispatcherServlet - Web MVC Config
+## Spring Web MVC - DispatcherServlet - Web MVC Config
 
 ### 개요
 
@@ -1464,34 +1466,32 @@ public class WebConfig implements WebMvcConfigurer {
 }
 ```
 
-## DispatcherServlet - Servlet Config
+## Spring Web MVC - DispatcherServlet - Servlet Config
 
-## DispatcherServlet - Processing
+## Spring Web MVC - DispatcherServlet - Processing
 
-## DispatcherServlet - Path Matching
+## Spring Web MVC - DispatcherServlet - Path Matching
 
-## DispatcherServlet - Interception
+## Spring Web MVC - DispatcherServlet - Interception
 
-## DispatcherServlet - Exceptions
+## Spring Web MVC - DispatcherServlet - Exceptions
 
-## DispatcherServlet - View Resolution
+## Spring Web MVC - DispatcherServlet - View Resolution
 
-## DispatcherServlet - Locale
+## Spring Web MVC - DispatcherServlet - Locale
 
-## DispatcherServlet - Themes
+## Spring Web MVC - DispatcherServlet - Themes
 
-## DispatcherServlet - Multipart Resolver
+## Spring Web MVC - DispatcherServlet - Multipart Resolver
 
-## DispatcherServlet - Logging
+## Spring Web MVC - DispatcherServlet - Logging
 
-## Filters
+## Spring Web MVC - Filters
 
-## Annotated Controllers
+## Spring Web MVC - Annotated Controllers
 
-- 스프링 MVC는 어노테이션 기반의 프로그래밍 모델을 제공하는데, 이를 통해 `@Controller`와 `@RestController` 컴포넌트에서 어노테이션을 사용하여 요청 매핑, 요청 입력, 예외 처리 등을 표현할 수 있음.
-- 어노테이션 기반의 컨트롤러는 유연한 메서드 시그니처를 가지며, 특정 기본 클래스를 상속하거나 인터페이스를 구현할 필요가 없음.
-- 어노테이션 기반의 컨트롤러를 사용하면 코드의 가독성과 유지보수성이 좋아지며, 요청 매핑과 처리 로직을 명확하게 표현할 수 있음. 또한 컨트롤러 클래스를 간결하게 작성할 수 있어 생산성을 높일 수 있음.
-- 예제 코드
+- Spring MVC는 `@Controller`와 `@RestController` 구성요소가 요청 매핑, 요청 입력, 예외 처리 등을 표현하기 위해 어노테이션을 사용하는 어노테이션 기반 프로그래밍 모델을 제공함. 어노테이션을 사용한 컨트롤러는 유연한 메서드 시그니처를 가지고 있으며, 기본 클래스를 확장하거나 특정 인터페이스를 구현할 필요가 없음.
+- [예제 코드](https://github.com/foreverfl/study-java-springDocumentation/blob/main/src/main/java/com/example/springDocumentation/controller/HomeController.java)
 
 ```java
 @Controller
@@ -1505,9 +1505,9 @@ public class HelloController {
 }
 ```
 
-## Annotated Controllers - Declaration
+## Spring Web MVC - Annotated Controllers - Declaration
 
-## Annotated Controllers - Mapping Requests
+## Spring Web MVC - Annotated Controllers - Mapping Requests
 
 ### @RequestMapping
 
@@ -1622,123 +1622,123 @@ public class UserController {
 }
 ```
 
-## Annotated Controllers - Handler Methods
+## Spring Web MVC - Annotated Controllers - Handler Methods
 
-## Annotated Controllers - Handler Methods - Method Arguments
+## Spring Web MVC - Annotated Controllers - Handler Methods - Method Arguments
 
-## Annotated Controllers - Handler Methods - Return Values
+## Spring Web MVC - Annotated Controllers - Handler Methods - Return Values
 
-## Annotated Controllers - Handler Methods - Type Conversion
+## Spring Web MVC - Annotated Controllers - Handler Methods - Type Conversion
 
-## Annotated Controllers - Handler Methods - Matrix Variables
+## Spring Web MVC - Annotated Controllers - Handler Methods - Matrix Variables
 
-## Annotated Controllers - Handler Methods - @RequestParam
+## Spring Web MVC - Annotated Controllers - Handler Methods - @RequestParam
 
-## Annotated Controllers - Handler Methods - @RequestHeader
+## Spring Web MVC - Annotated Controllers - Handler Methods - @RequestHeader
 
-## Annotated Controllers - Handler Methods - @CookieValue
+## Spring Web MVC - Annotated Controllers - Handler Methods - @CookieValue
 
-## Annotated Controllers - Handler Methods - @ModelAttribute
+## Spring Web MVC - Annotated Controllers - Handler Methods - @ModelAttribute
 
-## Annotated Controllers - Handler Methods - @SessionAttributes
+## Spring Web MVC - Annotated Controllers - Handler Methods - @SessionAttributes
 
-## Annotated Controllers - Handler Methods - @SessionAttribute
+## Spring Web MVC - Annotated Controllers - Handler Methods - @SessionAttribute
 
-## Annotated Controllers - Handler Methods - @RequestAttribute
+## Spring Web MVC - Annotated Controllers - Handler Methods - @RequestAttribute
 
-## Annotated Controllers - Handler Methods - Redirect Attributes
+## Spring Web MVC - Annotated Controllers - Handler Methods - Redirect Attributes
 
-## Annotated Controllers - Handler Methods - Flash Attributes
+## Spring Web MVC - Annotated Controllers - Handler Methods - Flash Attributes
 
-## Annotated Controllers - Handler Methods - Multipart
+## Spring Web MVC - Annotated Controllers - Handler Methods - Multipart
 
-## Annotated Controllers - Handler Methods - @RequestBody
+## Spring Web MVC - Annotated Controllers - Handler Methods - @RequestBody
 
-## Annotated Controllers - Handler Methods - HttpEntity
+## Spring Web MVC - Annotated Controllers - Handler Methods - HttpEntity
 
-## Annotated Controllers - Handler Methods - @ResponseBody
+## Spring Web MVC - Annotated Controllers - Handler Methods - @ResponseBody
 
-## Annotated Controllers - Handler Methods - ResponseEntity
+## Spring Web MVC - Annotated Controllers - Handler Methods - ResponseEntity
 
-## Annotated Controllers - Handler Methods - Jackson JSON
+## Spring Web MVC - Annotated Controllers - Handler Methods - Jackson JSON
 
-## Annotated Controllers - Model
+## Spring Web MVC - Annotated Controllers - Model
 
-## Annotated Controllers - @InitBinder
+## Spring Web MVC - Annotated Controllers - @InitBinder
 
-## Annotated Controllers - Validation
+## Spring Web MVC - Annotated Controllers - Validation
 
-## Annotated Controllers - Exceptions
+## Spring Web MVC - Annotated Controllers - Exceptions
 
-## Annotated Controllers - Controller Advice
+## Spring Web MVC - Annotated Controllers - Controller Advice
 
-## Functional Endpoints
+## Spring Web MVC - Functional Endpoints
 
-## URI Links
+## Spring Web MVC - URI Links
 
-## Asynchronous Requests
+## Spring Web MVC - Asynchronous Requests
 
-## CORS
+## pring Web MVC - CORS
 
-## Error Responses
+## Spring Web MVC - Error Responses
 
-## Web Security
+## Spring Web MVC - Web Security
 
-## HTTP Caching
+## Spring Web MVC - HTTP Caching
 
-## View Technologies
+## Spring Web MVC - View Technologies
 
-## View Technologies - Thymeleaf
+## Spring Web MVC - View Technologies - Thymeleaf
 
-## View Technologies - FreeMarker
+## Spring Web MVC - View Technologies - FreeMarker
 
-## View Technologies - Groovy Markup
+## Spring Web MVC - View Technologies - Groovy Markup
 
-## View Technologies - Script Views
+## Spring Web MVC - View Technologies - Script Views
 
-## View Technologies - JSP and JSTL
+## Spring Web MVC - View Technologies - JSP and JSTL
 
-## View Technologies - RSS and Atom
+## Spring Web MVC - View Technologies - RSS and Atom
 
-## View Technologies - PDF and Excel
+## Spring Web MVC - View Technologies - PDF and Excel
 
-## View Technologies - Jackson
+## Spring Web MVC - View Technologies - Jackson
 
-## View Technologies - XML Marshalling
+## Spring Web MVC - View Technologies - XML Marshalling
 
-## View Technologies - XSLT Views
+## Spring Web MVC - View Technologies - XSLT Views
 
-## MVC Config
+## Spring Web MVC - MVC Config
 
-## MVC Config - Enable MVC Configuration
+## Spring Web MVC - MVC Config - Enable MVC Configuration
 
-## MVC Config - MVC Config API
+## Spring Web MVC - MVC Config - MVC Config API
 
-## MVC Config - Type Conversion
+## Spring Web MVC - MVC Config - Type Conversion
 
-## MVC Config - Validation
+## Spring Web MVC - MVC Config - Validation
 
-## MVC Config - Interceptors
+## Spring Web MVC - MVC Config - Interceptors
 
-## MVC Config - Content Types
+## Spring Web MVC - MVC Config - Content Types
 
-## MVC Config - Message Converters
+## Spring Web MVC - MVC Config - Message Converters
 
-## MVC Config - View Controllers
+## Spring Web MVC - MVC Config - View Controllers
 
-## MVC Config - View Resolvers
+## Spring Web MVC - MVC Config - View Resolvers
 
-## MVC Config - Static Resources
+## Spring Web MVC - MVC Config - Static Resources
 
-## MVC Config - Default Servlet
+## Spring Web MVC - MVC Config - Default Servlet
 
-## MVC Config - Path Matching
+## Spring Web MVC - MVC Config - Path Matching
 
-## MVC Config - Advanced Java Config
+## Spring Web MVC - MVC Config - Advanced Java Config
 
-## MVC Config - Advanced XML Config
+## Spring Web MVC - MVC Config - Advanced XML Config
 
-## HTTP/2
+## Spring Web MVC - HTTP/2
 
 ## REST Clients
 
