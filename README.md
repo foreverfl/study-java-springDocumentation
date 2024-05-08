@@ -1,7 +1,9 @@
 # Spring Documentation
 
-- Spring 공식 문서 및 Claude Opus/ChatGPT4를 사용해서 만들었습니다.
-- application.properties 구성: 적절하게 고쳐쓰시면 됩니다.
+- Spring 공식 문서를 한글로 번역한 자료입니다. 구성상 불필요하다고 생각하는 부분은 읽고 제외했습니다.
+- 번역은 Claude Opus/ChatGPT4를 사용했고, 어색한 부분은 직접 손을 봤습니다.
+- 오역이 있을 수 있기 때문에, 공식문서가 필요한 부분에서는 직접 영어로 참조해주세요.
+- 예시 코드를 쓸 때는 아래의 `application.properties` 구성을 참조하세요.
 
 ```properties
 spring.application.name=springDocumentation
@@ -57,8 +59,8 @@ spring.datasource.password=***
   > - Validation, Data Binding, and Type Conversion - Spring Field Formatting
   > - Validation, Data Binding, and Type Conversion - Configuring a Global Date and Time Format
   > - Validation, Data Binding, and Type Conversion - Java Bean Validation
-  > - Spring Expression Language (SpEL)
-  > - Spring Expression Language (SpEL) - Evaluation
+  > - [Spring Expression Language (SpEL)](#spring-expression-language-spel)
+  > - [Spring Expression Language (SpEL) - Evaluation](#spring-expression-language-spel---evaluation)
   > - Spring Expression Language (SpEL) - Expressions in Bean Definitions
   > - Spring Expression Language (SpEL) - Language Reference
   > - Spring Expression Language (SpEL) - Language Reference - Literal Expressions
@@ -79,7 +81,6 @@ spring.datasource.password=***
   > - Spring Expression Language (SpEL) - Language Reference - Collection Selection
   > - Spring Expression Language (SpEL) - Language Reference - Collection Projection
   > - Spring Expression Language (SpEL) - Language Reference - Expression Templating
-  > - Spring Expression Language (SpEL) - Classes Used in the Examples
   > - Aspect Oriented Programming with Spring
   > - Aspect Oriented Programming with Spring - AOP Concepts
   > - Aspect Oriented Programming with Spring - Spring AOP Capabilities and Goals
@@ -126,122 +127,122 @@ spring.datasource.password=***
   > - Integration Testing
   > - JDBC Testing Support
   > - Spring TestContext Framework
-  > - Key Abstractions
-  > - Bootstrapping the TestContext Framework
-  > - TestExecutionListener Configuration
-  > - Application Events
-  > - Test Execution Events
-  > - Context Management
-  > - Context Configuration with XML resources
-  > - Context Configuration with Groovy Scripts
-  > - Context Configuration with Component Classes
-  > - Mixing XML, Groovy Scripts, and Component Classes
-  > - Configuration Configuration with Context Customizers
-  > - Context Configuration with Context Initializers
-  > - Context Configuration Inheritance
-  > - Context Configuration with Environment Profiles
-  > - Context Configuration with Test Property Sources
-  > - Context Configuration with Dynamic Property Sources
-  > - Loading a WebApplicationContext
-  > - Working with Web Mocks
-  > - Context Caching
-  > - Context Failure Threshold
-  > - Context Hierarchies
-  > - Dependency Injection of Test Fixtures
-  > - Testing Request- and Session-scoped Beans
-  > - Transaction Management
-  > - Executing SQL Scripts
-  > - Parallel Test Execution
-  > - TestContext Framework Support Classes
-  > - Ahead of Time Support for Tests
+  > - Spring TestContext Framework - Key Abstractions
+  > - Spring TestContext Framework - Bootstrapping the TestContext Framework
+  > - Spring TestContext Framework - TestExecutionListener Configuration
+  > - Spring TestContext Framework - Application Events
+  > - Spring TestContext Framework - Test Execution Events
+  > - Spring TestContext Framework - Context Management
+  > - Spring TestContext Framework - Context Management - Context Configuration with XML resources
+  > - Spring TestContext Framework - Context Management - Context Configuration with Groovy Scripts
+  > - Spring TestContext Framework - Context Management - Context Configuration with Component Classes
+  > - Spring TestContext Framework - Context Management - Mixing XML, Groovy Scripts, and Component Classes
+  > - Spring TestContext Framework - Context Management - Configuration Configuration with Context Customizers
+  > - Spring TestContext Framework - Context Management - Context Configuration with Context Initializers
+  > - Spring TestContext Framework - Context Management - Context Configuration Inheritance
+  > - Spring TestContext Framework - Context Management - Context Configuration with Environment Profiles
+  > - Spring TestContext Framework - Context Management - Context Configuration with Test Property Sources
+  > - Spring TestContext Framework - Context Management - Context Configuration with Dynamic Property Sources
+  > - Spring TestContext Framework - Context Management - Loading a WebApplicationContext
+  > - Spring TestContext Framework - Context Management - Working with Web Mocks
+  > - Spring TestContext Framework - Context Management - Context Caching
+  > - Spring TestContext Framework - Context Management - Context Failure Threshold
+  > - Spring TestContext Framework - Context Management - Context Hierarchies
+  > - Spring TestContext Framework - Dependency Injection of Test Fixtures
+  > - Spring TestContext Framework - Testing Request- and Session-scoped Beans
+  > - Spring TestContext Framework - Transaction Management
+  > - Spring TestContext Framework - Executing SQL Scripts
+  > - Spring TestContext Framework - Parallel Test Execution
+  > - Spring TestContext Framework - TestContext Framework Support Classes
+  > - Spring TestContext Framework - Ahead of Time Support for Tests
   > - WebTestClient
   > - MockMvc
-  > - Overview
-  > - Static Imports
-  > - Setup Choices
-  > - Setup Features
-  > - Performing Requests
-  > - Defining Expectations
-  > - Async Requests
-  > - Streaming Responses
-  > - Filter Registrations
-  > - MockMvc vs End-to-End Tests
-  > - Further Examples
-  > - HtmlUnit Integration
-  > - Why HtmlUnit Integration?
-  > - MockMvc and HtmlUnit
-  > - MockMvc and WebDriver
-  > - MockMvc and Geb
+  > - MockMvc - Overview
+  > - MockMvc - Static Imports
+  > - MockMvc - Setup Choices
+  > - MockMvc - Setup Features
+  > - MockMvc - Performing Requests
+  > - MockMvc - Defining Expectations
+  > - MockMvc - Async Requests
+  > - MockMvc - Streaming Responses
+  > - MockMvc - Filter Registrations
+  > - MockMvc - MockMvc vs End-to-End Tests
+  > - MockMvc - Further Examples
+  > - MockMvc - HtmlUnit Integration
+  > - MockMvc - HtmlUnit Integration - Why HtmlUnit Integration?
+  > - MockMvc - HtmlUnit Integration - MockMvc and HtmlUnit
+  > - MockMvc - HtmlUnit Integration - MockMvc and WebDriver
+  > - MockMvc - HtmlUnit Integration - MockMvc and Geb
   > - Testing Client Applications
   > - Appendix
-  > - Annotations
-  > - Standard Annotation Support
-  > - Spring Testing Annotations
-  > - @BootstrapWith
-  > - @ContextConfiguration
-  > - @WebAppConfiguration
-  > - @ContextHierarchy
-  > - @ContextCustomizerFactories
-  > - @ActiveProfiles
-  > - @TestPropertySource
-  > - @DynamicPropertySource
-  > - @DirtiesContext
-  > - @TestExecutionListeners
-  > - @RecordApplicationEvents
-  > - @Commit
-  > - @Rollback
-  > - @BeforeTransaction
-  > - @AfterTransaction
-  > - @Sql
-  > - @SqlConfig
-  > - @SqlMergeMode
-  > - @SqlGroup
-  > - @DisabledInAotMode
-  > - Spring JUnit 4 Testing Annotations
-  > - Spring JUnit Jupiter Testing Annotations
-  > - Meta-Annotation Support for Testing
-  > - Further Resources
+  > - Appendix - Annotations
+  > - Appendix - Annotations - Standard Annotation Support
+  > - Appendix - Annotations - Spring Testing Annotations
+  > - Appendix - Annotations - Spring Testing Annotations - @BootstrapWith
+  > - Appendix - Annotations - Spring Testing Annotations - @ContextConfiguration
+  > - Appendix - Annotations - Spring Testing Annotations - @WebAppConfiguration
+  > - Appendix - Annotations - Spring Testing Annotations - @ContextHierarchy
+  > - Appendix - Annotations - Spring Testing Annotations - @ContextCustomizerFactories
+  > - Appendix - Annotations - Spring Testing Annotations - @ActiveProfiles
+  > - Appendix - Annotations - Spring Testing Annotations - @TestPropertySource
+  > - Appendix - Annotations - Spring Testing Annotations - @DynamicPropertySource
+  > - Appendix - Annotations - Spring Testing Annotations - @DirtiesContext
+  > - Appendix - Annotations - Spring Testing Annotations - @TestExecutionListeners
+  > - Appendix - Annotations - Spring Testing Annotations - @RecordApplicationEvents
+  > - Appendix - Annotations - Spring Testing Annotations - @Commit
+  > - Appendix - Annotations - Spring Testing Annotations - @Rollback
+  > - Appendix - Annotations - Spring Testing Annotations - @BeforeTransaction
+  > - Appendix - Annotations - Spring Testing Annotations - @AfterTransaction
+  > - Appendix - Annotations - Spring Testing Annotations - @Sql
+  > - Appendix - Annotations - Spring Testing Annotations - @SqlConfig
+  > - Appendix - Annotations - Spring Testing Annotations - @SqlMergeMode
+  > - Appendix - Annotations - Spring Testing Annotations - @SqlGroup
+  > - Appendix - Annotations - Spring Testing Annotations - @DisabledInAotMode
+  > - Appendix - Annotations - Spring JUnit 4 Testing Annotations
+  > - Appendix - Annotations - Spring JUnit Jupiter Testing Annotations
+  > - Appendix - Annotations - Meta-Annotation Support for Testing
+  > - Appendix - Further Resources
 
 - Data Access
 
   > - Transaction Management
-  > - Advantages of the Spring Framework’s Transaction Support Model
-  > - Understanding the Spring Framework Transaction Abstraction
-  > - Synchronizing Resources with Transactions
-  > - Declarative Transaction Management
-  > - Understanding the Spring Framework’s Declarative Transaction Implementation
-  > - Example of Declarative Transaction Implementation
-  > - Rolling Back a Declarative Transaction
-  > - Configuring Different Transactional Semantics for Different Beans
-  > - <tx:advice/> Settings
-  > - Using @Transactional
-  > - Transaction Propagation
-  > - Advising Transactional Operations
-  > - Using @Transactional with AspectJ
-  > - Programmatic Transaction Management
-  > - Choosing Between Programmatic and Declarative Transaction Management
-  > - Transaction-bound Events
-  > - Application server-specific integration
-  > - Solutions to Common Problems
-  > - Further Resources
+  > - Transaction Management - Advantages of the Spring Framework’s Transaction Support Model
+  > - Transaction Management - Understanding the Spring Framework Transaction Abstraction
+  > - Transaction Management - Synchronizing Resources with Transactions
+  > - Transaction Management - Declarative Transaction Management
+  > - Transaction Management - Declarative Transaction Management - Understanding the Spring Framework’s Declarative Transaction Implementation
+  > - Transaction Management - Declarative Transaction Management - Example of Declarative Transaction Implementation
+  > - Transaction Management - Declarative Transaction Management - Rolling Back a Declarative Transaction
+  > - Transaction Management - Declarative Transaction Management - Configuring Different Transactional Semantics for Different Beans
+  > - Transaction Management - Declarative Transaction Management - <tx:advice/> Settings
+  > - Transaction Management - Declarative Transaction Management - Using @Transactional
+  > - Transaction Management - Declarative Transaction Management - Transaction Propagation
+  > - Transaction Management - Declarative Transaction Management - Advising Transactional Operations
+  > - Transaction Management - Declarative Transaction Management - Using @Transactional with AspectJ
+  > - Transaction Management - Programmatic Transaction Management
+  > - Transaction Management - Choosing Between Programmatic and Declarative Transaction Management
+  > - Transaction Management - Transaction-bound Events
+  > - Transaction Management - Application server-specific integration
+  > - Transaction Management - Solutions to Common Problems
+  > - Transaction Management - Further Resources
   > - DAO Support
   > - Data Access with JDBC
-  > - Choosing an Approach for JDBC Database Access
-  > - Package Hierarchy
-  > - Using the JDBC Core Classes to Control Basic JDBC Processing and Error Handling
-  > - Controlling Database Connections
-  > - JDBC Batch Operations
-  > - Simplifying JDBC Operations with the SimpleJdbc Classes
-  > - Modeling JDBC Operations as Java Objects
-  > - Common Problems with Parameter and Data Value Handling
-  > - Embedded Database Support
-  > - Initializing a DataSource
+  > - Data Access with JDBC - Choosing an Approach for JDBC Database Access
+  > - Data Access with JDBC - Package Hierarchy
+  > - Data Access with JDBC - Using the JDBC Core Classes to Control Basic JDBC Processing and Error Handling
+  > - Data Access with JDBC - Controlling Database Connections
+  > - Data Access with JDBC - JDBC Batch Operations
+  > - Data Access with JDBC - Simplifying JDBC Operations with the SimpleJdbc Classes
+  > - Data Access with JDBC - Modeling JDBC Operations as Java Objects
+  > - Data Access with JDBC - Common Problems with Parameter and Data Value Handling
+  > - Data Access with JDBC - Embedded Database Support
+  > - Data Access with JDBC - Initializing a DataSource
   > - Data Access with R2DBC
   > - Object Relational Mapping (ORM) Data Access
-  > - Introduction to ORM with Spring
-  > - General ORM Integration Considerations
-  > - Hibernate
-  > - JPA
+  > - Object Relational Mapping (ORM) Data Access - Introduction to ORM with Spring
+  > - Object Relational Mapping (ORM) Data Access - General ORM Integration Considerations
+  > - Object Relational Mapping (ORM) Data Access - Hibernate
+  > - Object Relational Mapping (ORM) Data Access - JPA
   > - Marshalling XML by Using Object-XML Mappers
   > - Appendix
 
@@ -359,54 +360,54 @@ spring.datasource.password=***
 - Web on Reactive Stack
 
   > - Spring WebFlux
-  > - Overview
-  > - Reactive Core
-  > - DispatcherHandler
-  > - Annotated Controllers
-  > - @Controller
-  > - Mapping Requests
-  > - Handler Methods
-  > - Method Arguments
-  > - Return Values
-  > - Type Conversion
-  > - Matrix Variables
-  > - @RequestParam
-  > - @RequestHeader
-  > - @CookieValue
-  > - @ModelAttribute
-  > - @SessionAttributes
-  > - @SessionAttribute
-  > - @RequestAttribute
-  > - Multipart Content
-  > - @RequestBody
-  > - HttpEntity
-  > - @ResponseBody
-  > - ResponseEntity
-  > - Jackson JSON
-  > - Model
-  > - DataBinder
-  > - Validation
-  > - Exceptions
-  > - Controller Advice
-  > - Functional Endpoints
-  > - URI Links
-  > - CORS
-  > - Error Responses
-  > - Web Security
-  > - HTTP Caching
-  > - View Technologies
-  > - WebFlux Config
-  > - HTTP/2
+  > - Spring WebFlux - Overview
+  > - Spring WebFlux - Reactive Core
+  > - Spring WebFlux - DispatcherHandler
+  > - Spring WebFlux - Annotated Controllers
+  > - Spring WebFlux - Annotated Controllers - @Controller
+  > - Spring WebFlux - Annotated Controllers - Mapping Requests
+  > - Spring WebFlux - Annotated Controllers - Handler Methods
+  > - Spring WebFlux - Annotated Controllers - Handler Methods - Method Arguments
+  > - Spring WebFlux - Annotated Controllers - Handler Methods - Return Values
+  > - Spring WebFlux - Annotated Controllers - Handler Methods - Type Conversion
+  > - Spring WebFlux - Annotated Controllers - Handler Methods - Matrix Variables
+  > - Spring WebFlux - Annotated Controllers - Handler Methods - @RequestParam
+  > - Spring WebFlux - Annotated Controllers - Handler Methods - @RequestHeader
+  > - Spring WebFlux - Annotated Controllers - Handler Methods - @CookieValue
+  > - Spring WebFlux - Annotated Controllers - Handler Methods - @ModelAttribute
+  > - Spring WebFlux - Annotated Controllers - Handler Methods - @SessionAttributes
+  > - Spring WebFlux - Annotated Controllers - Handler Methods - @SessionAttribute
+  > - Spring WebFlux - Annotated Controllers - Handler Methods - @RequestAttribute
+  > - Spring WebFlux - Annotated Controllers - Handler Methods - Multipart Content
+  > - Spring WebFlux - Annotated Controllers - Handler Methods - @RequestBody
+  > - Spring WebFlux - Annotated Controllers - Handler Methods - HttpEntity
+  > - Spring WebFlux - Annotated Controllers - Handler Methods - @ResponseBody
+  > - Spring WebFlux - Annotated Controllers - Handler Methods - ResponseEntity
+  > - Spring WebFlux - Annotated Controllers - Handler Methods - Jackson JSON
+  > - Spring WebFlux - Annotated Controllers - Model
+  > - Spring WebFlux - Annotated Controllers - DataBinder
+  > - Spring WebFlux - Annotated Controllers - Validation
+  > - Spring WebFlux - Annotated Controllers - Exceptions
+  > - Spring WebFlux - Annotated Controllers - Controller Advice
+  > - Spring WebFlux - Functional Endpoints
+  > - Spring WebFlux - URI Links
+  > - Spring WebFlux - CORS
+  > - Spring WebFlux - Error Responses
+  > - Spring WebFlux - Web Security
+  > - Spring WebFlux - HTTP Caching
+  > - Spring WebFlux - View Technologies
+  > - Spring WebFlux - WebFlux Config
+  > - Spring WebFlux - HTTP/2
   > - WebClient
-  > - Configuration
-  > - retrieve()
-  > - Exchange
-  > - Request Body
-  > - Filters
-  > - Attributes
-  > - Context
-  > - Synchronous Use
-  > - Testing
+  > - WebClient - Configuration
+  > - WebClient - retrieve()
+  > - WebClient - Exchange
+  > - WebClient - Request Body
+  > - WebClient - Filters
+  > - WebClient - Attributes
+  > - WebClient - Context
+  > - WebClient - Synchronous Use
+  > - WebClient - Testing
   > - HTTP Interface Client
   > - WebSockets
   > - Testing
@@ -417,30 +418,30 @@ spring.datasource.password=***
 
   > - REST Clients
   > - JMS (Java Message Service)
-  > - Using Spring JMS
-  > - Sending a Message
-  > - Receiving a Message
-  > - Support for JCA Message Endpoints
-  > - Annotation-driven Listener Endpoints
-  > - JMS Namespace Support
+  > - JMS (Java Message Service) - Using Spring JMS
+  > - JMS (Java Message Service) - Sending a Message
+  > - JMS (Java Message Service) - Receiving a Message
+  > - JMS (Java Message Service) - Support for JCA Message Endpoints
+  > - JMS (Java Message Service) - Annotation-driven Listener Endpoints
+  > - JMS (Java Message Service) - JMS Namespace Support
   > - JMX
-  > - Exporting Your Beans to JMX
-  > - Controlling the Management Interface of Your Beans
-  > - Controlling ObjectName Instances for Your Beans
-  > - Using JSR-160 Connectors
-  > - Accessing MBeans through Proxies
-  > - Notifications
-  > - Further Resources
+  > - JMX - Exporting Your Beans to JMX
+  > - JMX - Controlling the Management Interface of Your Beans
+  > - JMX - Controlling ObjectName Instances for Your Beans
+  > - JMX - Using JSR-160 Connectors
+  > - JMX - Accessing MBeans through Proxies
+  > - JMX - Notifications
+  > - JMX - Further Resources
   > - Email
   > - Task Execution and Scheduling
   > - Cache Abstraction
-  > - Understanding the Cache Abstraction
+  > - Cache Abstraction - Understanding the Cache Abstraction
   > - Declarative Annotation-based Caching
-  > - JCache (JSR-107) Annotations
-  > - Declarative XML-based Caching
-  > - Configuring the Cache Storage
-  > - Plugging-in Different Back-end Caches
-  > - How can I Set the TTL/TTI/Eviction policy/XXX feature?
+  > - Cache Abstraction - JCache (JSR-107) Annotations
+  > - Cache Abstraction - Declarative XML-based Caching
+  > - Cache Abstraction - Configuring the Cache Storage
+  > - Cache Abstraction - Plugging-in Different Back-end Caches
+  > - Cache Abstraction - How can I Set the TTL/TTI/Eviction policy/XXX feature?
   > - Observability Support
   > - JVM Checkpoint Restore
   > - CDS
@@ -953,7 +954,179 @@ public class AppConfig {
 
 ## Spring Expression Language (SpEL)
 
+- Spring Expression Language (SpEL)은 Spring 프레임워크에서 제공하는 강력한 표현 언어. 런타임에 객체 그래프를 쿼리하고 조작하는 기능을 지원함. SpEL의 언어 구문은 Jakarta Expression Language와 유사하지만 메서드 호출과 기본적인 문자열 템플릿 기능 등 추가적인 기능을 제공함.
+- 다른 Java 표현 언어(OGNL, MVEL, JBoss EL 등)도 있지만, SpEL은 Spring 커뮤니티에 단일하고 잘 지원되는 표현 언어를 제공하기 위해 만들어짐. SpEL은 Spring 포트폴리오의 모든 프로젝트에서 사용될 수 있으며, Eclipse용 Spring Tools에서 코드 자동 완성 지원과 같은 도구 요구 사항에 의해 언어 기능이 결정됨. 그럼에도 불구하고 SpEL은 기술에 구애받지 않는 API를 기반으로 하므로 필요한 경우 다른 표현 언어 구현을 통합할 수 있음.
+- SpEL은 Spring 포트폴리오 내에서 표현식 평가의 기반으로 사용되지만 Spring에 직접 연결되어 있지는 않으며 독립적으로 사용할 수 있음. 이 장의 많은 예제에서는 SpEL을 독립적인 표현 언어인 것처럼 사용함. 이를 위해서는 파서와 같은 부트스트래핑 인프라 클래스를 만들어야 함. 대부분의 Spring 사용자는 이러한 인프라를 다룰 필요가 없으며, 대신 평가할 표현식 문자열만 작성하면 됨. 이러한 일반적인 사용의 예로는 XML 또는 어노테이션 기반 빈 정의를 생성할 때 SpEL을 통합하는 것이 있음.
+- 여러 곳에서 Inventor와 Society 클래스가 표현식 평가의 대상 객체로 사용됨.
+- SpEL은 리터럴 표현식, 프로퍼티/배열/리스트/맵 접근, 인라인 리스트와 맵, 배열 생성, 관계 연산자, 정규식, 논리 연산자, 문자열 연산자, 수학 연산자, 할당, 타입 표현식, 메서드 호출, 생성자 호출, 변수, 사용자 정의 함수, 빈 참조, 삼항/Elvis/안전 탐색 연산자, 컬렉션 프로젝션과 선택, 템플릿 표현식 등 다양한 기능을 지원함.
+
 ## Spring Expression Language (SpEL) - Evaluation
+
+### Evaluation
+
+- SpEL의 인터페이스와 표현 언어를 프로그래밍 방식으로 사용하는 방법.
+
+#### 리터럴 문자열 표현식 Hello World를 평가하기
+
+```java
+ExpressionParser parser = new SpelExpressionParser();
+Expression exp = parser.parseExpression("'Hello World'");
+String message = (String) exp.getValue();
+System.out.println(message); // Hello World
+```
+
+#### 문자열 리터럴 Hello World에서 concat 메서드를 호출하기
+
+```java
+ExpressionParser parser = new SpelExpressionParser();
+Expression exp = parser.parseExpression("'Hello World'.concat('!')");
+String message = (String) exp.getValue();
+System.out.println(message); // Hello World!
+```
+
+#### 문자열 리터럴 Hello World의 Bytes JavaBean 속성에 액세스하기
+
+```java
+ExpressionParser parser = new SpelExpressionParser();
+Expression exp = parser.parseExpression("'Hello World'.bytes"); // 'getBytes()'를 호출
+byte[] bytes = (byte[]) exp.getValue();
+System.out.println(bytes);
+```
+
+#### 점 표기법을 사용하여 문자열 리터럴의 길이를 얻기
+
+```java
+ExpressionParser parser = new SpelExpressionParser();
+Expression exp = parser.parseExpression("'Hello World'.bytes.length"); // 'getBytes().length'를 호출
+int length = (Integer) exp.getValue();
+System.out.println(length);
+```
+
+#### 문자열 리터럴을 사용하는 대신 String의 생성자를 호출
+
+```java
+ExpressionParser parser = new SpelExpressionParser();
+Expression exp = parser.parseExpression("new String('hello world').toUpperCase()");
+String message = exp.getValue(String.class);
+```
+
+#### Inventor 클래스의 사용
+
+```java
+
+GregorianCalendar c = new GregorianCalendar(); // 달력을 생성
+c.set(1856, 7, 9);
+
+// The constructor arguments are name, birthday, and nationality.
+Inventor tesla = new Inventor("Nikola Tesla", c.getTime(), "Serbian"); // 생성자는 name, birthday, 그리고 nationality
+
+ExpressionParser parser = new SpelExpressionParser();
+
+Expression exp = parser.parseExpression("name"); // "name"을 파싱함.
+String name = (String) exp.getValue(tesla);
+System.out.println(name); // Nikola Tesla
+
+Expression exp = parser.parseExpression("name == 'Nikola Tesla'");
+Boolean result = exp.getValue(tesla, Boolean.class);
+System.out.println(result); // true
+```
+
+### Understanding EvaluationContext
+
+- `EvaluationContext` 인터페이스는 표현식을 평가할 때 속성, 메서드 또는 필드를 해결하고 타입 변환을 수행하는 데 사용됨. Spring은 두 가지 구현체를 제공함.
+  > - `SimpleEvaluationContext`: SpEL 언어 구문의 전체 범위를 필요로 하지 않고 의미 있게 제한되어야 하는 표현식 범주에 대해 필수적인 SpEL 언어 기능과 구성 옵션의 하위 집합을 노출함. 예로는 데이터 바인딩 표현식과 속성 기반 필터가 있음.
+  > - `StandardEvaluationContext`: SpEL 언어 기능과 구성 옵션의 전체 집합을 노출함. 기본 루트 객체를 지정하고 사용 가능한 모든 평가 관련 전략을 구성하는 데 사용할 수 있음.
+- `SimpleEvaluationContext`는 SpEL 언어 구문의 하위 집합만 지원하도록 설계됨. Java 타입 참조, 생성자 및 빈 참조는 제외됨. 또한 표현식에서 속성과 메서드에 대한 지원 수준을 명시적으로 선택해야 함. 기본적으로 `create()` 정적 팩토리 메서드는 속성에 대한 읽기 접근만 활성화함. 필요한 정확한 지원 수준을 구성하기 위해 빌더를 얻을 수도 있으며, 다음 중 하나 또는 일부 조합을 대상으로 함.
+  > - 사용자 정의 PropertyAccessor만 (리플렉션 없음)
+  > - 읽기 전용 접근을 위한 데이터 바인딩 속성
+  > - 읽기 및 쓰기를 위한 데이터 바인딩 속성
+
+### Type Conversion
+
+- 기본적으로 SpEL은 Spring 코어(`org.springframework.core.convert.ConversionService`)에서 사용 가능한 변환 서비스를 사용함. 이 변환 서비스에는 일반적인 변환을 위한 많은 기본 제공 변환기가 있지만, 사용자 정의 변환을 추가하여 타입 간의 변환을 완전히 확장할 수도 있음. 또한 제네릭을 인식함. 즉, 표현식에서 제네릭 타입으로 작업할 때 SpEL은 변환을 시도하여 만나는 모든 객체에 대해 타입 정확성을 유지함.
+- 예제 코드
+
+```java
+class Simple {
+	public List<Boolean> booleanList = new ArrayList<>();
+}
+
+public static void main(String[] args) {
+    // Simple 인스턴스 생성
+    Simple simple = new Simple();
+    simple.booleanList.add(true);
+
+    EvaluationContext context = SimpleEvaluationContext.forReadOnlyDataBinding().build();
+    ExpressionParser parser = new SpelExpressionParser();
+    parser.parseExpression("booleanList[0]").setValue(context, simple, "false"); // Simple 인스턴스 안의 배열에 "false"를 집어넣음
+    Boolean b = simple.booleanList.get(0);
+    System.out.println(b); // false
+}
+```
+
+### Parser Configuration
+
+- 파서 설정 객체(`org.springframework.expression.spel.SpelParserConfiguration`)를 사용하여 SpEL 표현식 파서를 설정할 수 있음. 설정 객체는 일부 표현식 구성 요소의 동작을 제어함. 예를 들어, 배열이나 컬렉션에 인덱스를 지정하고 지정된 인덱스의 요소가 null인 경우 SpEL은 자동으로 해당 요소를 생성할 수 있음. 이는 프로퍼티 참조의 체인으로 구성된 표현식을 사용할 때 유용함. 배열이나 리스트에 인덱스를 지정하고 현재 배열 또는 리스트의 크기를 벗어나는 인덱스를 지정하면 SpEL은 해당 인덱스를 수용하기 위해 배열 또는 리스트를 자동으로 증가시킬 수 있음. 지정된 인덱스에 요소를 추가하기 위해 SpEL은 지정된 값을 설정하기 전에 요소 타입의 기본 생성자를 사용하여 요소를 생성하려고 시도함. 요소 타입에 기본 생성자가 없으면 null이 배열 또는 리스트에 추가됨. 값을 설정하는 방법을 아는 내장 변환기나 사용자 정의 변환기가 없으면 지정된 인덱스의 배열이나 리스트에 null이 남게 됨.
+
+```java
+class Demo {
+	public List<String> list;
+}
+
+// SpelParserConfiguration의 두 매개변수는 '자동 null 참조 초기화'와 '자동 컬렉션 증가'를 활성화함.
+SpelParserConfiguration config = new SpelParserConfiguration(true, true);
+
+ExpressionParser parser = new SpelExpressionParser(config);
+
+Expression expression = parser.parseExpression("list[3]");
+
+Demo demo = new Demo();
+
+Object o = expression.getValue(demo); // demo.list는 이제 4개의 항목을 가진 실제 컬렉션이 됨. 각 항목은 새로운 빈 문자열임.
+```
+
+- 기본적으로 SpEL 표현식은 10,000자를 초과할 수 없지만 maxExpressionLength는 구성 가능함. `SpelExpressionParser`를 프로그래밍 방식으로 생성하는 경우 `SpelExpressionParser`에 제공하는 `SpelParserConfiguration`을 생성할 때 사용자 정의 maxExpressionLength를 지정할 수 있음. `ApplicationContext` 내에서 SpEL 표현식을 파싱하는 데 사용되는 maxExpressionLength를 설정하려는 경우(예: XML 빈 정의, @Value 등에서) JVM 시스템 속성 또는 Spring 속성 `spring.context.expression.maxLength`를 애플리케이션에 필요한 최대 표현식 길이로 설정할 수 있음.
+
+### SpEL Compilation
+
+- Spring은 SpEL 표현식을 위한 기본 컴파일러를 제공함. 표현식은 일반적으로 해석되며, 이는 평가 중에 많은 동적 유연성을 제공하지만 최적의 성능을 제공하지는 않음. 가끔 표현식을 사용하는 경우에는 괜찮지만, Spring Integration과 같은 다른 구성 요소에서 사용될 때는 성능이 매우 중요할 수 있으며 동적인 특성이 실제로 필요하지 않음.
+- SpEL 컴파일러는 이러한 요구를 해결하기 위한 것. 평가 중에 컴파일러는 런타임에 표현식 동작을 구현하는 Java 클래스를 생성하고 해당 클래스를 사용하여 훨씬 더 빠른 표현식 평가를 달성함. 표현식 주변의 타입 정보 부족으로 인해 컴파일러는 컴파일을 수행할 때 해석된 표현식 평가 중에 수집된 정보를 사용함. 예를 들어, 표현식에서 속성 참조의 타입을 순수하게 알 수는 없지만 첫 번째 해석된 평가 중에 해당 타입을 알아냄. 물론 이러한 파생된 정보를 기반으로 컴파일하면 시간이 지남에 따라 다양한 표현식 요소의 타입이 변경될 경우 나중에 문제가 발생할 수 있음. 이러한 이유로 컴파일은 반복적인 평가에서 타입 정보가 변경되지 않는 표현식에 가장 적합함.
+
+### Compiler Configuration
+
+- 컴파일러는 기본적으로 켜져 있지 않지만, 두 가지 다른 방법 중 하나로 켤 수 있음. 앞에서 설명한 파서 구성 프로세스를 사용하거나 SpEL 사용이 다른 구성 요소 내부에 포함되어 있을 때 Spring 속성을 사용하여 켤 수 있음.
+- 컴파일러는 `org.springframework.expression.spel.SpelCompilerMode` 열거형에 포함된 세 가지 모드 중 하나로 작동할 수 있음. 모드는 다음과 같음.
+  > - **OFF (기본값)**: 컴파일러가 꺼져 있음.
+  > - **IMMEDIATE**: 즉시 모드에서는 표현식이 가능한 한 빨리 컴파일됨. 일반적으로 첫 번째 해석된 평가 후에 이루어짐. 컴파일된 표현식이 실패하면(일반적으로 앞에서 설명한 대로 타입 변경으로 인해) 표현식 평가의 호출자는 예외를 받음.
+  > - **MIXED**: 혼합 모드에서는 표현식이 시간이 지남에 따라 해석된 모드와 컴파일된 모드 사이에서 자동으로 전환됨. 몇 번의 해석된 실행 후에 컴파일된 형식으로 전환되고, 컴파일된 형식에 문제가 발생하면(앞에서 설명한 대로 타입 변경 등) 표현식은 자동으로 다시 해석된 형식으로 전환됨. 나중에 다른 컴파일된 형식을 생성하고 그것으로 전환할 수 있음. 기본적으로 IMMEDIATE 모드에서 사용자가 받는 예외는 대신 내부적으로 처리됨.
+- IMMEDIATE 모드는 MIXED 모드가 부작용이 있는 표현식에 문제를 일으킬 수 있기 때문에 존재함. 컴파일된 표현식이 부분적으로 성공한 후 폭발하면 시스템의 상태에 이미 영향을 미친 것일 수 있음. 이런 일이 발생했다면 호출자는 표현식의 일부가 두 번 실행될 수 있으므로 해석된 모드에서 자동으로 다시 실행하는 것을 원하지 않을 수 있음.
+- 모드를 선택한 후에는 `SpelParserConfiguration`을 사용하여 파서를 구성함.
+
+```java
+SpelParserConfiguration config = new SpelParserConfiguration(SpelCompilerMode.IMMEDIATE,
+		this.getClass().getClassLoader());
+
+SpelExpressionParser parser = new SpelExpressionParser(config);
+
+Expression expr = parser.parseExpression("payload");
+
+MyMessage message = new MyMessage();
+
+Object payload = expr.getValue(message);
+```
+
+- 컴파일러 모드를 지정할 때 ClassLoader를 지정할 수도 있음(null 전달이 허용됨). 컴파일된 표현식은 제공된 ClassLoader 아래에 생성된 자식 ClassLoader에서 정의됨. ClassLoader를 지정하는 경우 표현식 평가 프로세스에 관련된 모든 타입을 볼 수 있는지 확인하는 것이 중요함. ClassLoader를 지정하지 않으면 기본 ClassLoader가 사용됨(일반적으로 표현식 평가 중에 실행 중인 스레드의 컨텍스트 ClassLoader).
+- 컴파일러를 구성하는 두 번째 방법은 SpEL이 다른 구성 요소 내부에 포함되어 있고 구성 객체를 통해 구성할 수 없는 경우에 사용하는 것. 이러한 경우에는 JVM 시스템 속성(또는 SpringProperties 메커니즘)을 통해 `spring.expression.compiler.mode` 속성을 SpelCompilerMode 열거형 값(off, immediate 또는 mixed) 중 하나로 설정할 수 있음.
+
+### Compiler Limitations
+
+- Spring은 모든 종류의 표현식을 컴파일하는 것을 지원하지 않음. 주요 초점은 성능에 중요한 컨텍스트에서 사용될 가능성이 높은 일반적인 표현식ㅇ;ㅁ. 다음과 같은 종류의 표현식은 컴파일할 수 없음.
+  > - 할당을 포함하는 표현식
+  > - 변환 서비스에 의존하는 표현식
+  > - 사용자 정의 리졸버 또는 접근자를 사용하는 표현식
+  > - 오버로드된 연산자를 사용하는 표현식
+  > - 배열 생성 구문을 사용하는 표현식
+  > - 선택 또는 프로젝션을 사용하는 표현식
 
 ## Spring Expression Language (SpEL) - Expressions in Bean Definitions
 
@@ -994,8 +1167,6 @@ public class AppConfig {
 ## Spring Expression Language (SpEL) - Language Reference - Collection Projection
 
 ## Spring Expression Language (SpEL) - Language Reference - Expression Templating
-
-## Spring Expression Language (SpEL) - Classes Used in the Examples
 
 ## Aspect Oriented Programming with Spring
 
