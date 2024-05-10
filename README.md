@@ -1,9 +1,11 @@
 # Spring Documentation
 
-- Spring 공식 문서를 한글로 번역한 자료입니다. 구성상 불필요하다고 생각하는 부분은 읽고 제외했습니다.
+- Spring 공식 문서를 한글로 번역한 자료입니다.
+- 구성상 불필요하다고 생각하는 부분은 읽고 제외했습니다.
+- 또한 최근에는 스프링부트를 쓰기 때문에 관련된 설명을 추가한 부분도 있습니다.
 - 번역은 Claude Opus/ChatGPT4를 사용했고, 어색한 부분은 직접 손을 봤습니다.
 - 오역이 있을 수 있기 때문에, 공식문서가 필요한 부분에서는 직접 영어로 참조해주세요.
-- 예시 코드를 쓸 때는 아래의 `application.properties` 구성을 참조하세요.
+- 예제 코드를 쓸 때는 아래의 `application.properties` 구성을 참조하세요.
 
 ```properties
 spring.application.name=springDocumentation
@@ -264,7 +266,7 @@ spring.datasource.password=***
   > - Spring Web MVC - DispatcherServlet - Logging
   > - Spring Web MVC - Filters
   > - [Spring Web MVC - Annotated Controllers](#spring-web-mvc---annotated-controllers)
-  > - Spring Web MVC - Annotated Controllers - Declaration
+  > - [Spring Web MVC - Annotated Controllers - Declaration](#spring-web-mvc---annotated-controllers---declaration)
   > - [Spring Web MVC - Annotated Controllers - Mapping Requests](#spring-web-mvc---annotated-controllers---mapping-requests)
   > - Spring Web MVC - Annotated Controllers - Handler Methods
   > - Spring Web MVC - Annotated Controllers - Handler Methods - Method Arguments
@@ -1506,6 +1508,81 @@ public class HelloController {
 ```
 
 ## Spring Web MVC - Annotated Controllers - Declaration
+
+### Declaration
+
+- 서블릿의 `WebApplicationContext`에서 표준 스프링 빈 정의를 사용하여 컨트롤러 빈을 정의할 수 있음. `@Controller` 스테레오타입은 클래스 경로에서 `@Component` 클래스를 감지하고 해당 클래스에 대한 빈 정의를 자동으로 등록하는 스프링의 일반적인 지원과 맞춰서 자동 감지를 허용함. `@Controller`은 또한 주석이 달린 클래스에 대한 스테레오타입으로 작용하여 웹 컴포넌트로서의 역할을 나타냄.
+- 스프링부트를 사용하면 많은 설정이 자동으로 이루어지기 때문에 `@Configuration`과 `@ComponentScan`을 명시적으로 설정할 필요가 없음. 하지만 스프링부트를 사용하지 않고 스프링 웹 MVC를 직접 설정하는 경우에는 `@Configuration`과 `@ComponentScan`을 사용하여 컴포넌트 스캐닝과 빈 등록을 설정해야 함.
+- **예제 코드**: `@Controller` 빈의 자동 감지를 활성화하는 자바 코드 설정.
+
+```java
+@Configuration
+@ComponentScan("org.example.web")
+public class WebConfig {
+
+	// ...
+}
+```
+
+- **예제 코드**: `@Controller` 빈의 자동 감지를 활성화하는 XML 코드 설정.
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+		https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context
+		https://www.springframework.org/schema/context/spring-context.xsd">
+
+	<context:component-scan base-package="org.example.web"/>
+
+	<!-- ... -->
+
+</beans>
+```
+
+- `@RestController`는 `@Controller`와 `@ResponseBody`로 메타 주석이 달린 컴포즈드 어노테이션으로, 모든 메서드가 타입 레벨의 `@ResponseBody` 어노테이션을 상속받아 HTML 템플릿을 사용한 뷰 해석 및 렌더링 대신 response body에 직접 쓰는 컨트롤러를 나타냄.
+
+### AOP Proxies
+
+- 경우에 따라 런타임에 AOP 프록시로 컨트롤러를 데코레이션해야 할 수 있음. 한 가지 예는 `@Transactional` 주석을 컨트롤러에 직접 선택하는 경우임. 이 경우, 특히 컨트롤러의 경우 클래스 기반 프록시를 사용하는 것이 좋음. 이는 컨트롤러에 직접 그러한 주석을 달 때 자동으로 적용됨.
+- 컨트롤러가 인터페이스를 구현하고 AOP 프록시가 필요한 경우 클래스 기반 프록시를 명시적으로 구성해야 할 수 있음. 예를 들어 `@EnableTransactionManagement`에서는 `@EnableTransactionManagement(proxyTargetClass = true)`로 변경할 수 있고, `<tx:annotation-driven/>`에서는 `<tx:annotation-driven proxy-target-class="true"/>`로 변경할 수 있음.
+- 6.0부터는 인터페이스 프록시를 사용할 때 Spring MVC는 더 이상 인터페이스의 타입 레벨 @RequestMapping 주석만으로 컨트롤러를 감지하지 않음. 클래스 기반 프록시를 활성화하거나, 인터페이스에 @Controller 주석도 있어야 함.
+- 예제 코드
+
+```java
+@Controller
+@Transactional
+public class UserController {
+
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @GetMapping("/users")
+    public String getAllUsers(Model model) {
+        List<User> users = userService.getAllUsers();
+        model.addAttribute("users", users);
+        return "users";
+    }
+
+    // 다른 메서드 생략
+}
+
+// AppConfig.java
+@Configuration
+@EnableTransactionManagement(proxyTargetClass = true)
+@ComponentScan("com.example")
+public class AppConfig {
+    // 다른 설정 생략
+}
+```
 
 ## Spring Web MVC - Annotated Controllers - Mapping Requests
 
