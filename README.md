@@ -1909,7 +1909,7 @@ public String multiply(@RequestParam int a, @RequestParam int b) {
 - `@RequestHeader` 애노테이션이 `Map<String, String>`, `MultiValueMap<String, String>` 또는 `HttpHeaders` 인자에 사용되면, 맵은 모든 헤더 값으로 채워짐.
 - 쉼표로 구분된 문자열을 문자열의 배열이나 컬렉션 또는 타입 변환 시스템에 알려진 다른 타입으로 변환하는 기본 지원이 제공됨. 예를 들어, `@RequestHeader("Accept")`로 애노테이션이 달린 메서드 파라미터는 `String` 타입일 수 있지만 `String[]` 또는 `List<String>`일 수도 있음.
 
-- **예제 코드**: 서버를 열고, `curl`을 통해서 `http://localhost:8080/headers`에 요청을 보내면 `json`형태로 결과값이 출력됨.
+- **[예제 코드](https://github.com/foreverfl/study-java-springDocumentation/blob/main/src/main/java/com/example/springDocumentation/controller/HeaderController.java)**: 서버를 열고, `curl`을 통해서 `http://localhost:8080/headers`에 요청을 보내면 `json`형태로 결과값이 출력됨.
 
 ````java
 @GetMapping("/headers")
@@ -1930,6 +1930,38 @@ curl -H "Accept-Encoding: gzip,deflate" -H "Keep-Alive: 300" -H "Accept-Language
 ````
 
 ## Spring Web MVC - Annotated Controllers - Handler Methods - @CookieValue
+
+- `@CookieValue` 애노테이션을 사용하여 HTTP 쿠키의 값을 컨트롤러의 메서드 인자에 바인딩할 수 있음.
+- **예제 코드**: `/setCookie`로 쿠키를 설정하고, `readCookie`로 쿠키를 가져옴.
+
+```java
+// 쿠키를 설정하는 메서드
+@GetMapping("/setCookie") // http://localhost:8080/setCookie
+public Map<String, Object> setCookie(HttpServletResponse response) {
+    // 쿠키 생성
+    String uniqueID = UUID.randomUUID().toString();
+    Cookie cookie = new Cookie("JSESSIONID", uniqueID);
+    cookie.setHttpOnly(true); // HttpOnly 속성 설정
+    cookie.setMaxAge(7 * 24 * 60 * 60); // 쿠키의 유효 시간을 1주일로 설정
+    response.addCookie(cookie); // 응답에 쿠키 추가
+
+    Map<String, Object> result = new HashMap<>();
+    result.put("message", "Cookie set successfully");
+    result.put("JSESSIONID", uniqueID);
+    return result;
+}
+
+// 설정된 쿠키를 읽는 메서드
+@GetMapping("/readCookie") // http://localhost:8080/readCookie
+public ResponseEntity<Map<String, String>> readCookie(
+        @CookieValue(name = "JSESSIONID", defaultValue = "No cookie") String jsessionId) {
+    Map<String, String> result = new HashMap<>();
+    result.put("JSESSIONID", jsessionId);
+    return ResponseEntity.ok(result);
+}
+```
+
+- 대상 메서드 파라미터 타입이 `String`이 아닌 경우, 타입 변환이 자동으로 적용됨.
 
 ## Spring Web MVC - Annotated Controllers - Handler Methods - @ModelAttribute
 
