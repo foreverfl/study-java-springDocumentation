@@ -1906,32 +1906,28 @@ public String multiply(@RequestParam int a, @RequestParam int b) {
 ## Spring Web MVC - Annotated Controllers - Handler Methods - @RequestHeader
 
 - `@RequestHeader` 애노테이션을 사용하여 요청 헤더를 컨트롤러의 메서드 인자에 바인딩할 수 있음.
-- 다음과 같은 헤더를 가진 요청을 고려해 보세요:
-
-```plain
-Host                    localhost:8080
-Accept                  text/html,application/xhtml+xml,application/xml;q=0.9
-Accept-Language         fr,en-gb;q=0.7,en;q=0.3
-Accept-Encoding         gzip,deflate
-Accept-Charset          ISO-8859-1,utf-8;q=0.7,*;q=0.7
-Keep-Alive              300
-```
-
-- 다음 예제는 Accept-Encoding과 Keep-Alive 헤더의 값을 가져옴.
-
-```java
-javaCopy code@GetMapping("/demo")
-public void handle(
-		@RequestHeader("Accept-Encoding") String encoding,
-		@RequestHeader("Keep-Alive") long keepAlive) {
-	//...
-}
-```
-
-- `Accept-Encoding` 헤더의 값을 가져옴. `Keep-Alive` 헤더의 값을 가져옴.
-- 대상 메서드 파라미터 타입이 String이 아닌 경우, 타입 변환이 자동으로 적용됨.
 - `@RequestHeader` 애노테이션이 `Map<String, String>`, `MultiValueMap<String, String>` 또는 `HttpHeaders` 인자에 사용되면, 맵은 모든 헤더 값으로 채워짐.
 - 쉼표로 구분된 문자열을 문자열의 배열이나 컬렉션 또는 타입 변환 시스템에 알려진 다른 타입으로 변환하는 기본 지원이 제공됨. 예를 들어, `@RequestHeader("Accept")`로 애노테이션이 달린 메서드 파라미터는 `String` 타입일 수 있지만 `String[]` 또는 `List<String>`일 수도 있음.
+
+- **예제 코드**: 서버를 열고, `curl`을 통해서 `http://localhost:8080/headers`에 요청을 보내면 `json`형태로 결과값이 출력됨.
+
+````java
+@GetMapping("/headers")
+public ResponseEntity<Map<String, String>> showHeaders(
+        @RequestHeader("Accept-Encoding") String encoding,
+        @RequestHeader("Keep-Alive") long keepAlive,
+        @RequestHeader(value = "Accept-Language", required = false) String language) {
+    Map<String, String> response = new HashMap<>();
+    response.put("Accept-Encoding", encoding);
+    response.put("Keep-Alive", String.valueOf(keepAlive));
+    response.put("Accept-Language", language != null ? language : "Not provided");
+
+    return ResponseEntity.ok(response);
+}
+
+```sh
+curl -H "Accept-Encoding: gzip,deflate" -H "Keep-Alive: 300" -H "Accept-Language: fr,en-gb;q=0.7,en;q=0.3" http://localhost:8080/headers
+````
 
 ## Spring Web MVC - Annotated Controllers - Handler Methods - @CookieValue
 
