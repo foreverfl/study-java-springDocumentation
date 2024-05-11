@@ -273,9 +273,9 @@ spring.datasource.password=***
   > - [Spring Web MVC - Annotated Controllers - Handler Methods - Method Arguments](#spring-web-mvc---annotated-controllers---handler-methods---method-arguments)
   > - [Spring Web MVC - Annotated Controllers - Handler Methods - Return Values](#spring-web-mvc---annotated-controllers---handler-methods---return-values)
   > - [Spring Web MVC - Annotated Controllers - Handler Methods - Type Conversion](#spring-web-mvc---annotated-controllers---handler-methods---type-conversion)
-  > - Spring Web MVC - Annotated Controllers - Handler Methods - Matrix Variables
-  > - Spring Web MVC - Annotated Controllers - Handler Methods - @RequestParam
-  > - Spring Web MVC - Annotated Controllers - Handler Methods - @RequestHeader
+  > - [Spring Web MVC - Annotated Controllers - Handler Methods - Matrix Variables](#spring-web-mvc---annotated-controllers---handler-methods---matrix-variables)
+  > - [Spring Web MVC - Annotated Controllers - Handler Methods - @RequestParam](#spring-web-mvc---annotated-controllers---handler-methods---requestparam)
+  > - [Spring Web MVC - Annotated Controllers - Handler Methods - @RequestHeader](#spring-web-mvc---annotated-controllers---handler-methods---requestheader)
   > - Spring Web MVC - Annotated Controllers - Handler Methods - @CookieValue
   > - Spring Web MVC - Annotated Controllers - Handler Methods - @ModelAttribute
   > - Spring Web MVC - Annotated Controllers - Handler Methods - @SessionAttributes
@@ -1834,15 +1834,104 @@ public Map<String, Object> findPetWithMatrixVars(
 - 매트릭스 변수의 사용을 활성화해야 한다는 점에 유의해야 함. MVC Java 설정에서는 경로 매칭을 통해 `removeSemicolonContent=false`로 설정된 `UrlPathHelper`를 설정해야 함. MVC XML 네임스페이스에서는 `<mvc:annotation-driven enable-matrix-variables="true"/>`를 설정할 수 있음.
 
 - 매트릭스 변수가 유용한 상황.
+
   > - **다중 필터링 옵션**: 한 리소스에 대한 다양한 필터링 옵션을 제공해야 할 때 매트릭스 변수를 사용할 수 있음. 예를 들어, 상품 목록을 조회하는 URL에서 여러 필터링 옵션(색상, 크기, 가격 범위 등)을 하나의 URL 경로 세그먼트에 포함시킬 수 있음. 이는 쿼리 파라미터를 사용하는 것보다 URL을 더 구조화된 방식으로 표현할 수 있게 해줌.
   > - **상태 유지 정보**: 세션 데이터나 임시 상태를 URL에 포함시켜 상태 유지를 처리할 필요가 있을 때 사용할 수 있음. 이 방법은 클라이언트가 상태 정보를 유지하도록 하여 서버의 부담을 줄일 수 있음.
   > - **리소스 내 계층적 데이터 접근**: URL 내에서 계층적인 리소스 접근을 표현할 때 유용함. 예를 들어, 사용자 ID 내의 특정 문서에 대한 여러 매개변수를 설정해야 하는 경우, 이러한 매개변수들을 매트릭스 변수로 표현할 수 있음.
   > - **버전 관리와 선택적 파라미터**: API의 특정 버전에 대해 선택적 파라미터를 제공하거나, 리소스 버전을 관리할 때 매트릭스 변수를 활용할 수 있음. 이를 통해 동일한 경로 내에서 여러 버전의 리소스를 다룰 수 있음.
   > - **RESTful API의 자원 표현 다양화**: 매트릭스 변수를 사용하여 RESTful API에서 자원의 표현을 다양화할 수 있음. 예를 들어, 같은 path를 가진 요청에 대해 다른 속성을 갖는 자원을 구분하여 요청을 처리할 수 있음.
 
+  - [예제 코드](https://github.com/foreverfl/study-java-springDocumentation/blob/main/src/main/java/com/example/springDocumentation/controller/HandlerMethodsController.java)
+
 ## Spring Web MVC - Annotated Controllers - Handler Methods - @RequestParam
 
+- `@RequestParam` 애노테이션을 사용하여 서블릿 요청 매개변수(쿼리 파라미터 또는 폼 데이터)를 컨트롤러의 메서드 인자에 바인딩할 수 있음.
+
+```java
+@GetMapping("/greet") // http://localhost:8080/requestparam/greet?name=rika
+public String greet(@RequestParam String name) {
+    return "Hello, " + name; // Hello! rika
+}
+```
+
+- 기본적으로 이 애노테이션을 사용하는 메서드 매개변수는 필수이지만, `@RequestParam` 애노테이션의 `required` 플래그를 `false`로 설정하거나 인자를 `java.util.Optional` 래퍼로 선언하여 메서드 매개변수를 선택 사항으로 지정할 수 있음.
+
+```java
+@GetMapping("/greetWithOptional") // http://localhost:8080/requestparam/greetWithOptional
+public String greetWithOptionalName(@RequestParam(required = false, defaultValue = "Guest") String name) {
+    return "Hello, " + name; // Hello, Guest
+}
+```
+
+- 대상 메서드 매개변수 유형이 `String`이 아닌 경우 유형 변환이 자동으로 적용됨.
+
+```java
+@GetMapping("/squareNumber") // http://localhost:8080/requestparam/squareNumber?number=5
+public String squareNumber(@RequestParam int number) {
+    int square = number * number;
+    return "Square of " + number + " is " + square; // Square of 5 is 25
+}
+```
+
+- 인자 유형을 배열 또는 목록으로 선언하면 동일한 매개변수 이름에 대해 여러 매개변수 값을 해결할 수 있음.
+
+```java
+@GetMapping("/showDetails") // http://localhost:8080/requestparam/showDetails?ids=1,2,3
+public String showDetails(@RequestParam List<String> ids) {
+    return "Details for IDs: " + ids.stream().collect(Collectors.joining(", ")); // Details for IDs: 1, 2, 3
+}
+```
+
+- `@RequestParam` 애노테이션이 `Map<String, String>` 또는 `MultiValueMap<String, String>`으로 선언되고 애노테이션에 매개변수 이름이 지정되지 않은 경우, 주어진 각 매개변수 이름에 대한 요청 매개변수 값으로 맵이 채워짐.
+
+```java
+@GetMapping("/showParameters") // http://localhost:8080/requestparam/showParameters?param1=value1&param2=value2
+public String showParameters(@RequestParam Map<String, String> params) {
+    return "Received parameters: " + params.entrySet().stream()
+            .map(entry -> entry.getKey() + "=" + entry.getValue())
+            .collect(Collectors.joining(", "));
+}
+```
+
+- `@RequestParam`의 사용은 선택 사항임을 유의(예: 속성 설정). 기본적으로 다른 인자 리졸버에 의해 해결되지 않고 단순 값 유형(`BeanUtils#isSimpleProperty`에 의해 결정됨)인 모든 인자는 `@RequestParam`으로 주석 처리된 것처럼 처리됨.
+
+```java
+@GetMapping("/multiply") // http://localhost:8080/requestparam/multiply?a=10&b=20
+public String multiply(@RequestParam int a, @RequestParam int b) {
+    int result = a * b;
+    return "Result of " + a + " * " + b + " = " + result;
+}
+```
+
 ## Spring Web MVC - Annotated Controllers - Handler Methods - @RequestHeader
+
+- `@RequestHeader` 애노테이션을 사용하여 요청 헤더를 컨트롤러의 메서드 인자에 바인딩할 수 있음.
+- 다음과 같은 헤더를 가진 요청을 고려해 보세요:
+
+```plain
+Host                    localhost:8080
+Accept                  text/html,application/xhtml+xml,application/xml;q=0.9
+Accept-Language         fr,en-gb;q=0.7,en;q=0.3
+Accept-Encoding         gzip,deflate
+Accept-Charset          ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive              300
+```
+
+- 다음 예제는 Accept-Encoding과 Keep-Alive 헤더의 값을 가져옴.
+
+```java
+javaCopy code@GetMapping("/demo")
+public void handle(
+		@RequestHeader("Accept-Encoding") String encoding,
+		@RequestHeader("Keep-Alive") long keepAlive) {
+	//...
+}
+```
+
+- `Accept-Encoding` 헤더의 값을 가져옴. `Keep-Alive` 헤더의 값을 가져옴.
+- 대상 메서드 파라미터 타입이 String이 아닌 경우, 타입 변환이 자동으로 적용됨.
+- `@RequestHeader` 애노테이션이 `Map<String, String>`, `MultiValueMap<String, String>` 또는 `HttpHeaders` 인자에 사용되면, 맵은 모든 헤더 값으로 채워짐.
+- 쉼표로 구분된 문자열을 문자열의 배열이나 컬렉션 또는 타입 변환 시스템에 알려진 다른 타입으로 변환하는 기본 지원이 제공됨. 예를 들어, `@RequestHeader("Accept")`로 애노테이션이 달린 메서드 파라미터는 `String` 타입일 수 있지만 `String[]` 또는 `List<String>`일 수도 있음.
 
 ## Spring Web MVC - Annotated Controllers - Handler Methods - @CookieValue
 
