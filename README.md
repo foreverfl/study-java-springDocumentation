@@ -1,12 +1,13 @@
 # Spring Framework Documentation
 
-- Spring Framework 6.1.6 공식 문서를 한글로 번역한 자료입니다. 개인적으로는 프레임워크나 라이브러리 공부에서 공식문서보다 좋은 레퍼런스는 존재하지 않는다고 생각합니다.
+- Spring Framework 6.1.6 공식 문서를 한글로 번역 및 재구성한 자료입니다. 해당 자료 내용을 사용할 경우에는 출처를 남겨주세요. 그리고 유용하다고 생각하시면, 스타 부탁드려요. 🥲
 - 구성상 불필요하다고 생각하는 부분은 읽고 제외했습니다.
-- 또한 최근에는 Spring Boot를 많이 쓰기 때문에 관련된 설명을 추가한 부분도 있습니다.
+- 여러 설명을 공식 문서 외에도 추가했습니다. 문서를 읽다가 추가 설명이 있으면 좋겠다고 생각한 부분에 대해서 추가했고, 최근에는 Spring Boot를 많이 쓰기 때문에 관련된 설명을 추가한 부분도 있습니다.
+- 기본적인 구성은 `Java` 파일을 통해 진행했습니다. `XML` 기반으로 파일 설정은 하는 부분은 모두 `Java`기반으로 변경했습니다. 레거시 코드를 운영하는 부분 때문에 `XML`기반 설정도 알면 좋겠다고 생각은 합니다만, 익숙하지가 않아서 그런지 할 생각이 들지 않네요. `XML`기반 설정에 대해서 잘 아시는 분이 도와주시면 감사하겠습니다.
 - 번역은 Claude Opus/ChatGPT4를 사용했고, 어색한 부분은 직접 손을 봤습니다.
 - 오역이 있을 수 있기 때문에, 이 페이지는 참고만 하시고, 실제 작업에서는 직접 [영어](https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-controller/ann-methods/matrix-variables.html)로 참고해주세요.
-- 목차에서 링크가 작동하는 부분만 번역이 된 부분입니다.
-- 예제 코드를 쓸 때는 아래의 `application.properties` 구성을 참조하세요.
+- 목차는 영어로 구성했습니다. 핵심 개념을 한글로 바꾸는 게 더 이상하다고 생각합니다. 목차에서 링크가 작동하는 부분만 번역이 된 부분 또는 번역이 될 예정인 부분입니다.
+- 예제 코드를 돌려보고 싶은 분들은 프로젝트를 `git clone`하고, 아래의 `application.properties` 구성을 참조해서 `application.properties`를 추가해주세요.
 
 ```properties
 spring.application.name=springDocumentation
@@ -23,36 +24,36 @@ spring.datasource.password=***
   > - [The IoC Container - Container Overview](#the-ioc-container---container-overview)
   > - [The IoC Container - Bean Overview](#the-ioc-container---bean-overview)
   > - [The IoC Container - Dependencies - Dependency Injection](#the-ioc-container---dependencies---dependency-injection)
-  > - The IoC Container - Dependencies - Dependencies and Configuration in Detail
-  > - The IoC Container - Dependencies - Using depends-on
-  > - The IoC Container - Dependencies - Lazy-initialized Beans
-  > - The IoC Container - Dependencies - Autowiring Collaborators
-  > - The IoC Container - Dependencies - Method Injection
-  > - The IoC Container - Bean Scopes
-  > - The IoC Container - Customizing the Nature of a Bean
-  > - The IoC Container - Bean Definition Inheritance
-  > - The IoC Container - Container Extension Points
-  > - The IoC Container - Annotation-based Container Configuration
-  > - The IoC Container - Annotation-based Container Configuration - Using @Autowired
-  > - The IoC Container - Annotation-based Container Configuration - Fine-tuning Annotation-based Autowiring with @Primary
-  > - The IoC Container - Annotation-based Container Configuration - Fine-tuning Annotation-based Autowiring with Qualifiers
-  > - The IoC Container - Annotation-based Container Configuration - Using Generics as Autowiring Qualifiers
-  > - The IoC Container - Annotation-based Container Configuration - Using CustomAutowireConfigurer
-  > - The IoC Container - Annotation-based Container Configuration - Injection with @Resource
-  > - The IoC Container - Annotation-based Container Configuration - Using @Value
-  > - The IoC Container - Annotation-based Container Configuration - Using @PostConstruct and @PreDestroy
-  > - The IoC Container - Classpath Scanning and Managed Components
-  > - The IoC Container - Using JSR 330 Standard Annotations
-  > - The IoC Container - Java-based Container Configuration
-  > - The IoC Container - Java-based Container Configuration - Basic Concepts: @Bean and @Configuration
-  > - The IoC Container - Java-based Container Configuration - Instantiating the Spring Container by Using AnnotationConfigApplicationContext
-  > - The IoC Container - Java-based Container Configuration - Using the @Bean Annotation
-  > - The IoC Container - Java-based Container Configuration - Using the @Configuration annotation
-  > - The IoC Container - Java-based Container Configuration - Composing Java-based Configurations
-  > - The IoC Container - Environment Abstraction
-  > - The IoC Container - Registering a LoadTimeWeaver
-  > - The IoC Container - Additional Capabilities of the ApplicationContext
-  > - The IoC Container - The BeanFactory API
+  > - [The IoC Container - Dependencies - Dependencies and Configuration in Detail](#the-ioc-container---dependencies---dependencies-and-configuration-in-detail)
+  > - [The IoC Container - Dependencies - Using depends-on](#the-ioc-container---dependencies---using-depends-on)
+  > - [The IoC Container - Dependencies - Lazy-initialized Beans](#the-ioc-container---dependencies---lazy-initialized-beans)
+  > - [The IoC Container - Dependencies - Autowiring Collaborators](#the-ioc-container---dependencies---autowiring-collaborators)
+  > - [The IoC Container - Dependencies - Method Injection](#the-ioc-container---dependencies---method-injection)
+  > - [The IoC Container - Bean Scopes](#the-ioc-container---bean-scopes)
+  > - [The IoC Container - Customizing the Nature of a Bean](#the-ioc-container---customizing-the-nature-of-a-bean)
+  > - [The IoC Container - Bean Definition Inheritance](#the-ioc-container---bean-definition-inheritance)
+  > - [The IoC Container - Container Extension Points](#the-ioc-container---container-extension-points)
+  > - [The IoC Container - Annotation-based Container Configuration](#the-ioc-container---java-based-container-configuration)
+  > - [The IoC Container - Annotation-based Container Configuration - Using @Autowired](#the-ioc-container---annotation-based-container-configuration---using-autowired)
+  > - [The IoC Container - Annotation-based Container Configuration - Fine-tuning Annotation-based Autowiring with @Primary](#the-ioc-container---annotation-based-container-configuration---fine-tuning-annotation-based-autowiring-with-primary)
+  > - [The IoC Container - Annotation-based Container Configuration - Fine-tuning Annotation-based Autowiring with Qualifiers](#the-ioc-container---annotation-based-container-configuration---fine-tuning-annotation-based-autowiring-with-qualifiers)
+  > - [The IoC Container - Annotation-based Container Configuration - Using Generics as Autowiring Qualifiers](#the-ioc-container---annotation-based-container-configuration---using-generics-as-autowiring-qualifiers)
+  > - [The IoC Container - Annotation-based Container Configuration - Using CustomAutowireConfigurer](#the-ioc-container---annotation-based-container-configuration---using-customautowireconfigurer)
+  > - [The IoC Container - Annotation-based Container Configuration - Injection with @Resource](#the-ioc-container---annotation-based-container-configuration---injection-with-resource)
+  > - [The IoC Container - Annotation-based Container Configuration - Using @Value](#the-ioc-container---annotation-based-container-configuration---using-value)
+  > - [The IoC Container - Annotation-based Container Configuration - Using @PostConstruct and @PreDestroy](#the-ioc-container---annotation-based-container-configuration---using-postconstruct-and-predestroy)
+  > - [The IoC Container - Classpath Scanning and Managed Components](#the-ioc-container---classpath-scanning-and-managed-components)
+  > - [The IoC Container - Using JSR 330 Standard Annotations](#the-ioc-container---using-jsr-330-standard-annotations)
+  > - [The IoC Container - Java-based Container Configuration](#the-ioc-container---java-based-container-configuration)
+  > - [The IoC Container - Java-based Container Configuration - Basic Concepts: @Bean and @Configuration](#the-ioc-container---java-based-container-configuration---basic-concepts-bean-and-configuration)
+  > - [The IoC Container - Java-based Container Configuration - Instantiating the Spring Container by Using AnnotationConfigApplicationContext](#the-ioc-container---java-based-container-configuration---instantiating-the-spring-container-by-using-annotationconfigapplicationcontext)
+  > - [The IoC Container - Java-based Container Configuration - Using the @Bean Annotation](#the-ioc-container---java-based-container-configuration---using-the-bean-annotation)
+  > - [The IoC Container - Java-based Container Configuration - Using the @Configuration annotation](#the-ioc-container---java-based-container-configuration---using-the-configuration-annotation)
+  > - [The IoC Container - Java-based Container Configuration - Composing Java-based Configurations](#the-ioc-container---java-based-container-configuration---composing-java-based-configurations)
+  > - [The IoC Container - Environment Abstraction](#the-ioc-container---environment-abstraction)
+  > - [The IoC Container - Registering a LoadTimeWeaver](#the-ioc-container---registering-a-loadtimeweaver)
+  > - [The IoC Container - Additional Capabilities of the ApplicationContext](#the-ioc-container---additional-capabilities-of-the-applicationcontext)
+  > - [The IoC Container - The BeanFactory API](#the-ioc-container---the-beanfactory-api)
   > - Resources
   > - Validation, Data Binding, and Type Conversion
   > - Validation, Data Binding, and Type Conversion - Validation by Using Spring’s Validator Interface
@@ -255,17 +256,17 @@ spring.datasource.password=***
   > - [Spring Web MVC - DispatcherServlet - Context Hierarchy](#spring-web-mvc---dispatcherservlet---context-hierarchy)
   > - [Spring Web MVC - DispatcherServlet - Special Bean Types](#spring-web-mvc---dispatcherservlet---special-bean-types)
   > - [Spring Web MVC - DispatcherServlet - Web MVC Config](#spring-web-mvc---dispatcherservlet---web-mvc-config)
-  > - Spring Web MVC - DispatcherServlet - Servlet Config
-  > - Spring Web MVC - DispatcherServlet - Processing
-  > - Spring Web MVC - DispatcherServlet - Path Matching
-  > - Spring Web MVC - DispatcherServlet - Interception
-  > - Spring Web MVC - DispatcherServlet - Exceptions
-  > - Spring Web MVC - DispatcherServlet - View Resolution
-  > - Spring Web MVC - DispatcherServlet - Locale
-  > - Spring Web MVC - DispatcherServlet - Themes
-  > - Spring Web MVC - DispatcherServlet - Multipart Resolver
-  > - Spring Web MVC - DispatcherServlet - Logging
-  > - Spring Web MVC - Filters
+  > - [Spring Web MVC - DispatcherServlet - Servlet Config](#spring-web-mvc---dispatcherservlet---servlet-config)
+  > - [Spring Web MVC - DispatcherServlet - Processing](#spring-web-mvc---dispatcherservlet---processing)
+  > - [Spring Web MVC - DispatcherServlet - Path Matching](#spring-web-mvc---mvc-config---path-matching)
+  > - [Spring Web MVC - DispatcherServlet - Interception](#spring-web-mvc---dispatcherservlet---interception)
+  > - [Spring Web MVC - DispatcherServlet - Exceptions](#spring-web-mvc---dispatcherservlet---exceptions)
+  > - [Spring Web MVC - DispatcherServlet - View Resolution](#spring-web-mvc---dispatcherservlet---view-resolution)
+  > - [Spring Web MVC - DispatcherServlet - Locale](#spring-web-mvc---dispatcherservlet---locale)
+  > - [Spring Web MVC - DispatcherServlet - Themes](#spring-web-mvc---dispatcherservlet---themes)
+  > - [Spring Web MVC - DispatcherServlet - Multipart Resolver](#spring-web-mvc---dispatcherservlet---multipart-resolver)
+  > - [Spring Web MVC - DispatcherServlet - Logging](#spring-web-mvc---dispatcherservlet---logging)
+  > - [Spring Web MVC - Filters](#spring-web-mvc---filters)
   > - [Spring Web MVC - Annotated Controllers](#spring-web-mvc---annotated-controllers)
   > - [Spring Web MVC - Annotated Controllers - Declaration](#spring-web-mvc---annotated-controllers---declaration)
   > - [Spring Web MVC - Annotated Controllers - Mapping Requests](#spring-web-mvc---annotated-controllers---mapping-requests)
@@ -276,24 +277,24 @@ spring.datasource.password=***
   > - [Spring Web MVC - Annotated Controllers - Handler Methods - Matrix Variables](#spring-web-mvc---annotated-controllers---handler-methods---matrix-variables)
   > - [Spring Web MVC - Annotated Controllers - Handler Methods - @RequestParam](#spring-web-mvc---annotated-controllers---handler-methods---requestparam)
   > - [Spring Web MVC - Annotated Controllers - Handler Methods - @RequestHeader](#spring-web-mvc---annotated-controllers---handler-methods---requestheader)
-  > - Spring Web MVC - Annotated Controllers - Handler Methods - @CookieValue
-  > - Spring Web MVC - Annotated Controllers - Handler Methods - @ModelAttribute
-  > - Spring Web MVC - Annotated Controllers - Handler Methods - @SessionAttributes
-  > - Spring Web MVC - Annotated Controllers - Handler Methods - @SessionAttribute
-  > - Spring Web MVC - Annotated Controllers - Handler Methods - @RequestAttribute
-  > - Spring Web MVC - Annotated Controllers - Handler Methods - Redirect Attributes
-  > - Spring Web MVC - Annotated Controllers - Handler Methods - Flash Attributes
-  > - Spring Web MVC - Annotated Controllers - Handler Methods - Multipart
-  > - Spring Web MVC - Annotated Controllers - Handler Methods - @RequestBody
-  > - Spring Web MVC - Annotated Controllers - Handler Methods - HttpEntity
-  > - Spring Web MVC - Annotated Controllers - Handler Methods - @ResponseBody
-  > - Spring Web MVC - Annotated Controllers - Handler Methods - ResponseEntity
-  > - Spring Web MVC - Annotated Controllers - Handler Methods - Jackson JSON
-  > - Spring Web MVC - Annotated Controllers - Model
-  > - Spring Web MVC - Annotated Controllers - @InitBinder
-  > - Spring Web MVC - Annotated Controllers - Validation
-  > - Spring Web MVC - Annotated Controllers - Exceptions
-  > - Spring Web MVC - Annotated Controllers - Controller Advice
+  > - [Spring Web MVC - Annotated Controllers - Handler Methods - @CookieValue](#spring-web-mvc---annotated-controllers---handler-methods---cookievalue)
+  > - [Spring Web MVC - Annotated Controllers - Handler Methods - @ModelAttribute](#spring-web-mvc---annotated-controllers---handler-methods---modelattribute)
+  > - [Spring Web MVC - Annotated Controllers - Handler Methods - @SessionAttributes](#spring-web-mvc---annotated-controllers---handler-methods---sessionattributes)
+  > - [Spring Web MVC - Annotated Controllers - Handler Methods - @SessionAttribute](#spring-web-mvc---annotated-controllers---handler-methods---sessionattribute)
+  > - [Spring Web MVC - Annotated Controllers - Handler Methods - @RequestAttribute](#spring-web-mvc---annotated-controllers---handler-methods---requestattribute)
+  > - [Spring Web MVC - Annotated Controllers - Handler Methods - Redirect Attributes](#spring-web-mvc---annotated-controllers---handler-methods---redirect-attributes)
+  > - [Spring Web MVC - Annotated Controllers - Handler Methods - Flash Attributes](#spring-web-mvc---annotated-controllers---handler-methods---flash-attributes)
+  > - [Spring Web MVC - Annotated Controllers - Handler Methods - Multipart](#spring-web-mvc---annotated-controllers---handler-methods---multipart)
+  > - [Spring Web MVC - Annotated Controllers - Handler Methods - @RequestBody](#spring-web-mvc---annotated-controllers---handler-methods---responsebody)
+  > - [Spring Web MVC - Annotated Controllers - Handler Methods - HttpEntity](#spring-web-mvc---annotated-controllers---handler-methods---httpentity)
+  > - [Spring Web MVC - Annotated Controllers - Handler Methods - @ResponseBody](#spring-web-mvc---annotated-controllers---handler-methods---responsebody)
+  > - [Spring Web MVC - Annotated Controllers - Handler Methods - ResponseEntity](#spring-web-mvc---annotated-controllers---handler-methods---responseentity)
+  > - [Spring Web MVC - Annotated Controllers - Handler Methods - Jackson JSON](#spring-web-mvc---annotated-controllers---handler-methods---jackson-json)
+  > - [Spring Web MVC - Annotated Controllers - Model](#spring-web-mvc---annotated-controllers---model)
+  > - [Spring Web MVC - Annotated Controllers - @InitBinder](#spring-web-mvc---annotated-controllers---initbinder)
+  > - [Spring Web MVC - Annotated Controllers - Validation](#spring-web-mvc---annotated-controllers---validation)
+  > - [Spring Web MVC - Annotated Controllers - Exceptions](#spring-web-mvc---annotated-controllers---exceptions)
+  > - [Spring Web MVC - Annotated Controllers - Controller Advice](#spring-web-mvc---annotated-controllers---controller-advice)
   > - Spring Web MVC - Functional Endpoints
   > - Spring Web MVC - URI Links
   > - Spring Web MVC - Asynchronous Requests
@@ -1932,7 +1933,7 @@ curl -H "Accept-Encoding: gzip,deflate" -H "Keep-Alive: 300" -H "Accept-Language
 ## Spring Web MVC - Annotated Controllers - Handler Methods - @CookieValue
 
 - `@CookieValue` 애노테이션을 사용하여 HTTP 쿠키의 값을 컨트롤러의 메서드 인자에 바인딩할 수 있음.
-- **예제 코드**: `/setCookie`로 쿠키를 설정하고, `readCookie`로 쿠키를 가져옴.
+- **[예제 코드](https://github.com/foreverfl/study-java-springDocumentation/blob/main/src/main/java/com/example/springDocumentation/controller/CookieController.java)**: `/setCookie`로 쿠키를 설정하고, `readCookie`로 쿠키를 가져옴.
 
 ```java
 // 쿠키를 설정하는 메서드
@@ -1965,7 +1966,149 @@ public ResponseEntity<Map<String, String>> readCookie(
 
 ## Spring Web MVC - Annotated Controllers - Handler Methods - @ModelAttribute
 
+- 전체 예제 코드
+- `@ModelAttribute` 메서드 파라미터 애노테이션은 요청 파라미터를 모델 객체에 바인딩함. 예제 코드의 매핑된 주소에 Post 요청을 보내면 json으로 결과를 응답함.
+
+```java
+@PostMapping("/editPerson") // 요청 파라미터를 Person 객체에 바인딩하여 저장
+public Person editPerson(@ModelAttribute Person person) {
+    return person;
+}
+```
+
+```sh
+curl -X POST http://localhost:8080/modelAttribute/editPerson -d "firstName=John&lastName=Doe&age=30&sex=Male" -H "Content-Type: application/x-www-form-urlencoded"
+```
+
+- 모델 속성 이름이 경로 변수나 요청 파라미터와 같은 요청 값의 이름과 일치하고 호환되는 `Converter<String, T>`가 있는 경우 `Converter<String, T>`를 사용하여 모델 객체를 얻을 수 있음.
+
+```java
+// 로컬 컨버터 메서드
+private Person stringToPerson(String source) {
+    // source는 "name,age,sex" 형태로 가정
+    String[] parts = source.split(",");
+    Person p = new Person();
+    p.setFirstName(parts[0]);
+    p.setAge(Integer.parseInt(parts[1]));
+    p.setSex(parts[2]);
+    return p;
+}
+
+@GetMapping("/getPerson/{info}") // http://localhost:8080/modelAttribute/getPerson/John,30,Male
+public Person getPerson(@PathVariable("info") String info) {
+    Person person = stringToPerson(info); // 로컬 컨버터 함수를 사용하여 문자열을 Person 객체로 변환
+    return person;
+}
+```
+
+- 기본적으로 생성자와 프로퍼티 데이터 바인딩이 모두 적용됨. 그러나 모델 객체 설계는 신중한 고려가 필요하며, 보안상의 이유로 웹 바인딩에 특화된 객체를 사용하거나 생성자 바인딩만 적용하는 것이 좋음. 프로퍼티 바인딩을 계속 사용해야 하는 경우에는 `allowedFields` 패턴을 설정하여 설정할 수 있는 프로퍼티를 제한해야 함.
+- 생성자 바인딩을 사용할 때 `@BindParam` 애노테이션을 통해 요청 파라미터 이름을 커스터마이즈할 수 있음.
+- `@BindParam`은 생성자 매개변수에 해당하는 필드에도 배치할 수 있음. `@BindParam`은 기본적으로 지원되지만 `DataBinder`에 `DataBinder.NameResolver`를 설정하여 다른 애노테이션을 사용할 수도 있음.
+
+```java
+public PersonWithBindParam(@BindParam("first-name") String firstName,
+        @BindParam("last-name") String lastName,
+        @BindParam("age") int age,
+        @BindParam("sex") String sex) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.age = age;
+    this.sex = sex;
+}
+```
+
+- 경우에 따라 데이터 바인딩 없이 모델 속성에 접근하고 싶을 수 있음. 이러한 경우 `Model`을 컨트롤러에 주입하고 직접 접근하거나, 다음 예제와 같이 `@ModelAttribute(binding=false)`를 설정할 수 있음.
+
+```java
+@GetMapping("/getStaticPerson") // http://localhost:8080/modelAttribute/getStaticPerson
+public Person getStaticPerson(@ModelAttribute(binding = false) Person person) {
+    // 사전에 정의된 또는 다른 방법으로 생성된 Person 객체를 사용
+    person.setFirstName("Nagisa");
+    person.setLastName("Minase");
+    person.setAge(15);
+    person.setSex("female");
+    return person;
+}
+```
+
+- 데이터 바인딩 결과 오류가 발생하면 기본적으로 `MethodArgumentNotValidException`이 발생하지만, `@ModelAttribute` 바로 옆에 `BindingResult` 인수를 추가하여 컨트롤러 메서드에서 이러한 오류를 처리할 수도 있음.
+- 아래의 예제코드에서 `age` 필드에 문자열로 요청이 들어가면 오류가 발생함.
+
+```java
+@GetMapping("/getPersonWithBindingResult") // http://localhost:8080/modelAttribute/getPersonWithBindingResult?first-name=Nagisa&last-name=Minase&age=15&sex=female
+public ResponseEntity<?> getPersonWithBindingResult(@ModelAttribute Person person, BindingResult result) {
+    if (result.hasErrors()) {
+        // 오류 응답을 JSON 형태로 반환
+        System.out.println("BindingResult has a problem");
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body("Error in form submission: " + result.getAllErrors());
+    }
+
+    System.out.println("BindingResult is normal");
+    return ResponseEntity.ok(person); // 성공 응답을 JSON 형태로 반환
+
+}
+```
+
+- `jakarta.validation.Valid` 애노테이션이나 Spring의 `@Validated` 애노테이션을 추가하여 데이터 바인딩 후에 자동으로 유효성 검사를 적용할 수 있음.
+- `@Valid`와 `@Validated`의 차이
+  > - `@Valid`: 자바 표준 유효성 검사 어노테이션(Jakarta Bean Validation API)으로, 객체 그래프에 대해 깊이 있는 검증을 수행함. 이 어노테이션이 붙은 객체의 모든 필드와 해당 필드의 객체 등, 객체 내부의 모든 것에 대해 유효성 검사를 적용함.
+  > - `@Validated`: 스프링 프레임워크에서 제공하는 어노테이션으로, 그룹화된 유효성 검사를 지원함. 이는 복잡한 검증 로직에서 특정 조건을 그룹으로 묶어 검증할 때 유용함. 또한, 클래스 레벨이나 메소드 파라미터 레벨에서 사용할 수 있어, 스프링 특정 상황(예: 컨트롤러 메소드에서)에서 더 세밀한 검증 설정이 가능함.
+- `@ModelAttribute` 다음에 `BindingResult` 파라미터가 없으면 유효성 검사 오류와 함께 `MethodArgumentNotValueException`이 발생함. 그러나 다른 매개변수에 `@jakarta.validation.Constraint` 애노테이션이 있어 메서드 유효성 검사가 적용되는 경우에는 `HandlerMethodValidationException`이 대신 발생함.
+
+```java
+@GetMapping("/getPersonWithValidated") // http://localhost:8080/modelAttribute/getPersonWithValidated?first-name=Nagisa&last-name=Minase&age=15&sex=female
+public ResponseEntity<?> getPersonWithValidated(
+        @Validated @ModelAttribute Person person,
+        BindingResult result) {
+
+    if (result.hasErrors()) {
+        // 데이터 바인딩 및 유효성 검사에서 오류가 발견되면 오류 메시지를 반환
+        System.out.println("response is not validated.");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result.getAllErrors());
+    }
+
+    // 유효성 검사 통과 시, 정상적인 Person 객체를 반환
+    System.out.println("response is validated.");
+    return ResponseEntity.ok(person);
+}
+```
+
+- `@ModelAttribute`의 사용은 선택 사항. 기본적으로 `BeanUtils#isSimpleProperty`에 의해 단순 값 유형이 아닌 것으로 결정되고 다른 인수 리졸버에 의해 해결되지 않는 모든 매개변수는 암시적 `@ModelAttribute`로 처리됨.
+- GraalVM을 사용하여 네이티브 이미지로 컴파일할 때 위에서 설명한 암시적 `@ModelAttribute` 지원은 관련 데이터 바인딩 리플렉션 힌트의 적절한 사전 추론을 허용하지 않음. 결과적으로 GraalVM 네이티브 이미지에서 사용하기 위해 메서드 매개변수에 `@ModelAttribute`를 명시적으로 애노테이션하는 것이 좋음.
+
 ## Spring Web MVC - Annotated Controllers - Handler Methods - @SessionAttributes
+
+- `@SessionAttributes`는 요청 간에 모델 속성을 `HTTP Servlet` 세션에 저장하는 데 사용됨. 이는 특정 컨트롤러에서 사용되는 세션 속성을 선언하는 타입 레벨 애노테이션. 일반적으로 후속 요청에서 접근할 수 있도록 세션에 투명하게 저장되어야 하는 모델 속성의 이름이나 유형을 나열함.
+
+```java
+@Controller
+@SessionAttributes("pet")
+public class EditPetForm {
+	// ...
+}
+```
+
+- 첫 번째 요청에서 `pet`이라는 이름의 모델 속성이 모델에 추가되면 자동으로 `HTTP Servlet` 세션으로 승격되어 저장됨. 다음 예제와 같이 다른 컨트롤러 메서드가 `SessionStatus` 메서드 인수를 사용하여 저장소를 지울 때까지 그대로 유지됨.
+
+```java
+@Controller
+@SessionAttributes("pet")
+public class EditPetForm {
+
+	// ...
+
+	@PostMapping("/pets/{id}")
+	public String handle(Pet pet, BindingResult errors, SessionStatus status) {
+		if (errors.hasErrors) {
+			// ...
+		}
+		status.setComplete();
+		// ...
+	}
+}
+```
 
 ## Spring Web MVC - Annotated Controllers - Handler Methods - @SessionAttribute
 
