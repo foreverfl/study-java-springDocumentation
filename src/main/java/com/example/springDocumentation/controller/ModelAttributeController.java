@@ -91,5 +91,4 @@ public class ModelAttributeController {
         System.out.println("response is validated.");
         return ResponseEntity.ok(person);
     }
-
 }

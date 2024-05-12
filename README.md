@@ -1,11 +1,11 @@
 # Spring Framework Documentation
 
 - Spring Framework 6.1.6 공식 문서를 한글로 번역 및 재구성한 자료입니다. 해당 자료 내용을 사용할 경우에는 출처를 남겨주세요. 그리고 유용하다고 생각하시면, 스타 부탁드려요. 🥲
-- 구성상 불필요하다고 생각하는 부분은 읽고 제외했습니다.
+- 구성상 불필요하다고 생각하는 부분은 제외했습니다.
 - 여러 설명을 공식 문서 외에도 추가했습니다. 문서를 읽다가 추가 설명이 있으면 좋겠다고 생각한 부분에 대해서 추가했고, 최근에는 Spring Boot를 많이 쓰기 때문에 관련된 설명을 추가한 부분도 있습니다.
-- 기본적인 구성은 `Java` 파일을 통해 진행했습니다. `XML` 기반으로 파일 설정은 하는 부분은 모두 `Java`기반으로 변경했습니다. 레거시 코드를 운영하는 부분 때문에 `XML`기반 설정도 알면 좋겠다고 생각은 합니다만, 익숙하지가 않아서 그런지 할 생각이 들지 않네요. `XML`기반 설정에 대해서 잘 아시는 분이 도와주시면 감사하겠습니다.
+- 기본적인 구성은 `Java` 파일을 통해 진행했습니다. `XML` 기반으로 파일 설정은 하는 부분은 모두 `Java`기반으로 변경했습니다. 제가 예제 코드도 만들진 않을 거에요. 레거시 코드를 운영하는 회사도 있을 거란 생각에 `XML`기반 설정도 알면 좋겠다고 생각은 합니다만, 제가 할 마음은 들지 않네요. `XML`기반 설정에 대해서 잘 아시는 분이 도와주시면 감사하겠습니다. 🥺
 - 번역은 Claude Opus/ChatGPT4를 사용했고, 어색한 부분은 직접 손을 봤습니다.
-- 오역이 있을 수 있기 때문에, 이 페이지는 참고만 하시고, 실제 작업에서는 직접 [영어](https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-controller/ann-methods/matrix-variables.html)로 참고해주세요.
+- 오역이 있을 수 있기 때문에, 이 페이지는 참고만 하시고, 실제 작업에서는 직접 [영어](https://docs.spring.io/spring-framework/reference/)로 참고해주세요.
 - 목차는 영어로 구성했습니다. 핵심 개념을 한글로 바꾸는 게 더 이상하다고 생각합니다. 목차에서 링크가 작동하는 부분만 번역이 된 부분 또는 번역이 될 예정인 부분입니다.
 - 예제 코드를 돌려보고 싶은 분들은 프로젝트를 `git clone`하고, 아래의 `application.properties` 구성을 참조해서 `application.properties`를 추가해주세요.
 
@@ -1966,7 +1966,7 @@ public ResponseEntity<Map<String, String>> readCookie(
 
 ## Spring Web MVC - Annotated Controllers - Handler Methods - @ModelAttribute
 
-- 전체 예제 코드
+- [전체 예제 코드](https://github.com/foreverfl/study-java-springDocumentation/blob/main/src/main/java/com/example/springDocumentation/controller/ModelAttributeController.java)
 - `@ModelAttribute` 메서드 파라미터 애노테이션은 요청 파라미터를 모델 객체에 바인딩함. 예제 코드의 매핑된 주소에 Post 요청을 보내면 json으로 결과를 응답함.
 
 ```java
@@ -2111,6 +2111,28 @@ public class EditPetForm {
 ```
 
 ## Spring Web MVC - Annotated Controllers - Handler Methods - @SessionAttribute
+
+- 컨트롤러 외부(예: 필터)에서 전역적으로 관리되며 존재할 수도 있고 존재하지 않을 수도 있는 기존 세션 속성에 접근해야 하는 경우, 다음 예제와 같이 메서드 매개변수에 `@SessionAttribute` 어노테이션을 사용할 수 있음.
+
+```java
+@GetMapping("getUserId") // http://localhost:8080/SessionAttribute/getUserId
+public ResponseEntity<Map<String, String>> getUserId(
+        @SessionAttribute(value = "userId", required = false) String userId, HttpSession session) {
+    Map<String, String> response = new HashMap<>();
+    System.out.println("session: " + session.getAttribute("userId"));
+
+    if (userId != null) {
+        response.put("message", "User ID: " + userId);
+    } else {
+        response.put("message", "User ID not found in session.");
+    }
+
+    return ResponseEntity.ok(response);
+}
+```
+
+- 세션 속성을 추가하거나 제거해야 하는 경우, 컨트롤러 메서드에 `org.springframework.web.context.request.WebRequest` 또는 `jakarta.servlet.http.HttpSession`을 주입하는 것을 고려할 것.
+- 컨트롤러 워크플로의 일부로 모델 속성을 세션에 임시로 저장하는 경우, `@SessionAttributes`에 설명된 대로 `@SessionAttributes`를 사용할 것.
 
 ## Spring Web MVC - Annotated Controllers - Handler Methods - @RequestAttribute
 
