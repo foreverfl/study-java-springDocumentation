@@ -2190,7 +2190,66 @@ public class RequestAttributeController {
 
 ## Spring Web MVC - Annotated Controllers - Handler Methods - @ResponseBody
 
+- `@ResponseBody` 어노테이션을 메서드에 사용하면 반환 값이 `HttpMessageConverter`를 통해 응답 본문으로 직렬화됨.
+
+```java
+@RestController
+@RequestMapping("/responseBody")
+public class ResponseBodyController {
+
+    @GetMapping("/getPerson") // http://localhost:8080/responseBody/getPerson
+    @ResponseBody // @RestController를 class에 다는 순간, 메서드는 전부 @ResponseBody가 적용되므로 의미는 없음
+    public Person getPerson() {
+        Person person = new Person();
+        person.setFirstName("Nagisa");
+        person.setLastName("Minase");
+        person.setAge(15);
+        person.setSex("female");
+        return person;
+    }
+}
+```
+
+- `@ResponseBody`는 클래스 레벨에서도 지원되며, 이 경우 모든 컨트롤러 메서드에 상속됨. 이는 `@Controller`와 `@ResponseBody`로 표시된 메타 어노테이션에 불과한 `@RestController`의 효과임.
+- `@ResponseBody`는 리액티브 타입과 함께 사용할 수 있음.
+- MVC 설정의 메시지 컨버터 옵션을 사용하여 메시지 변환을 구성하거나 사용자 정의할 수 있음.
+- `@ResponseBody` 메서드와 JSON 직렬화 뷰를 함께 사용할 수 있음
+
 ## Spring Web MVC - Annotated Controllers - Handler Methods - ResponseEntity
+
+- `ResponseEntity`는 `@ResponseBody`와 유사하지만 상태 코드와 헤더를 포함함.
+- 예제 코드: 서버를 열고 아래처럼, `curl`로 요청을 보내면 헤더와 응답 코드를 함께 응답으로 받을 수 있음.
+
+```java
+@RestController
+@RequestMapping("/responseEntity")
+public class ResponseEntityController {
+
+    @GetMapping("/getPerson") // http://localhost:8080/responseEntity/getPerson
+    public ResponseEntity<Person> getPerson() {
+        Person person = new Person();
+        person.setFirstName("Nagisa");
+        person.setLastName("Minase");
+        person.setAge(15);
+        person.setSex("female");
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Custom-Header", "Value");
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(person);
+    }
+}
+```
+
+```sh
+curl -i http://localhost:8080/responseEntity/getPerson
+```
+
+- Spring MVC는 단일 값 리액티브 타입을 사용하여 `ResponseEntity`를 비동기적으로 생성하거나, 단일 및 다중 값 리액티브 타입을 `body`로 사용할 수 있도록 지원합니다. 이를 통해 다음과 같은 유형의 비동기 응답을 사용할 수 있음.
+  > - `ResponseEntity<Mono<T>>` 또는 `ResponseEntity<Flux<T>>`는 응답의 상태 코드와 헤더를 즉시 알려주고, `body`는 나중에 비동기적으로 제공됩니다. `body`가 0개 또는 1개의 값으로 구성된 경우 `Mono`를 사용하고, 여러 개의 값을 생성할 수 있는 경우 `Flux`를 사용함.
+  > - `Mono<ResponseEntity<T>>`는 응답의 상태 코드, 헤더, `body`를 모두 비동기적으로 제공함. 이를 통해 비동기 요청 처리의 결과에 따라 응답의 상태 코드와 헤더를 다르게 설정할 수 있음.
 
 ## Spring Web MVC - Annotated Controllers - Handler Methods - Jackson JSON
 
