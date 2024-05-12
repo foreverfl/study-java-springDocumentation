@@ -1966,7 +1966,6 @@ public ResponseEntity<Map<String, String>> readCookie(
 
 ## Spring Web MVC - Annotated Controllers - Handler Methods - @ModelAttribute
 
-- [전체 예제 코드](https://github.com/foreverfl/study-java-springDocumentation/blob/main/src/main/java/com/example/springDocumentation/controller/ModelAttributeController.java)
 - `@ModelAttribute` 메서드 파라미터 애노테이션은 요청 파라미터를 모델 객체에 바인딩함. 예제 코드의 매핑된 주소에 Post 요청을 보내면 json으로 결과를 응답함.
 
 ```java
@@ -2077,6 +2076,7 @@ public ResponseEntity<?> getPersonWithValidated(
 
 - `@ModelAttribute`의 사용은 선택 사항. 기본적으로 `BeanUtils#isSimpleProperty`에 의해 단순 값 유형이 아닌 것으로 결정되고 다른 인수 리졸버에 의해 해결되지 않는 모든 매개변수는 암시적 `@ModelAttribute`로 처리됨.
 - GraalVM을 사용하여 네이티브 이미지로 컴파일할 때 위에서 설명한 암시적 `@ModelAttribute` 지원은 관련 데이터 바인딩 리플렉션 힌트의 적절한 사전 추론을 허용하지 않음. 결과적으로 GraalVM 네이티브 이미지에서 사용하기 위해 메서드 매개변수에 `@ModelAttribute`를 명시적으로 애노테이션하는 것이 좋음.
+- [전체 예제 코드](https://github.com/foreverfl/study-java-springDocumentation/blob/main/src/main/java/com/example/springDocumentation/controller/ModelAttributeController.java)
 
 ## Spring Web MVC - Annotated Controllers - Handler Methods - @SessionAttributes
 
@@ -2133,8 +2133,51 @@ public ResponseEntity<Map<String, String>> getUserId(
 
 - 세션 속성을 추가하거나 제거해야 하는 경우, 컨트롤러 메서드에 `org.springframework.web.context.request.WebRequest` 또는 `jakarta.servlet.http.HttpSession`을 주입하는 것을 고려할 것.
 - 컨트롤러 워크플로의 일부로 모델 속성을 세션에 임시로 저장하는 경우, `@SessionAttributes`에 설명된 대로 `@SessionAttributes`를 사용할 것.
+- [전체 예제 코드](https://github.com/foreverfl/study-java-springDocumentation/blob/main/src/main/java/com/example/springDocumentation/controller/SessionAttributeController.java)
 
 ## Spring Web MVC - Annotated Controllers - Handler Methods - @RequestAttribute
+
+- `@SessionAttribute`와 유사하게, `@RequestAttribute` 어노테이션을 사용하여 이전에 생성된 요청 속성(예: `Servlet Filter` 또는 `HandlerInterceptor`에 의해 생성된)에 접근할 수 있음.
+- **예제 코드**: `RequestAttributeInterceptor` 클래스에서 `HandlerInterceptor`를 구현한 `RequestAttributeInterceptor`을 `@Component`를 통해 bean으로 등록하고 여기서 `request`에 `name`을 등록하고, `WebConfig`에서 `addInterceptors`를 `@Override`한 뒤, `RequestAttributeController`에서 사용함.
+
+```java
+@Component
+public class RequestAttributeInterceptor implements HandlerInterceptor {
+    @Override
+    public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
+            @NonNull Object handler)
+            throws Exception {
+        request.setAttribute("name", "Nagisa");
+        return true; // true를 반환하여 요청 처리 계속 진행
+    }
+}
+
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
+    @Override
+    public void addInterceptors(@NonNull InterceptorRegistry registry) {
+        registry.addInterceptor(requestAttributeInterceptor).addPathPatterns("/requestAttribute/getName");
+    }
+}
+
+@RestController
+@RequestMapping("/requestAttribute")
+public class RequestAttributeController {
+
+    @GetMapping("/getName") // http://localhost:8080/requestAttribute/getName
+    public ResponseEntity<Map<String, String>> getName(@RequestAttribute("name") String name) {
+        Map<String, String> response = new HashMap<>();
+        response.put("name", name);
+        return ResponseEntity.ok(response);
+    }
+}
+```
+
+- 주로 사용되는 시나리오
+  > - **인터셉터나 필터에서 처리된 정보 전달**: 서블릿 필터나 스프링 인터셉터에서 요청에 대한 사전 처리를 하고 그 결과를 컨트롤러로 전달할 때 사용할 수 있음. 예를 들어, 인증 필터에서 사용자 정보를 검증하고 이를 요청 속성에 추가하여 컨트롤러에서 사용하는 경우 등이 있음.
+  > - **요청 간 데이터 전달의 특별한 요구 사항**: 때로는 특정 요청 처리 과정에서 계산된 값을 다음 처리 단계로 전달해야 할 수도 있음. 이런 경우 `@RequestAttribute`를 사용해 데이터를 요청 범위 내에서 전달하고 접근할 수 있음.
+  > - **로그 처리나 요청 추적**: 요청을 처리하는 동안 생성된 로그 또는 요청 추적 정보 등을 컨트롤러나 뷰에 전달할 때 사용될 수 있음.
+  > - **테스트 환경에서의 데이터 모의**: 테스트 코드에서 HTTP 요청의 특정 속성을 설정하여 컨트롤러의 동작을 모의하는 경우에 유용할 수 있음.
 
 ## Spring Web MVC - Annotated Controllers - Handler Methods - Redirect Attributes
 
