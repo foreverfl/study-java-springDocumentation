@@ -2077,7 +2077,6 @@ public ResponseEntity<?> getPersonWithValidated(
 
 - `@ModelAttribute`의 사용은 선택 사항. 기본적으로 `BeanUtils#isSimpleProperty`에 의해 단순 값 유형이 아닌 것으로 결정되고 다른 인수 리졸버에 의해 해결되지 않는 모든 매개변수는 암시적 `@ModelAttribute`로 처리됨.
 - GraalVM을 사용하여 네이티브 이미지로 컴파일할 때 위에서 설명한 암시적 `@ModelAttribute` 지원은 관련 데이터 바인딩 리플렉션 힌트의 적절한 사전 추론을 허용하지 않음. 결과적으로 GraalVM 네이티브 이미지에서 사용하기 위해 메서드 매개변수에 `@ModelAttribute`를 명시적으로 애노테이션하는 것이 좋음.
-- [전체 예제 코드](https://github.com/foreverfl/study-java-springDocumentation/blob/main/src/main/java/com/example/springDocumentation/controller/ModelAttributeController.java)
 
 ## Spring Web MVC - Annotated Controllers - Handler Methods - @SessionAttributes
 
@@ -2134,7 +2133,6 @@ public ResponseEntity<Map<String, String>> getUserId(
 
 - 세션 속성을 추가하거나 제거해야 하는 경우, 컨트롤러 메서드에 `org.springframework.web.context.request.WebRequest` 또는 `jakarta.servlet.http.HttpSession`을 주입하는 것을 고려할 것.
 - 컨트롤러 워크플로의 일부로 모델 속성을 세션에 임시로 저장하는 경우, `@SessionAttributes`에 설명된 대로 `@SessionAttributes`를 사용할 것.
-- [전체 예제 코드](https://github.com/foreverfl/study-java-springDocumentation/blob/main/src/main/java/com/example/springDocumentation/controller/SessionAttributeController.java)
 
 ## Spring Web MVC - Annotated Controllers - Handler Methods - @RequestAttribute
 
@@ -2195,6 +2193,134 @@ public class RequestAttributeController {
 ## Spring Web MVC - Annotated Controllers - Handler Methods - ResponseEntity
 
 ## Spring Web MVC - Annotated Controllers - Handler Methods - Jackson JSON
+
+- Spring은 Jackson JSON 라이브러리를 위한 지원을 제공함.
+
+### JSON Views
+
+- Spring MVC는 Jackson의 `Serialization Views`에 대한 기본 지원을 제공하며, 이를 통해 `Object`의 모든 필드 중 일부만 렌더링할 수 있습니다. `@ResponseBody` 또는 `ResponseEntity` 컨트롤러 메서드에서 사용하려면 다음 예제와 같이 Jackson의 `@JsonView` 어노테이션을 사용하여 직렬화 뷰 클래스를 활성화할 수 있음.
+
+```java
+@RestController
+@RequestMapping("/jacksonJSON")
+public class JacksonJSONController {
+
+    @GetMapping("/withoutSex") // http://localhost:8080/jacksonJSON/withoutSex
+    @JsonView(PersonWithJackson.WithoutSexView.class)
+    public PersonWithJackson getPersonWithoutSex() {
+        PersonWithJackson person = new PersonWithJackson();
+        person.setFirstName("Shino");
+        person.setLastName("Kiryuu");
+        person.setAge(15);
+        person.setSex("Female");
+        return person;
+    }
+
+    @GetMapping("/withSex") // http://localhost:8080/jacksonJSON/withSex
+    @JsonView(PersonWithJackson.WithSexView.class)
+    public PersonWithJackson getPersonWithSex() {
+        PersonWithJackson person = new PersonWithJackson();
+        person.setFirstName("Shino");
+        person.setLastName("Kiryuu");
+        person.setAge(15);
+        person.setSex("Female");
+        return person;
+    }
+}
+
+public class PersonWithJackson {
+
+    public interface WithoutSexView {
+    };
+
+    public interface WithSexView extends WithoutSexView {
+    };
+
+    private String firstName;
+    private String lastName;
+    private int age;
+    private String sex;
+
+    public PersonWithJackson() {
+    } // 기본 생성자 필요
+
+    // Getter and Setter
+    @JsonView(WithoutSexView.class)
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    @JsonView(WithoutSexView.class)
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    @JsonView(WithoutSexView.class)
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    @JsonView(WithSexView.class)
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+}
+
+```
+
+- `@JsonView`는 뷰 클래스의 배열을 허용하지만 컨트롤러 메서드당 하나만 지정할 수 있음. 여러 뷰를 활성화해야 하는 경우 복합 인터페이스를 사용할 수 있음.
+- `@JsonView` 어노테이션을 선언하는 대신 프로그래밍 방식으로 위의 작업을 수행하려면 반환 값을 `MappingJacksonValue`로 감싸고 이를 사용하여 직렬화 뷰를 제공하면 됨.
+
+```java
+@GetMapping("/withSexUsingMappingJacksonValue") // http://localhost:8080/jacksonJSON/withSexUsingMappingJacksonValue
+public MappingJacksonValue getPersonWithMappingJacksonValue() {
+    PersonWithJackson person = new PersonWithJackson();
+    person.setFirstName("Nagisa");
+    person.setLastName("Minase");
+    person.setAge(15);
+    person.setSex("Female");
+    MappingJacksonValue value = new MappingJacksonValue(person);
+    value.setSerializationView(PersonWithJackson.WithoutSexView.class);
+    return value;
+}
+```
+
+- 뷰 해석에 의존하는 컨트롤러의 경우 다음 예제와 같이 직렬화 뷰 클래스를 모델에 추가할 수 있음.
+
+```java
+@GetMapping("/withSexUsingModel") // http://localhost:8080/jacksonJSON/withSexUsingModel
+public Map<String, Object> getPersonWithSexUsingModel(Model model) {
+    PersonWithJackson person = new PersonWithJackson();
+    person.setFirstName("Saki");
+    person.setLastName("Saki");
+    person.setAge(15);
+    person.setSex("Female");
+
+    model.addAttribute("person", person);
+    model.addAttribute(JsonView.class.getName(), PersonWithJackson.WithSexView.class);
+
+    Map<String, Object> response = new HashMap<>();
+    response.put("model", model.asMap());
+    return response;
+}
+```
 
 ## Spring Web MVC - Annotated Controllers - Model
 
