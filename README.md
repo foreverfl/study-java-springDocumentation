@@ -1,11 +1,12 @@
 # Spring Framework Documentation
 
 - Spring Framework 6.1.6 공식 문서를 한글로 번역 및 재구성한 자료입니다. 해당 자료 내용을 사용할 경우에는 출처를 남겨주세요. 그리고 유용하다고 생각하시면, 스타 부탁드려요. 🥲
+- 번역은 Claude Opus/ChatGPT4를 사용했고, 어색한 부분은 직접 손을 봤습니다.
+- 오역이 있을 수 있기 때문에, 이 페이지는 참고만 하시고, 실제 작업에서는 직접 [영어](https://docs.spring.io/spring-framework/reference/)로 참고해주세요.
 - 구성상 불필요하다고 생각하는 부분은 제외했습니다.
 - 여러 설명을 공식 문서 외에도 추가했습니다. 문서를 읽다가 추가 설명이 있으면 좋겠다고 생각한 부분에 대해서 추가했고, 최근에는 Spring Boot를 많이 쓰기 때문에 관련된 설명을 추가한 부분도 있습니다.
 - 기본적인 구성은 `Java` 파일을 통해 진행했습니다. `XML` 기반으로 파일 설정은 하는 부분은 모두 `Java`기반으로 변경했습니다. 제가 예제 코드도 만들진 않을 거에요. 레거시 코드를 운영하는 회사도 있을 거란 생각에 `XML`기반 설정도 알면 좋겠다고 생각은 합니다만, 제가 할 마음은 들지 않네요. `XML`기반 설정에 대해서 잘 아시는 분이 도와주시면 감사하겠습니다. 🥺
-- 번역은 Claude Opus/ChatGPT4를 사용했고, 어색한 부분은 직접 손을 봤습니다.
-- 오역이 있을 수 있기 때문에, 이 페이지는 참고만 하시고, 실제 작업에서는 직접 [영어](https://docs.spring.io/spring-framework/reference/)로 참고해주세요.
+- View단을 기본적으로는 Thymeleaf를 활용했습니다. 솔직히 혼자 개발하면 Restful하게 스프링에서 작성하고, React를 이용해서 View단에서 개발을 주로 개발을 하지만, 설명의 편의상 Thymeleaf를 사용했습니다. JSP로 예제가 필요한 분은 직접 만들어보시면 좋을 거라 생각합니다. 😊
 - 목차는 영어로 구성했습니다. 핵심 개념을 한글로 바꾸는 게 더 이상하다고 생각합니다. 목차에서 링크가 작동하는 부분만 번역이 된 부분 또는 번역이 될 예정인 부분입니다.
 - 예제 코드를 돌려보고 싶은 분들은 프로젝트를 `git clone`하고, 아래의 `application.properties` 구성을 참조해서 `application.properties`를 추가해주세요.
 
@@ -2196,6 +2197,80 @@ public class RequestAttributeController {
 ## Spring Web MVC - Annotated Controllers - Handler Methods - Jackson JSON
 
 ## Spring Web MVC - Annotated Controllers - Model
+
+- `Model`: 하나의 요청 안에서 데이터를 저장하고 전달하는 역할을 함. 요청 처리가 완료되면 Model도 함께 사라짐.
+
+```java
+@GetMapping("/model") // http://localhost:8080/model/model
+public String modelExample(Model model) {
+    model.addAttribute("message", "kanojo mo kanojo");
+
+    Person person = new Person();
+    person.setFirstName("Nagisa");
+    person.setLastName("Minase");
+    person.setAge(15);
+    person.setSex("female");
+    model.addAttribute("person", person);
+    return "model/model";
+}
+```
+
+- `@ModelAttribute` 애노테이션을 다음과 같이 사용할 수 있음
+
+  > - `@RequestMapping` 메서드의 메서드 인자에 사용하여 모델에서 Object를 생성하거나 접근하고, `WebDataBinder`를 통해 요청에 바인딩할 수 있음.
+  > - `@Controller` 또는 `@ControllerAdvice` 클래스의 메서드 레벨 애노테이션으로 사용하여 `@RequestMapping` 메서드 호출 전에 모델을 초기화할 수 있음.
+  > - `@RequestMapping` 메서드에 사용하여 해당 메서드의 반환 값이 모델 속성임을 나타낼 수 있음.
+
+- 이 섹션에서는 앞서 나열한 두 번째 항목인 `@ModelAttribute` 메서드에 대해 설명함. 컨트롤러에는 여러 개의 `@ModelAttribute` 메서드가 있을 수 있음. 이러한 모든 메서드는 동일한 컨트롤러의 `@RequestMapping` 메서드 이전에 호출됨. `@ModelAttribute` 메서드는 `@ControllerAdvice`를 통해 컨트롤러 간에 공유될 수도 있음.
+- `@ModelAttribute` 메서드는 유연한 메서드 시그니처를 가지고 있음. `@ModelAttribute` 자체나 요청 본문과 관련된 것을 제외하고 `@RequestMapping` 메서드와 동일한 인자를 많이 지원함.
+- 다음 예제는 `@ModelAttribute` 메서드를 보여줌.
+
+```java
+@GetMapping("/modelAttribute") // http://localhost:8080/model/modelAttribute
+public String modelAttributeExample(@ModelAttribute("person") Person person, Model model) {
+    model.addAttribute("message", "kanojo mo kanojo");
+
+    person.setFirstName("Saki");
+    person.setLastName("Saki");
+    person.setAge(15);
+    person.setSex("female");
+
+    return "model/modelAttribute";
+}
+```
+
+- 이름을 명시적으로 지정하지 않으면 `Conventions javadoc`에 설명된 대로 `Object` 타입에 따라 기본 이름이 선택됨. 오버로드된 `addAttribute` 메서드를 사용하거나 `@ModelAttribute`의 `name` 속성(반환 값에 대해)을 통해 항상 명시적인 이름을 지정할 수 있음.
+- `@RequestMapping` 메서드에서 `@ModelAttribute`를 메서드 레벨 애노테이션으로 사용할 수도 있음. 이 경우 `@RequestMapping` 메서드의 반환 값은 모델 속성으로 해석됨. 이는 일반적으로 필요하지 않음. HTML 컨트롤러에서는 반환 값이 뷰 이름으로 해석되는 String이 아닌 이상 기본 동작이기 때문.
+- `@ModelAttribute`는 다음 예제와 같이 모델 속성 이름을 사용자 정의할 수도 있음.
+
+```java
+@GetMapping("/customModelAttribute") // http://localhost:8080/model/customModelAttribute?firstName=Rika&lastName=Hoshizaki&age=15&sex=female
+public String customModeleAttributeExample(@ModelAttribute("person") Person person, Model model) {
+    model.addAttribute("message", "kanojo mo kanojo");
+    return "model/customModelAttribute";
+}
+
+@ModelAttribute("person")
+public Person addPerson(@RequestParam(required = false, defaultValue = "") String firstName,
+        @RequestParam(required = false, defaultValue = "") String lastName,
+        @RequestParam(required = false, defaultValue = "0") int age,
+        @RequestParam(required = false, defaultValue = "") String sex) {
+    Person person = new Person();
+    if (!firstName.isEmpty()) {
+        person.setFirstName(firstName);
+    }
+    if (!lastName.isEmpty()) {
+        person.setLastName(lastName);
+    }
+    if (age != 0) {
+        person.setAge(age);
+    }
+    if (!sex.isEmpty()) {
+        person.setSex(sex);
+    }
+    return person;
+}
+```
 
 ## Spring Web MVC - Annotated Controllers - @InitBinder
 

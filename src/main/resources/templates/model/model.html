@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Model Example</title>
+  </head>
+  <body>
+    <h1>message: [[${message}]]</h1>
+
+    <h2>Person Details</h2>
+    <p>First Name: <span th:text="${person.firstName}"></span></p>
+    <p>Last Name: <span th:text="${person.lastName}"></span></p>
+    <p>Age: <span th:text="${person.age}"></span></p>
+    <p>Sex: <span th:text="${person.sex}"></span></p>
+  </body>
+</html>
