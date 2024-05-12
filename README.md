@@ -6,6 +6,7 @@
 - 구성상 불필요하다고 생각하는 부분은 제외했습니다.
 - 여러 설명을 공식 문서 외에도 추가했습니다. 문서를 읽다가 추가 설명이 있으면 좋겠다고 생각한 부분에 대해서 추가했고, 최근에는 Spring Boot를 많이 쓰기 때문에 관련된 설명을 추가한 부분도 있습니다.
 - 기본적인 구성은 `Java` 파일을 통해 진행했습니다. `XML` 기반으로 파일 설정은 하는 부분은 모두 `Java`기반으로 변경했습니다. 제가 예제 코드도 만들진 않을 거에요. 레거시 코드를 운영하는 회사도 있을 거란 생각에 `XML`기반 설정도 알면 좋겠다고 생각은 합니다만, 제가 할 마음은 들지 않네요. `XML`기반 설정에 대해서 잘 아시는 분이 도와주시면 감사하겠습니다. 🥺
+- `curl`을 통해 요청을 보낼 때는 윈도우의 `cmd` 사용했습니다.
 - View단을 기본적으로는 Thymeleaf를 활용했습니다. 솔직히 혼자 개발하면 Restful하게 스프링에서 작성하고, React를 이용해서 View단에서 개발을 주로 개발을 하지만, 설명의 편의상 Thymeleaf를 사용했습니다. JSP로 예제가 필요한 분은 직접 만들어보시면 좋을 거라 생각합니다. 😊
 - 목차는 영어로 구성했습니다. 핵심 개념을 한글로 바꾸는 게 더 이상하다고 생각합니다. 목차에서 링크가 작동하는 부분만 번역이 된 부분 또는 번역이 될 예정인 부분입니다.
 - 예제 코드를 돌려보고 싶은 분들은 프로젝트를 `git clone`하고, 아래의 `application.properties` 구성을 참조해서 `application.properties`를 추가해주세요.
@@ -2186,7 +2187,102 @@ public class RequestAttributeController {
 
 ## Spring Web MVC - Annotated Controllers - Handler Methods - @RequestBody
 
+- `@RequestBody` 어노테이션을 사용하여 요청 본문을 읽고 `HttpMessageConverter`를 통해 Object로 역직렬화할 수 있음.
+- **예제 코드**: 서버를 실행하고, 아래처럼 `curl` 요청을 보내면 `json`형태로 그대로 응답함.
+
+```java
+@RestController
+@RequestMapping("/requestBody")
+public class RequestBodyController {
+    @PostMapping("/createPerson") // http://localhost:8080/requestBody/createPerson
+    public ResponseEntity<Person> createPerson(@RequestBody Person person) {
+        return ResponseEntity.ok(person);
+    }
+
+}
+```
+
+```sh
+curl -d "{\"firstName\":\"Nagisa\",\"lastName\":\"Minase\",\"age\":15,\"sex\":\"female\"}" -H "Content-Type: application/json" -X POST http://localhost:8080/requestBody/createPerson
+```
+
+- MVC 설정의 `Message Converters` 옵션을 사용하여 메시지 변환을 구성하거나 사용자 정의할 수 있음.
+- `@RequestBody`는 `jakarta.validation.Valid` 또는 Spring의 `@Validated` 어노테이션과 함께 사용할 수 있으며, 둘 다 표준 Bean Validation이 적용되도록 함. 기본적으로 유효성 검사 오류는 `MethodArgumentNotValidException`을 발생시키며, 이는 `400 (BAD_REQUEST)` 응답으로 변환됨. 또는 다음 예제와 같이 `Errors` 또는 `BindingResult` 인자를 통해 컨트롤러 내에서 유효성 검사 오류를 로컬로 처리할 수 있음.
+- **예제 코드**: Spring Boot Starter Validation을 의존성에 포함시키고, 객체로 사용할 클래스에 `@NotBlank`와 `@Min`을 적용함. 이후에 메서드의 argument에 `@Valid`를 추가하면 검증이 됨. 아래의 `curl` 코드에서 위처럼 오류가 없는 `json`값을 요청으로 보내면 정상 응답하지만, 아래처럼 age를 음수로 설정하면 예외가 발생함.
+
+```java
+public class PersonWithValidated {
+    @NotBlank(message = "First name must not be blank")
+    private String firstName;
+
+    @NotBlank(message = "Last name must not be blank")
+    private String lastName;
+
+    @Min(value = 0, message = "Age must be greater than or equal to 0")
+    private int age;
+
+    @NotBlank(message = "Sex must not be blank")
+    private String sex;
+
+    public PersonWithValidated() {
+    } // 기본 생성자 필요
+
+    // Getter and Setter 생략
+}
+
+
+@RestController
+@RequestMapping("/requestBody")
+public class RequestBodyController {
+    @PostMapping("/createPersonWithValidated") // http://localhost:8080/requestBody/createPersonWithValidated
+    public ResponseEntity<PersonWithValidated> createPerson(@Valid @RequestBody PersonWithValidated person) {
+        return ResponseEntity.ok(person);
+    }
+
+}
+```
+
+```sh
+curl -d "{\"firstName\":\"Nagisa\",\"lastName\":\"Minase\",\"age\":15,\"sex\":\"female\"}" -H "Content-Type: application/json" -X POST http://localhost:8080/requestBody/createPersonWithValidated
+
+curl -d "{\"firstName\":\"Nagisa\",\"lastName\":\"Minase\",\"age\":-15,\"sex\":\"female\"}" -H "Content-Type: application/json" -X POST http://localhost:8080/requestBody/createPersonWithValidated
+```
+
+- 다른 매개변수에 `@Constraint` 어노테이션이 있어서 메서드 유효성 검사가 적용되는 경우에는 `HandlerMethodValidationException`이 발생함.
+
 ## Spring Web MVC - Annotated Controllers - Handler Methods - HttpEntity
+
+- `HttpEntity`는 `@RequestBody`를 사용하는 것과 거의 동일하지만, 요청 헤더와 본문을 노출하는 컨테이너 객체를 기반으로 함.
+- **예제 코드**: 아래와 같이 `Controller`를 구성하고 `curl`로 요청을 보내면 정상으로 응답을 받음.
+
+```java
+@RestController
+@RequestMapping("/httpEntity")
+public class HttpEntityController {
+    @PostMapping("/createPerson") // http://localhost:8080/httpEntity/createPerson
+    public ResponseEntity<String> createPerson(HttpEntity<Person> entity) {
+        // HttpEntity로부터 Person 객체 얻기 전 null 체크
+        if (entity.getBody() == null) {
+            return ResponseEntity.badRequest().body("No person data in request body");
+        }
+        Person person = entity.getBody();
+        // 요청 헤더 접근 예시
+        // ContentType null 체크
+        MediaType contentType = entity.getHeaders().getContentType();
+        String contentTypeStr = (contentType != null) ? contentType.toString() : "unknown";
+
+        @SuppressWarnings("null")
+        String responseMessage = String.format("Received person: %s %s, Age: %d, Sex: %s, Content-Type: %s",
+                person.getFirstName(), person.getLastName(), person.getAge(), person.getSex(), contentTypeStr);
+
+        return ResponseEntity.ok(responseMessage); // 처리 결과 응답
+    }
+}
+```
+
+```sh
+curl -X POST "http://localhost:8080/httpEntity/createPerson" -H "Content-Type: application/json" -d "{\"firstName\": \"Nagisa\", \"lastName\": \"Minase\", \"age\": 15, \"sex\": \"female\"}"
+```
 
 ## Spring Web MVC - Annotated Controllers - Handler Methods - @ResponseBody
 
