@@ -456,63 +456,18 @@ spring.datasource.password=***
 
 ## The IoC Container - Introduction to the Spring IoC Container and Beans
 
-### 개요
+- 이 장에서는 스프링 프레임워크의 제어 반전(Inversion of Control, IoC) 원칙 구현에 대해 다룸. 의존성 주입(Dependency Injection, DI)은 IoC의 특수한 형태로, 객체가 생성자 인자, 팩토리 메서드에 대한 인자 또는 객체 인스턴스가 생성되거나 팩토리 메서드에서 반환된 후 객체 인스턴스에 설정된 프로퍼티를 통해서만 의존성(함께 작동하는 다른 객체)을 정의함. 그런 다음 IoC 컨테이너는 빈을 생성할 때 해당 의존성을 주입함. 이 프로세스는 근본적으로 빈 자체가 클래스의 직접 생성이나 서비스 로케이터 패턴과 같은 메커니즘을 사용하여 의존성의 인스턴스화 또는 위치를 제어하는 것과는 반대(따라서 제어 반전이라는 이름)임.
 
-- Spring IoC 컨테이너와 빈(Bean)은 스프링 프레임워크의 핵심 개념 중 하나. IoC는 Inversion of Control의 약자로, 제어의 역전을 의미함. 스프링 IoC 컨테이너는 애플리케이션의 객체 생성, 의존성 관리, 생명주기 관리 등을 담당함.
+- `org.springframework.beans`와 `org.springframework.context` 패키지는 스프링 프레임워크의 IoC 컨테이너의 기반. `BeanFactory` 인터페이스는 모든 유형의 객체를 관리할 수 있는 고급 구성 메커니즘을 제공함. `ApplicationContext`는 `BeanFactory`의 하위 인터페이스. 다음과 같은 기능이 추가됨.
 
-### 빈(Bean)
+  > - 스프링의 AOP 기능과 더 쉬운 통합
+  > - 메시지 리소스 처리(국제화에 사용)
+  > - 이벤트 발행
+  > - 웹 애플리케이션에서 사용할 `WebApplicationContext`와 같은 애플리케이션 계층 특정 컨텍스트
 
-- 빈은 스프링 IoC 컨테이너에 의해 관리되는 객체를 말함.
-- 스프링에서는 POJO(Plain Old Java Object)를 빈으로 사용할 수 있음.
-- 빈은 일반적으로 싱글톤 스코프로 생성되며, 애플리케이션 전체에서 공유됨.
+- 간단히 말해, `BeanFactory`는 구성 프레임워크와 기본 기능을 제공하고, `ApplicationContext`는 더 많은 엔터프라이즈 특화 기능을 추가함. `ApplicationContext`는 `BeanFactory`의 완전한 상위 집합이며, 이 장에서 스프링 IoC 컨테이너에 대한 설명에서 독점적으로 사용됨. `BeanFactory` 대신 `ApplicationContext`를 사용하는 방법에 대한 자세한 내용은 BeanFactory API를 다루는 섹션을 참조할 것.
 
-### 빈 설정
-
-- 빈은 XML 설정 파일, 자바 어노테이션, 자바 설정 클래스 등을 통해 정의할 수 있음.
-- XML 설정 파일에서는 `<bean>` 태그를 사용하여 빈을 정의함.
-- 자바 어노테이션을 사용할 경우, `@Component`, `@Service`, `@Repository`, `@Controller` 등의 어노테이션을 클래스에 적용하여 빈으로 등록할 수 있음.
-- 자바 설정 클래스에서는 `@Configuration` 어노테이션을 사용하고, 빈을 정의하는 메서드에 `@Bean` 어노테이션을 적용함.
-
-### 기본적으로 등록되어 있는 Bean
-
-- `org.springframework.context.annotation.internalConfigurationAnnotationProcessor`: `@Configuration` 어노테이션 처리를 위한 빈
-- `org.springframework.context.annotation.internalAutowiredAnnotationProcessor`: `@Autowired` 어노테이션 처리를 위한 빈
-- `org.springframework.context.annotation.internalCommonAnnotationProcessor`: `@PostConstruct`, `@PreDestroy` 등의 어노테이션 처리를 위한 빈
-- `org.springframework.context.event.internalEventListenerProcessor`: 이벤트 리스너 처리를 위한 빈
-- `org.springframework.context.event.internalEventListenerFactory`: 이벤트 리스너 팩토리 빈
-
-### 의존성 주입(Dependency Injection)
-
-- 스프링 IoC 컨테이너는 의존성 주입을 통해 빈 간의 의존 관계를 관리함.
-- 의존성 주입은 생성자 주입, 세터 주입, 필드 주입 등의 방식으로 이루어짐.
-- 생성자 주입은 생성자의 매개변수를 통해 의존성을 주입받음.
-- 세터 주입은 세터 메서드를 통해 의존성을 주입받음.
-- 필드 주입은 필드에 `@Autowired` 어노테이션을 사용하여 의존성을 주입받음.
-
-### IoC 컨테이너 초기화
-
-- 스프링 IoC 컨테이너는 ApplicationContext 인터페이스를 구현한 클래스로 표현됨.
-- ClassPathXmlApplicationContext, AnnotationConfigApplicationContext 등의 구현체를 사용하여 IoC 컨테이너를 초기화할 수 있음.
-- IoC 컨테이너 초기화 시점에 빈이 생성되고, 의존성 주입이 이루어짐.
-
-## BeanFactory와 ApplicationContext의 관계
-
-- BeanFactory는 스프링 IoC 컨테이너의 최상위 인터페이스.
-- ApplicationContext는 BeanFactory를 확장한 인터페이스로, BeanFactory의 모든 기능을 포함하며 추가적인 기능을 제공함.
-- ApplicationContext는 BeanFactory에 비해 더 많은 기능과 편의성을 제공하는 고급 컨테이너.
-- 일반적으로 스프링 애플리케이션에서는 ApplicationContext를 사용하며, BeanFactory는 저수준의 기능을 필요로 할 때 직접 사용됨.
-
-### 빈 생명주기
-
-- 스프링 IoC 컨테이너는 빈의 생명주기를 관리함.
-- 빈 생성 → 의존성 주입 → 초기화 → 사용 → 소멸의 과정을 거침.
-- `@PostConstruct`, `@PreDestroy` 어노테이션을 사용하여 빈의 초기화와 소멸 시점에 커스텀 로직을 실행할 수 있음.
-
-### [예제 코드](https://github.com/foreverfl/study-java-springDocumentation/blob/main/src/main/java/com/example/springDocumentation/BeanCountApplication.java)
-
-1. `bean` 패키지에 `MyBean1.java`, `MyBean2.java`를 생성.
-2. `config` 패키지에 `AppConfig.java`를 생성하고 `MyBean1.java`와 `MyBean2.java`를 각각 Bean으로 등록함.
-3. `BeanCountApplication.java`에서 등록된 Bean이 기본 Bean 5개, Configuration Bean 1개, 등록한 Bean 2개로 총 8개임을 알 수 있음.
+- 스프링에서 애플리케이션의 중추를 형성하고 스프링 IoC 컨테이너에 의해 관리되는 객체를 빈(bean)이라고 함. 빈은 스프링 IoC 컨테이너에 의해 인스턴스화되고 조립되며 관리되는 객체. 그렇지 않으면 빈은 단순히 애플리케이션의 많은 객체 중 하나일 뿐임. 빈과 빈 사이의 의존성은 컨테이너에서 사용하는 구성 메타데이터에 반영됨.
 
 ## The IoC Container - Container Overview
 
