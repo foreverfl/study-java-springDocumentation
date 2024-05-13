@@ -25,6 +25,7 @@ spring.datasource.password=***
   > - [The IoC Container - Introduction to the Spring IoC Container and Beans](#the-ioc-container---introduction-to-the-spring-ioc-container-and-beans)
   > - [The IoC Container - Container Overview](#the-ioc-container---container-overview)
   > - [The IoC Container - Bean Overview](#the-ioc-container---bean-overview)
+  > - [The IoC Container - Dependencies](#the-ioc-container---dependencies)
   > - [The IoC Container - Dependencies - Dependency Injection](#the-ioc-container---dependencies---dependency-injection)
   > - [The IoC Container - Dependencies - Dependencies and Configuration in Detail](#the-ioc-container---dependencies---dependencies-and-configuration-in-detail)
   > - [The IoC Container - Dependencies - Using depends-on](#the-ioc-container---dependencies---using-depends-on)
@@ -673,46 +674,76 @@ public MyBean myBean() {
 - 빈의 실제 런타임 타입을 결정하는 것은 간단하지 않음. 빈 메타데이터 정의에 지정된 클래스는 초기 클래스 참조일 뿐이며, 팩토리 메서드나 `FactoryBean` 클래스와 결합되어 실제 런타임 타입과 다를 수 있음. 또한 AOP 프록시가 빈 인스턴스를 래핑하여 실제 타입의 노출을 제한할 수 있음.
 - 특정 빈의 실제 런타임 타입을 알아내는 권장 방법은 `BeanFactory.getType` 메서드를 사용하는 것. 이 메서드는 위의 모든 경우를 고려하여 동일한 빈 이름에 대해 `BeanFactory.getBean` 호출이 반환할 객체의 타입을 반환함.
 
+## The IoC Container - Dependencies
+
+- 일반적인 엔터프라이즈 애플리케이션은 단일 객체(또는 Spring에서는 빈(bean)이라고 부름)로 구성되지 않음. 가장 간단한 애플리케이션조차도 최종 사용자가 일관된 애플리케이션으로 보는 것을 표현하기 위해 함께 작동하는 몇 개의 객체를 가지고 있음. 다음 섹션에서는 독립적으로 존재하는 여러 개의 빈 정의를 정의하는 것에서부터 객체들이 목표를 달성하기 위해 협력하는 완전히 실현된 애플리케이션으로 나아가는 방법을 설명함.
+
 ## The IoC Container - Dependencies - Dependency Injection
 
-- 의존성 주입(Dependency Injection)은 팩토리 메서드를 향한 생성자 인자 또는 객체 인스턴스에 설정(set)되는 속성을 통해서 객체가 의존성을 주입하는 과정을 의미함.
-- 의존성 주입(Dependency Injection)을 통해서 코드는 결합도가 낮아짐.
-- 객체는 의존성을 찾지 않고 위치 또는 의존성의 클래스에 대해서도 알지 못함. 결과적으로, 클래스는 테스트하기에 용이해짐.
-
-### 생성자 기반 의존성 주입 (Constructor-based Dependency Injection)
-
-- 생성자를 통해 객체의 의존성을 주입하는 방법.
-- 정적 팩토리 메서드(static factory method)를 사용하여 빈(bean)을 생성하는 것과 생성자(constructor)를 사용하여 빈을 생성하는 것이 거의 동등함.
-- 객체 생성 시점에 필요한 의존성을 모두 받아와서 객체를 초기화함.
-- 의존성이 필수적으로 필요한 경우에 적합함.
-- 스프링 4.3부터는 클래스에 생성자가 하나만 있고, 그 생성자의 매개변수가 빈으로 등록된 타입이라면 @Autowired 어노테이션을 생략할 수 있음. 따라서 @Autowired가 명시되어 있지 않아도 스프링 컨테이너는 해당 생성자를 사용하여 의존성을 주입함.
-- 예제 코드
+- 의존성 주입(DI)은 객체가 생성자 인수(Constructor Argument), 팩토리 메서드에 대한 인수(Argument) 또는 객체 인스턴스가 생성되거나 팩토리 메서드에서 반환된 후 객체 인스턴스에 설정된 속성을 통해서만 의존성(협력하는 다른 객체)을 정의하는 프로세스. 그런 다음 컨테이너는 빈을 생성할 때 이러한 의존성을 주입함. 이 프로세스는 기본적으로 빈 자체가 클래스의 직접 생성이나 Service Locator 패턴을 사용하여 의존성의 인스턴스화 또는 위치를 제어하는 것과는 반대됨(따라서 Inversion of Control이라는 이름이 붙었음).
+- **`Service Locator` 패턴**: 의존성을 관리하는 디자인 패턴 중 하나. 이 패턴에서는 응용 프로그램이 실행 중인 중앙 레지스트리를 사용하여 서비스 또는 객체를 검색할 수 있음. 이렇게 하면 클라이언트 객체는 필요한 서비스의 구체적인 구현에 대해 알 필요 없이 서비스를 사용할 수 있음. `Service Locator` 패턴의 단점은 의존성이 명시적이지 않고, 실행 시점까지 서비스가 사용 가능한지 알 수 없다는 것. 이는 오류 발생 가능성을 높이고, 코드의 테스트를 더 어렵게 만듦.
 
 ```java
-public class SimpleMovieLister {
+import java.util.HashMap;
+import java.util.Map;
 
-	// the SimpleMovieLister은 MovieFinder에 대해서 의존성을 가짐
-	private final MovieFinder movieFinder;
+interface Service {
+    void execute();
+}
 
-	// 컨테이너가 MovideFinder를 주입할 수 있도록 하는 생성자
-	public SimpleMovieLister(MovieFinder movieFinder) {
-		this.movieFinder = movieFinder;
-	}
+class ServiceA implements Service {
+    public void execute() {
+        System.out.println("Executing Service A");
+    }
+}
 
-	// 주입된 MovideFinder를 사용하는 비즈니스 로직은 생략
+class ServiceB implements Service {
+    public void execute() {
+        System.out.println("Executing Service B");
+    }
+}
+
+class ServiceLocator {
+    private static Map<String, Service> services = new HashMap<>();
+
+    static {
+        services.put("serviceA", new ServiceA());
+        services.put("serviceB", new ServiceB());
+    }
+
+    public static Service getService(String serviceName) {
+        return services.get(serviceName);
+    }
+}
+
+public class Client {
+    public static void main(String[] args) {
+        Service service = ServiceLocator.getService("serviceA");
+        service.execute();
+    }
 }
 ```
 
-### 생성자 인자 해결 (Constructor Argument Resolution)
+- DI 원칙을 사용하면 코드가 더 깔끔해지고, 객체에 의존성을 제공할 때 결합도를 더 효과적으로 분리할 수 있음. 객체는 의존성을 찾거나 의존성의 위치 또는 클래스를 알지 못함. 그 결과, 클래스는 특히 의존성이 인터페이스나 추상 기본 클래스에 있을 때 테스트하기가 더 쉬워짐. 이를 통해 단위 테스트에서 스텁이나 모의 구현을 사용할 수 있음.
+- DI에는 두 가지 주요 변형이 있음. 생성자 기반 의존성 주입과 세터 기반 의존성 주입이 있음.
 
-- 스프링 컨테이너가 빈을 인스턴스화할 때 생성자 인수를 해석하고 매칭하는 방법.
+### Constructor-based Dependency Injection
 
-#### 타입에 의한 매칭
+- 생성자 기반 DI는 컨테이너가 각각 의존성을 나타내는 여러 인수와 함께 생성자를 호출하여 수행됨. 정적 팩토리 메서드를 특정 인수와 함께 호출하여 빈을 생성하는 것은 거의 동일하며, 이 논의에서는 생성자에 대한 인수와 정적 팩토리 메서드에 대한 인수를 유사하게 처리함. 다음 예제는 생성자 주입으로만 의존성을 주입할 수 있는 클래스를 보여줌.
 
-- 생성자 인수의 타입을 기반으로 매칭이 이루어짐.
-- 생성자 인수에 모호성이 없다면 빈 정의에서 인수를 정의한 순서대로 생성자에 전달됨.
-- 예를 들어, `ThingOne` 클래스의 생성자가 `ThingTwo`와 `ThingThree` 타입의 인수를 받고, 이 클래스들이 상속 관계가 아니라면 모호성이 없으므로 별도의 설정 없이 빈 정의에서 인수의 순서대로 생성자에 전달됨. 아래 예제에서는 확실하게 순서가 정해져 있으므로 `<constructor-arg>`을 설정할 필요는 없음.
-- 예제 코드
+```java
+// SimpleMovieLister는 MovieFinder에 대한 의존성을 가지고 있음
+private final MovieFinder movieFinder;
+
+// Spring 컨테이너가 MovieFinder를 주입할 수 있도록 하는 생성자
+public SimpleMovieLister(MovieFinder movieFinder) {
+	this.movieFinder = movieFinder;
+}
+```
+
+### Constructor Argument Resolution
+
+- 생성자 인수 해결은 인수의 유형을 사용하여 일치시킴. 빈 정의의 생성자 인수에 잠재적인 모호성이 없는 경우, 빈 정의에서 생성자 인수를 정의한 순서는 빈이 인스턴스화될 때 해당 인수가 적절한 생성자에 제공되는 순서.
 
 ```java
 package x.y;
@@ -724,6 +755,8 @@ public class ThingOne {
 	}
 }
 ```
+
+- `ThingTwo`와 `ThingThree` 클래스가 상속으로 관련되지 않았다고 가정하면 잠재적인 모호성이 존재하지 않음. 따라서 다음 구성은 잘 작동하며, <constructor-arg/> 요소에 생성자 인수 인덱스나 유형을 명시적으로 지정할 필요가 없음.
 
 ```xml
 <beans>
@@ -738,11 +771,7 @@ public class ThingOne {
 </beans>
 ```
 
-#### 단순 타입의 경우
-
-- 단순 타입(예: `int`, `String` 등)을 사용할 때는 스프링이 타입을 결정할 수 없으므로 타입에 의한 매칭이 불가능함.
-- 이 경우, `type` 속성을 사용하여 명시적으로 생성자 인수의 타입을 지정해야 함.
-- 예를 들어, `ExampleBean` 클래스의 생성자가 int와 String 타입의 인수를 받는다면 `<constructor-arg>` 요소에 `type` 속성을 사용하여 타입을 명시해야 합니다.
+다른 빈을 참조할 때는 유형을 알 수 있으므로 일치가 가능합니다(앞의 예제에서와 같이). <value>true</value>와 같은 단순한 유형을 사용할 때, Spring은 값의 유형을 결정할 수 없으므로 도움 없이는 유형으로 일치시킬 수 없습니다. 다음 클래스를 고려해 보십시오:
 
 ```java
 package examples;
@@ -762,6 +791,8 @@ public class ExampleBean {
 }
 ```
 
+앞의 시나리오에서는 type 속성을 사용하여 생성자 인수의 유형을 명시적으로 지정하면 컨테이너가 단순한 유형과 유형 일치를 사용할 수 있습니다. 다음 예제와 같이 사용합니다:
+
 ```xml
 <bean id="exampleBean" class="examples.ExampleBean">
 	<constructor-arg type="int" value="7500000"/>
@@ -769,12 +800,7 @@ public class ExampleBean {
 </bean>
 ```
 
-#### 인덱스를 사용한 매칭
-
-- `index` 속성을 사용하여 생성자 인수의 인덱스를 명시적으로 지정할 수 있음.
-- 인덱스는 0부터 시작함.
-- 이는 단순 값의 모호성을 해결할 뿐만 아니라, 생성자에 동일한 타입의 인수가 여러 개 있을 때도 모호성을 해결할 수 있음.
-- 예제 코드
+index 속성을 사용하여 생성자 인수의 인덱스를 명시적으로 지정할 수 있습니다. 다음 예제와 같이 사용합니다:
 
 ```xml
 <bean id="exampleBean" class="examples.ExampleBean">
@@ -783,12 +809,9 @@ public class ExampleBean {
 </bean>
 ```
 
-#### 생성자 인수 이름을 사용한 매칭
+인덱스를 지정하면 여러 단순 값의 모호성을 해결할 뿐만 아니라 생성자에 동일한 유형의 인수가 두 개 있을 때 발생하는 모호성도 해결합니다.
 
-- 생성자 인수의 이름을 사용하여 값의 모호성을 해결할 수 있음.
-- `name` 속성을 사용하여 생성자 인수의 이름을 지정함.
-- 이를 위해서는 코드를 디버그 플래그를 사용하여 컴파일해야 하며, 스프링이 생성자에서 인수의 이름을 찾을 수 있어야 함.
-- 디버그 플래그를 사용하여 컴파일할 수 없거나 원하지 않는 경우, `@ConstructorProperties` 어노테이션을 사용하여 명시적으로 생성자 인수의 이름을 지정할 수 있음.
+값의 모호성을 없애기 위해 생성자 매개변수 이름을 사용할 수도 있습니다. 다음 예제와 같이 사용합니다:
 
 ```xml
 <bean id="exampleBean" class="examples.ExampleBean">
@@ -797,88 +820,190 @@ public class ExampleBean {
 </bean>
 ```
 
-#### Bean의 사용
-
-- 기존에는 XML 설정 파일을 사용하여 빈을 정의하고 의존성을 주입했음.
-- 최근에는 어노테이션 기반의 설정을 더 많이 사용하며, `@Configuration` 클래스에서 `@Bean` 어노테이션을 사용하여 빈을 정의하고 의존성을 주입함.
-
-- 예제 코드
+이 방법이 제대로 작동하려면 코드를 컴파일할 때 디버그 플래그를 사용해야 Spring이 생성자에서 매개변수 이름을 찾을 수 있다는 점에 유의하십시오. 디버그 플래그를 사용하여 코드를 컴파일할 수 없거나 컴파일하고 싶지 않다면, @ConstructorProperties JDK 어노테이션을 사용하여 생성자 인수의 이름을 명시적으로 지정할 수 있습니다. 그러면 샘플 클래스는 다음과 같이 작성되어야 합니다:
 
 ```java
-public class User {
-    private String name;
-    private int age;
+package examples;
 
-    public User(String name, int age) {
-        this.name = name;
-        this.age = age;
-    }
+public class ExampleBean {
 
-    // Getters and Setters
+	// Fields omitted
+
+	@ConstructorProperties({"years", "ultimateAnswer"})
+	public ExampleBean(int years, String ultimateAnswer) {
+		this.years = years;
+		this.ultimateAnswer = ultimateAnswer;
+	}
 }
 ```
 
-```java
-@Configuration
-public class AppConfig {
+### Setter-based Dependency Injection
 
-    @Bean
-    public User user() {
-        return new User("John Doe", 30);
-    }
+- 세터 기반 DI는 컨테이너가 빈을 인스턴스화하기 위해 인수가 없는 생성자 또는 인수가 없는 정적 팩토리 메서드를 호출한 후 빈의 세터 메서드를 호출하여 수행됨.
+- 다음 예제는 순수한 세터 주입을 사용해서만 의존성을 주입할 수 있는 클래스를 보여줌.
+
+```java
+public class SimpleMovieLister {
+
+	// SimpleMovieListener는 MovieFinder에 의존성을 가짐
+	private MovieFinder movieFinder;
+
+	// Spring 컨테이너가 MovieFinder에 주입하기 위한 setter 메서드
+	public void setMovieFinder(MovieFinder movieFinder) {
+		this.movieFinder = movieFinder;
+	}
 }
 ```
 
-### Setter 기반 의존성 주입 (Setter-based Dependency Injection)
+- `ApplicationContext`는 관리하는 빈에 대해 생성자 기반과 세터 기반의 DI를 모두 지원함. 또한 생성자 접근 방식으로 일부 의존성이 이미 주입된 후에도 세터 기반 DI를 지원함. `BeanDefinition`의 형태로 의존성을 구성하고, 이를 `PropertyEditor` 인스턴스와 함께 사용하여 속성을 한 형식에서 다른 형식으로 변환함. 그러나 대부분의 Spring 사용자는 이러한 클래스를 직접(즉, 프로그래밍 방식으로) 사용하지 않고 XML 빈 정의, 어노테이션이 달린 컴포넌트(즉, `@Component`, `@Controller` 등으로 어노테이션이 달린 클래스) 또는 Java 기반 `@Configuration` 클래스의 `@Bean` 메서드를 사용함. 이러한 소스는 내부적으로 `BeanDefinition`의 인스턴스로 변환되어 전체 Spring IoC 컨테이너 인스턴스를 로드하는 데 사용됨.
 
-#### 개요
+### Constructor-based or setter-based DI?
 
-- Setter 기반 의존성 주입은 스프링 컨테이너가 빈의 _기본 생성자_ 또는 인자가 없는 정적 팩토리 메서드를 호출하여 빈을 인스턴스화한 후, 빈의 `setter` 메서드를 호출하여 의존성을 주입하는 방식.
-- 순수한 자바 클래스로 구현된 POJO(Plain Old Java Object)에 적용할 수 있으며, 컨테이너 관련 인터페이스, 기본 클래스, 어노테이션 등에 대한 의존성이 없음.
+- 생성자 기반과 세터 기반의 DI를 혼합할 수 있으므로, 필수 의존성에는 생성자를 사용하고 선택적 의존성에는 세터 메서드나 구성 메서드를 사용하는 것이 좋음. 세터 메서드에 `@Autowired` 어노테이션을 사용하면 해당 프로퍼티를 필수 의존성으로 만들 수 있지만, 생성자 주입과 인수의 프로그래밍 방식 유효성 검사가 더 좋음.
+- Spring 팀은 일반적으로 생성자 주입을 지지함. 생성자 주입을 사용하면 애플리케이션 컴포넌트를 불변 객체로 구현할 수 있고 필수 의존성이 `null`이 아닌 것을 보장할 수 있기 때문. 또한 생성자로 주입된 컴포넌트는 항상 클라이언트(호출) 코드에 완전히 초기화된 상태로 반환됨. 부연하자면, 많은 수의 생성자 인수는 나쁜 코드 스멜이며, 해당 클래스가 너무 많은 책임을 가지고 있어 관심사의 적절한 분리를 더 잘 해결하기 위해 리팩토링해야 함을 의미함.
+- 세터 주입은 주로 클래스 내에서 합리적인 기본값을 할당할 수 있는 선택적 의존성에만 사용해야 함. 그렇지 않으면 코드에서 의존성을 사용하는 모든 곳에서 `not-null` 검사를 수행해야 함. 세터 주입의 한 가지 장점은 세터 메서드가 해당 클래스의 객체를 나중에 재구성하거나 재주입할 수 있게 만든다는 것. 따라서 `JMX MBean`을 통한 관리는 세터 주입을 사용하는 설득력 있는 사용 사례임.
+- 특정 클래스에 가장 적합한 DI 스타일을 사용해야함. 때로는 소스를 가지고 있지 않은 타사 클래스를 다룰 때 선택의 여지가 없음. 예를 들어, 타사 클래스가 세터 메서드를 노출하지 않는 경우 생성자 주입이 사용 가능한 유일한 DI 형식일 수 있음.
 
-#### 의존성 주입 방식 선택
+### Dependency Resolution Process
 
-- 생성자 주입과 `Setter` 주입을 혼용할 수 있음.
-- 생성자 주입이 이루어진 후에 `Setter` 주입이 이루어질 수 있음. 의존성은 `BeanDefinition` 형태로 구성되며, `PropertyEditor` 인스턴스와 함께 사용하여 속성을 한 형식에서 다른 형식으로 변환함. 그러나 대부분의 Spring 사용자는 이러한 클래스를 직접(프로그래밍 방식으로) 사용하지 않음.
-- 필수적인 의존성은 생성자를 통해 주입하고, 선택적인 의존성은 `Setter` 메서드나 설정 메서드를 통해 주입하는 것이 좋음.
-- `@Autowired` 어노테이션을 `Setter` 메서드에 사용하면 해당 프로퍼티를 필수 의존성으로 만들 수 있지만, 생성자 주입과 인자 유효성 검사를 사용하는 것이 더 바람직함.
+컨테이너는 다음과 같은 방식으로 빈 의존성 해결을 수행합니다:
+모든 빈을 설명하는 구성 메타데이터로 ApplicationContext가 생성되고 초기화됩니다. 구성 메타데이터는 XML, Java 코드 또는 어노테이션으로 지정할 수 있습니다.
+각 빈에 대해 의존성은 속성, 생성자 인수 또는 정적 팩토리 메서드에 대한 인수(일반 생성자 대신 사용하는 경우)의 형태로 표현됩니다. 이러한 의존성은 빈이 실제로 생성될 때 빈에 제공됩니다.
+각 속성 또는 생성자 인수는 설정할 값의 실제 정의이거나 컨테이너의 다른 빈에 대한 참조입니다.
+값인 각 속성 또는 생성자 인수는 지정된 형식에서 해당 속성 또는 생성자 인수의 실제 유형으로 변환됩니다. 기본적으로 Spring은 문자열 형식으로 제공된 값을 int, long, String, boolean 등과 같은 모든 기본 제공 유형으로 변환할 수 있습니다.
+Spring 컨테이너는 컨테이너가 생성될 때 각 빈의 구성을 유효성 검사합니다. 그러나 빈 속성 자체는 빈이 실제로 생성될 때까지 설정되지 않습니다. 싱글톤 범위이며 사전 인스턴스화되도록 설정된 빈(기본값)은 컨테이너가 생성될 때 생성됩니다. 범위는 Bean Scopes에 정의되어 있습니다. 그렇지 않으면 빈은 요청될 때만 생성됩니다. 빈의 생성은 잠재적으로 빈의 의존성과 의존성의 의존성(등)이 생성되고 할당됨에 따라 빈 그래프가 생성될 수 있습니다. 이러한 의존성 간의 해결 불일치는 늦게 나타날 수 있습니다. 즉, 영향을 받는 빈이 처음 생성될 때 나타날 수 있습니다.
 
-#### 생성자 주입 vs Setter 주입
+일반적으로 Spring이 올바른 일을 하도록 신뢰할 수 있습니다. Spring은 컨테이너 로드 시점에 존재하지 않는 빈에 대한 참조 및 순환 의존성과 같은 구성 문제를 감지합니다. Spring은 빈이 실제로 생성될 때 가능한 한 늦게 속성을 설정하고 의존성을 해결합니다. 이는 올바르게 로드된 Spring 컨테이너가 나중에 객체를 요청할 때 해당 객체 또는 해당 객체의 의존성 중 하나를 생성하는 데 문제가 있는 경우 예외를 생성할 수 있음을 의미합니다. 예를 들어, 빈이 누락되거나 잘못된 속성으로 인해 예외를 throw할 수 있습니다. 이러한 일부 구성 문제의 가시성이 지연될 수 있는 이유는 ApplicationContext 구현에서 기본적으로 싱글톤 빈을 사전 인스턴스화하기 때문입니다. 실제로 필요하기 전에 이러한 빈을 생성하는 데 드는 일부 선행 시간과 메모리 비용으로 인해 ApplicationContext가 생성될 때 구성 문제를 발견할 수 있습니다. 그러나 이 기본 동작을 무시하여 싱글톤 빈이 열심히 사전 인스턴스화되는 대신 게으르게 초기화되도록 할 수 있습니다.
 
-- 스프링 팀은 일반적으로 생성자 주입을 권장함.
-  > - 애플리케이션 컴포넌트를 불변 객체로 구현할 수 있음.
-  > - 필수 의존성이 null이 아님을 보장함.
-  > - 생성자 주입된 컴포넌트는 항상 완전히 초기화된 상태로 클라이언트 코드에 반환됨.
-- `Setter` 주입은 주로 합리적인 기본값을 설정할 수 있는 선택적 의존성에 사용해야 함.
-  > - 그렇지 않으면 의존성을 사용하는 모든 곳에서 not-null 검사를 수행해야 함.
-  > - `Setter` 메서드를 사용하면 객체를 나중에 재구성하거나 재주입할 수 있음.
-  > - JMX MBean을 통한 관리는 `Setter` 주입의 설득력 있는 사용 사례.
+### Circular dependencies
 
-### 의존성 해결 과정 (Dependency Resolution Process)
+주로 생성자 주입을 사용하는 경우 해결할 수 없는 순환 의존성 시나리오가 발생할 수 있습니다.
+예를 들어, 클래스 A는 생성자 주입을 통해 클래스 B의 인스턴스를 필요로 하고, 클래스 B는 생성자 주입을 통해 클래스 A의 인스턴스를 필요로 합니다. 클래스 A와 B의 빈이 서로 주입되도록 구성하면 Spring IoC 컨테이너는 런타임에 이 순환 참조를 감지하고 BeanCurrentlyInCreationException을 throw합니다.
+한 가지 가능한 해결책은 일부 클래스의 소스 코드를 편집하여 생성자가 아닌 세터로 구성하는 것입니다. 또는 생성자 주입을 피하고 세터 주입만 사용하는 방법도 있습니다. 즉, 권장되지는 않지만 세터 주입으로 순환 의존성을 구성할 수 있습니다.
+일반적인 경우(순환 의존성이 없는 경우)와 달리, 빈 A와 빈 B 사이의 순환 의존성은 한 빈이 완전히 초기화되기 전에 다른 빈에 주입되도록 강제합니다(고전적인 닭이 먼저냐 달걀이 먼저냐 시나리오).
 
-#### 개요
+### Examples of Dependency Injection
 
-- `ApplicationContext`는 모든 빈을 설명하는 구성 메타데이터를 사용하여 생성되고 초기화됨. 구성 메타데이터는 XML, Java 코드 또는 어노테이션으로 지정될 수 있음.
-- 각 빈에 대해 의존성은 속성, 생성자 인수 또는 정적 팩토리 메서드에 대한 인수의 형태로 표현됨. 이러한 의존성은 빈이 실제로 생성될 때 빈에 제공됨.
-- 각 속성 또는 생성자 인수는 설정할 값의 실제 정의이거나 컨테이너의 다른 빈에 대한 참조임.
-- 값인 각 속성 또는 생성자 인수는 지정된 형식에서 해당 속성 또는 생성자 인수의 실제 유형으로 변환됨. 기본적으로 Spring은 문자열 형식으로 제공된 값을 `int`, `long`, `String`, `boolean` 등과 같은 모든 기본 제공 유형으로 변환할 수 있음.
-- Spring 컨테이너는 컨테이너가 생성될 때 각 빈의 구성을 유효성 검사함. 그러나 빈 속성 자체는 빈이 실제로 생성될 때까지 설정되지 않음.
-- 컨테이너가 생성될 때 싱글톤 범위이고 사전 인스턴스화되도록 설정된 빈(기본값)이 생성됨. 그렇지 않으면 요청 시에만 빈이 생성됨.
-- 빈을 생성하면 해당 빈의 의존성과 의존성의 의존성이 생성되고 할당되므로 빈의 그래프가 생성될 수 있음. 이러한 의존성 간의 해결 불일치는 영향을 받는 빈이 처음 생성될 때 늦게 나타날 수 있음.
+다음 예제에서는 세터 기반 DI를 위해 XML 기반 구성 메타데이터를 사용합니다. Spring XML 구성 파일의 일부분은 다음과 같이 일부 빈 정의를 지정합니다:
 
-#### 순환 의존성 (Circular dependencies)
+```xml
+<bean id="exampleBean" class="examples.ExampleBean">
+	<!-- setter injection using the nested ref element -->
+	<property name="beanOne">
+		<ref bean="anotherExampleBean"/>
+	</property>
 
-- 주로 생성자 주입을 사용하는 경우 해결할 수 없는 순환 의존성 시나리오가 발생할 수 있음.
-- 예를 들어, A 클래스가 생성자 주입을 통해 B 클래스의 인스턴스를 필요로 하고 B 클래스도 생성자 주입을 통해 A 클래스의 인스턴스를 필요로 하는 경우. A와 B 클래스의 빈을 서로 주입하도록 구성하면 Spring IoC 컨테이너는 런타임에 이 순환 참조를 감지하고 `BeanCurrentlyInCreationException`을 던짐.
-- 한 가지 가능한 해결책은 일부 클래스의 소스 코드를 편집하여 생성자가 아닌 setter로 구성하는 것. 또는 생성자 주입을 피하고 `setter` 주입만 사용하는 것.
-- 일반적인 경우(순환 의존성 없음)와 달리 빈 A와 빈 B 사이의 순환 의존성은 한 빈이 완전히 초기화되기 전에 다른 빈에 주입되도록 함.
-- Spring은 구성 문제(존재하지 않는 빈에 대한 참조 및 순환 의존성)를 컨테이너 로드 시점에 감지함. Spring은 빈이 실제로 생성될 때 가능한 한 늦게 속성을 설정하고 의존성을 해결함.
-- `ApplicationContext` 구현은 기본적으로 싱글톤 빈을 사전 인스턴스화함. 이는 필요한 시점보다 빨리 빈을 생성하는 데 약간의 시간과 메모리가 소요되지만, `ApplicationContext`가 생성될 때 구성 문제를 발견할 수 있음.
-- 순환 의존성이 없는 경우, 하나 이상의 협력 빈이 종속 빈에 주입될 때 각 협력 빈은 종속 빈에 주입되기 전에 완전히 구성됨.
+	<!-- setter injection using the neater ref attribute -->
+	<property name="beanTwo" ref="yetAnotherBean"/>
+	<property name="integerProperty" value="1"/>
+</bean>
 
-### 예제 코드
+<bean id="anotherExampleBean" class="examples.AnotherBean"/>
+<bean id="yetAnotherBean" class="examples.YetAnotherBean"/>
+```
 
-- 아직 안 만들었어요... 졸려 ㅠㅠ
+다음 예제는 해당하는 ExampleBean 클래스를 보여줍니다:
+
+```java
+public class ExampleBean {
+
+	private AnotherBean beanOne;
+
+	private YetAnotherBean beanTwo;
+
+	private int i;
+
+	public void setBeanOne(AnotherBean beanOne) {
+		this.beanOne = beanOne;
+	}
+
+	public void setBeanTwo(YetAnotherBean beanTwo) {
+		this.beanTwo = beanTwo;
+	}
+
+	public void setIntegerProperty(int i) {
+		this.i = i;
+	}
+}
+```
+
+앞의 예제에서는 XML 파일에 지정된 속성과 일치하도록 세터가 선언됩니다. 다음 예제에서는 생성자 기반 DI를 사용합니다:
+
+```xml
+<bean id="exampleBean" class="examples.ExampleBean">
+	<!-- constructor injection using the nested ref element -->
+	<constructor-arg>
+		<ref bean="anotherExampleBean"/>
+	</constructor-arg>
+
+	<!-- constructor injection using the neater ref attribute -->
+	<constructor-arg ref="yetAnotherBean"/>
+
+	<constructor-arg type="int" value="1"/>
+</bean>
+
+<bean id="anotherExampleBean" class="examples.AnotherBean"/>
+<bean id="yetAnotherBean" class="examples.YetAnotherBean"/>
+```
+
+다음 예제는 해당하는 ExampleBean 클래스를 보여줍니다:
+
+```java
+public class ExampleBean {
+
+	private AnotherBean beanOne;
+
+	private YetAnotherBean beanTwo;
+
+	private int i;
+
+	public ExampleBean(
+		AnotherBean anotherBean, YetAnotherBean yetAnotherBean, int i) {
+		this.beanOne = anotherBean;
+		this.beanTwo = yetAnotherBean;
+		this.i = i;
+	}
+}
+```
+
+빈 정의에 지정된 생성자 인수는 ExampleBean의 생성자에 대한 인수로 사용됩니다.
+이제 이 예제의 변형을 고려해 보겠습니다. 생성자를 사용하는 대신 Spring에게 정적 팩토리 메서드를 호출하여 객체의 인스턴스를 반환하도록 지시합니다:
+
+```xml
+<bean id="exampleBean" class="examples.ExampleBean" factory-method="createInstance">
+	<constructor-arg ref="anotherExampleBean"/>
+	<constructor-arg ref="yetAnotherBean"/>
+	<constructor-arg value="1"/>
+</bean>
+
+<bean id="anotherExampleBean" class="examples.AnotherBean"/>
+<bean id="yetAnotherBean" class="examples.YetAnotherBean"/>
+```
+
+다음 예제는 해당하는 ExampleBean 클래스를 보여줍니다:
+
+```java
+public class ExampleBean {
+
+	// a private constructor
+	private ExampleBean(...) {
+		...
+	}
+
+	// a static factory method; the arguments to this method can be
+	// considered the dependencies of the bean that is returned,
+	// regardless of how those arguments are actually used.
+	public static ExampleBean createInstance (
+		AnotherBean anotherBean, YetAnotherBean yetAnotherBean, int i) {
+
+		ExampleBean eb = new ExampleBean (...);
+		// some other operations...
+		return eb;
+	}
+}
+```
+
+정적 팩토리 메서드에 대한 인수는 실제 생성자가 사용된 것과 정확히 동일한 방식으로 <constructor-arg/> 요소로 제공됩니다. 팩토리 메서드에서 반환하는 클래스의 유형은 정적 팩토리 메서드를 포함하는 클래스와 동일한 유형일 필요는 없습니다(이 예제에서는 그렇지만). 인스턴스(비정적) 팩토리 메서드는 class 속성 대신 factory-bean 속성을 사용한다는 점을 제외하면 기본적으로 동일한 방식으로 사용할 수 있으므로 여기서는 자세한 내용을 다루지 않겠습니다.
 
 ## The IoC Container - Dependencies - Dependencies and Configuration in Detail
 
@@ -899,6 +1024,14 @@ public class AppConfig {
 ## The IoC Container - Container Extension Points
 
 ## The IoC Container - Annotation-based Container Configuration
+
+- XML 설정의 대안으로 바이트코드 메타데이터를 사용하여 XML 선언 대신 컴포넌트를 연결하는 어노테이션 기반 구성이 제공됨. 개발자는 XML을 사용하여 빈 연결을 설명하는 대신 관련 클래스, 메서드 또는 필드 선언에 어노테이션을 사용하여 구성을 컴포넌트 클래스 자체로 이동시킴. `AutowiredAnnotationBeanPostProcessor`에서 언급한 것처럼 `BeanPostProcessor`를 어노테이션과 함께 사용하는 것은 Spring IoC 컨테이너를 확장하는 일반적인 수단. 예를 들어 `@Autowired` 어노테이션은 `Autowiring Collaborators`에 설명된 것과 동일한 기능을 제공하지만 더 세밀한 제어와 더 넓은 적용 가능성을 가지고 있음. 또한 Spring은 `@PostConstruct`와 `@PreDestroy`와 같은 JSR-250 어노테이션과 `jakarta.inject` 패키지에 포함된 `@Inject`와 `@Named`와 같은 JSR-330(Java용 의존성 주입) 어노테이션을 지원함. 이러한 어노테이션에 대한 자세한 내용은 관련 섹션에서 찾을 수 있음.
+- 어노테이션 주입은 XML 주입보다 먼저 수행됨. 따라서 두 가지 접근 방식을 통해 연결된 속성의 경우 XML 구성이 어노테이션을 재정의함.
+
+### 어노테이션이 Spring 구성에 XML보다 더 좋은가?
+
+- 어노테이션 기반 구성의 도입으로 이 접근 방식이 XML보다 "더 좋은" 것인지에 대한 질문이 제기됨. 짧게 대답하자면 "상황에 따라 다름." 긴 대답은 각 접근 방식에는 장단점이 있으며 보통 개발자가 어떤 전략이 더 적합한지 결정하는 것. 어노테이션은 정의 방식으로 인해 선언에 많은 컨텍스트를 제공하므로 더 짧고 간결한 구성이 가능함. 그러나 XML은 소스 코드를 건드리거나 다시 컴파일하지 않고도 컴포넌트를 연결하는 데 탁월함. 일부 개발자는 소스 코드와 가까운 곳에 연결이 있는 것을 선호하는 반면, 다른 개발자는 어노테이션이 달린 클래스가 더 이상 POJO가 아니며 구성이 분산되어 제어하기 어려워진다고 주장함.
+- 어떤 선택을 하든 Spring은 두 가지 스타일을 모두 수용할 수 있으며 심지어 함께 혼합할 수도 있음. Spring의 `JavaConfig` 옵션을 통해 대상 컴포넌트의 소스 코드를 건드리지 않고도 - 어노테이션을 비침습적인 방식으로 사용할 수 있으며, 도구 측면에서 Spring Tools for Eclipse, Visual Studio Code 및 Theia에서 모든 구성 스타일을 지원한다는 점을 강조할 만함.
 
 ## The IoC Container - Annotation-based Container Configuration - Using @Autowired
 
