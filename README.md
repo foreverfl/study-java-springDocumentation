@@ -1212,6 +1212,43 @@ public class MovieRecommender {
 
 ## The IoC Container - Annotation-based Container Configuration - Fine-tuning Annotation-based Autowiring with @Primary
 
+- 유형별로 autowiring하면 여러 후보가 나올 수 있으므로 선택 과정을 더 잘 제어해야 할 때가 많음. 이를 수행하는 한 가지 방법은 Spring의 `@Primary` 어노테이션을 사용하는 것. `@Primary`는 여러 빈이 단일 값 의존성에 autowired되기 위한 후보일 때 특정 빈에 우선순위를 부여해야 함을 나타냄. 후보 중에 primary 빈이 정확히 하나만 존재하면 그 빈이 autowired 값이 됨.
+- 다음 구성은 `person`을 기본 `Person`로 정의함.
+
+```java
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
+    @Bean
+    @Primary
+    public Person person() {
+        return new Person("Yume", "Irido", 16, "female");
+    }
+
+    @Bean
+    public Person secondaryPerson() {
+        return new Person("Akatsuki", "Minami", 16, "female");
+    }
+}
+```
+
+- 앞의 구성을 사용하면 다음 `Person`는 `person`와 함께 autowired됨. 해당 빈 정의는 다음과 같음. 다음의 테스트 코드는 문제 없이 실행됨.
+
+```java
+@SpringBootTest
+public class PrimaryTest {
+    @Autowired
+    private Person person; // primaryPerson이 주입될 것임
+
+    @Test
+    public void testPrimaryPersonInjection() {
+        assertEquals("Yume", person.getFirstName());
+        assertEquals("Irido", person.getLastName());
+        assertEquals(16, person.getAge());
+        assertEquals("female", person.getSex());
+    }
+}
+```
+
 ## The IoC Container - Annotation-based Container Configuration - Fine-tuning Annotation-based Autowiring with Qualifiers
 
 ## The IoC Container - Annotation-based Container Configuration - Using Generics as Autowiring Qualifiers

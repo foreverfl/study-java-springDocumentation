@@ -6,11 +6,9 @@ public class Person {
     private int age;
     private String sex;
 
-    // 기본 생성자
     public Person() {
     }
 
-    // 생성자 주입을 위한 생성자
     public Person(String firstName, String lastName, int age, String sex) {
         this.firstName = firstName;
         this.lastName = lastName;
