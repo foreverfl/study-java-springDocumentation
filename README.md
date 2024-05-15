@@ -36,7 +36,7 @@ spring.datasource.password=***
   > - [The IoC Container - Customizing the Nature of a Bean](#the-ioc-container---customizing-the-nature-of-a-bean)
   > - [The IoC Container - Bean Definition Inheritance](#the-ioc-container---bean-definition-inheritance)
   > - [The IoC Container - Container Extension Points](#the-ioc-container---container-extension-points)
-  > - [The IoC Container - Annotation-based Container Configuration](#the-ioc-container---java-based-container-configuration)
+  > - [The IoC Container - Annotation-based Container Configuration](#the-ioc-container---annotation-based-container-configuration)
   > - [The IoC Container - Annotation-based Container Configuration - Using @Autowired](#the-ioc-container---annotation-based-container-configuration---using-autowired)
   > - [The IoC Container - Annotation-based Container Configuration - Fine-tuning Annotation-based Autowiring with @Primary](#the-ioc-container---annotation-based-container-configuration---fine-tuning-annotation-based-autowiring-with-primary)
   > - [The IoC Container - Annotation-based Container Configuration - Fine-tuning Annotation-based Autowiring with Qualifiers](#the-ioc-container---annotation-based-container-configuration---fine-tuning-annotation-based-autowiring-with-qualifiers)
@@ -1259,87 +1259,56 @@ public class AppConfig {
 
 ## The IoC Container - Dependencies - Autowiring Collaborators
 
-### Limitations and Disadvantages of Autowiring
-
-### Excluding a Bean from Autowiring
+- Limitations and Disadvantages of Autowiring
+- Excluding a Bean from Autowiring
 
 ## The IoC Container - Dependencies - Method Injection
 
-### Lookup Method Injection
-
-### Arbitrary Method Replacement
+- Lookup Method Injection
+- Arbitrary Method Replacement
 
 ## The IoC Container - Bean Scopes
 
-### The Singleton Scope
-
-### The Prototype Scope
-
-### Singleton Beans with Prototype-bean Dependencies
-
-### Request, Session, Application, and WebSocket Scopes
-
-### Initial Web Configuration
-
-### Request scope
-
-### Session Scope
-
-### Application Scope
-
-### WebSocket Scope
-
-### Scoped Beans as Dependencies
-
-### Choosing the Type of Proxy to Create
-
-### Injecting Request/Session References Directly
-
-### Custom Scopes
-
-### Creating a Custom Scope
-
-### Using a Custom Scope
+- The Singleton Scope
+- The Prototype Scope
+- Singleton Beans with Prototype-bean Dependencies
+- Request, Session, Application, and WebSocket Scopes
+- Initial Web Configuration
+- Request scope
+- Session Scope
+- Application Scope
+- WebSocket Scope
+- Scoped Beans as Dependencies
+- Choosing the Type of Proxy to Create
+- Injecting Request/Session References Directly
+- Custom Scopes
+- Creating a Custom Scope
+- Using a Custom Scope
 
 ## The IoC Container - Customizing the Nature of a Bean
 
-### Lifecycle Callbacks
-
-### Initialization Callbacks
-
-### Destruction Callbacks
-
-### Default Initialization and Destroy Methods
-
-### Combining Lifecycle Mechanisms
-
-### Startup and Shutdown Callbacks
-
-### Shutting Down the Spring IoC Container Gracefully in Non-Web Applications
-
-### Thread Safety and Visibility
-
-### ApplicationContextAware and BeanNameAware
-
-### Other Aware Interfaces
+- Lifecycle Callbacks
+- Initialization Callbacks
+- Destruction Callbacks
+- Default Initialization and Destroy Methods
+- Combining Lifecycle Mechanisms
+- Startup and Shutdown Callbacks
+- Shutting Down the Spring IoC Container Gracefully in Non-Web Applications
+- Thread Safety and Visibility
+- ApplicationContextAware and BeanNameAware
+- Other Aware Interfaces
 
 ## The IoC Container - Bean Definition Inheritance
 
 ## The IoC Container - Container Extension Points
 
-### Customizing Beans by Using a BeanPostProcessor
-
-### Example: Hello World, BeanPostProcessor-style
-
-### Example: The AutowiredAnnotationBeanPostProcessor
-
-### Customizing Configuration Metadata with a BeanFactoryPostProcessor
-
-### Example: The Class Name Substitution PropertySourcesPlaceholderConfigurer
-
-### Example: The PropertyOverrideConfigurer
-
-### Customizing Instantiation Logic with a FactoryBean
+- Customizing Beans by Using a BeanPostProcessor
+- Example: Hello World, BeanPostProcessor-style
+- Example: The AutowiredAnnotationBeanPostProcessor
+- Customizing Configuration Metadata with a BeanFactoryPostProcessor
+- Example: The Class Name Substitution PropertySourcesPlaceholderConfigurer
+- Example: The PropertyOverrideConfigurer
+- Customizing Instantiation Logic with a FactoryBean
 
 ## The IoC Container - Annotation-based Container Configuration
 
@@ -1612,9 +1581,32 @@ public class PrimaryTest {
 
 ## The IoC Container - Classpath Scanning and Managed Components
 
+- @Component and Further Stereotype Annotations
+- Using Meta-annotations and Composed Annotations
+- Automatically Detecting Classes and Registering Bean Definitions
+- Using Filters to Customize Scanning
+- Defining Bean Metadata within Components
+- Naming Autodetected Components
+- Providing a Scope for Autodetected Components
+- Providing Qualifier Metadata with Annotations
+
 ## The IoC Container - Using JSR 330 Standard Annotations
 
+- Dependency Injection with @Inject and @Named
+- @Named and @ManagedBean: Standard Equivalents to the @Component Annotation
+- Limitations of JSR-330 Standard Annotations
+
 ## The IoC Container - Java-based Container Configuration
+
+- 이 섹션은 Spring 컨테이너에서 환경설정을 하기 위해서 어떻게 자바 코드 기반의 어노테이션을 다루는지를 다룸.
+
+### Section Summary
+
+- Basic Concepts: @Bean and @Configuration
+- Instantiating the Spring Container by Using AnnotationConfigApplicationContext
+- Using the @Bean Annotation
+- Using the @Configuration annotation
+- Composing Java-based Configurations
 
 ## The IoC Container - Java-based Container Configuration - Basic Concepts: @Bean and @Configuration
 
