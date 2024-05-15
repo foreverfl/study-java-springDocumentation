@@ -1610,25 +1610,105 @@ public class PrimaryTest {
 
 ## The IoC Container - Java-based Container Configuration - Basic Concepts: @Bean and @Configuration
 
+- The IoC Container - Java-based Container Configuration
+
 ## The IoC Container - Java-based Container Configuration - Instantiating the Spring Container by Using AnnotationConfigApplicationContext
+
+- Simple Construction
+- Building the Container Programmatically by Using register(Class<?>…​)
+- Enabling Component Scanning with scan(String…​)
+- Support for Web Applications with AnnotationConfigWebApplicationContext
 
 ## The IoC Container - Java-based Container Configuration - Using the @Bean Annotation
 
+- Declaring a Bean
+- Bean Dependencies
+- Receiving Lifecycle Callbacks
+- Specifying Bean Scope
+- Using the @Scope Annotation
+- @Scope and scoped-proxy
+- Customizing Bean Naming
+- Bean Aliasing
+- Bean Description
+
 ## The IoC Container - Java-based Container Configuration - Using the @Configuration annotation
+
+- Injecting Inter-bean Dependencies
+- Lookup Method Injection
+- Further Information About How Java-based Configuration Works Internally
 
 ## The IoC Container - Java-based Container Configuration - Composing Java-based Configurations
 
+- Using the @Import Annotation
+- Injecting Dependencies on Imported @Bean Definitions
+- Conditionally Include @Configuration Classes or @Bean Methods
+- Combining Java and XML Configuration
+- XML-centric Use of @Configuration Classes
+- @Configuration Class-centric Use of XML with @ImportResource
+
 ## The IoC Container - Environment Abstraction
+
+- Bean Definition Profiles
+- Using @Profile
+- XML Bean Definition Profiles
+- Activating a Profile
+- Default Profile
+- PropertySource Abstraction
+- Using @PropertySource
+- Placeholder Resolution in Statements
 
 ## The IoC Container - Registering a LoadTimeWeaver
 
+- Internationalization using MessageSource
+- Standard and Custom Events
+- Annotation-based Event Listeners
+- Asynchronous Listeners
+- Ordering Listeners
+- Generic Events
+- Convenient Access to Low-level Resources
+- Application Startup Tracking
+- Convenient ApplicationContext Instantiation for Web Applications
+- Deploying a Spring ApplicationContext as a Jakarta EE RAR File
+
 ## The IoC Container - Additional Capabilities of the ApplicationContext
+
+- BeanFactory or ApplicationContext?
 
 ## The IoC Container - The BeanFactory API
 
 ## Resources
 
+- Introduction
+- The Resource Interface
+- Built-in Resource Implementations
+  > - UrlResource
+  > - ClassPathResource
+  > - FileSystemResource
+  > - PathResource
+  > - ServletContextResource
+  > - InputStreamResource
+  > - ByteArrayResource
+- The ResourceLoader Interface
+- The ResourcePatternResolver Interface
+- The ResourceLoaderAware Interface
+- Resources as Dependencies
+- Application Contexts and Resource Paths
+- Constructing Application Contexts
+- Constructing ClassPathXmlApplicationContext Instances — Shortcuts
+- Wildcards in Application Context Constructor Resource Paths
+- Ant-style Patterns
+- Implications on Portability
+- The classpath\*: Prefix
+- Other Notes Relating to Wildcards
+- FileSystemResource Caveats
+
 ## Validation, Data Binding, and Type Conversion
+
+- 검증을 비즈니스 로직으로 간주하는 데에는 장단점이 있으며, Spring은 검증과 데이터 바인딩을 위한 설계를 제공하여 둘 중 어느 것도 배제하지 않음. 특히 검증은 웹 계층에 묶여서는 안 되며 쉽게 지역화할 수 있어야 하고, 사용 가능한 모든 검증기를 플러그인할 수 있어야 함. 이러한 관심사를 고려하여 Spring은 애플리케이션의 모든 계층에서 기본적이면서도 매우 사용 가능한 `Validator` 계약을 제공함.
+- 데이터 바인딩은 사용자 입력을 애플리케이션의 도메인 모델(또는 사용자 입력을 처리하는 데 사용하는 모든 객체)에 동적으로 바인딩할 수 있도록 하는 데 유용함. Spring은 그렇게 하기 위해 적절하게 명명된 `DataBinder`를 제공함. `Validator`와 `DataBinder`는 주로 웹 계층에서 사용되지만 웹 계층에 국한되지 않는 `validation` 패키지를 구성함.
+- `BeanWrapper`는 Spring Framework의 기본 개념이며 많은 곳에서 사용됨. 그러나 `BeanWrapper`를 직접 사용할 필요는 없음. 하지만 이것이 참조 문서이기 때문에 약간의 설명을 하자면, 이 장에서 `BeanWrapper`를 설명하는 이유는 만약 사용한다면 객체에 데이터를 바인딩할 때 사용할 가능성이 가장 높기 때문임.
+- Spring의 `DataBinder`와 하위 수준의 `BeanWrapper`는 모두 `PropertyEditorSupport` 구현을 사용하여 속성 값을 구문 분석하고 포맷함. `PropertyEditor`와 `PropertyEditorSupport` 유형은 JavaBeans 사양의 일부이며 이 장에서도 설명함. Spring의 `core.convert` 패키지는 일반적인 유형 변환 기능과 UI 필드 값을 포맷하기 위한 상위 수준의 format 패키지를 제공함. 이러한 패키지는 `PropertyEditorSupport` 구현의 간단한 대안으로 사용할 수 있음. 이 장에서도 이에 대해 설명함.
+- Spring은 설정 인프라와 Spring 자체의 `Validator` 계약에 대한 어댑터를 통해 `Java Bean Validation`을 지원함. `Java Bean Validation`에 설명된 대로 애플리케이션은 `Bean Validation`을 한 번 전역으로 활성화하고 모든 검증 요구 사항에 대해 독점적으로 사용할 수 있음. 웹 계층에서 애플리케이션은 **Configuring a DataBinder**에 설명된 대로 컨트롤러(`DataBinder`마다 로컬 스프링 `Validator` 인스턴스)를 등록할 수 있으며, 이는 사용자 정의 검증 로직을 플러그인하는 데 유용할 수 있음.
 
 ## Validation, Data Binding, and Type Conversion - Validation by Using Spring’s Validator Interface
 
