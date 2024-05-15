@@ -1714,9 +1714,28 @@ public class PrimaryTest {
 
 ## Validation, Data Binding, and Type Conversion - Data Binding
 
+- Constructor Binding
+- Property Binding with BeanWrapper
+- Setting and Getting Basic and Nested Properties
+- PropertyEditor's
+- Custom PropertyEditor's
+- PropertyEditorRegistrar
+
 ## Validation, Data Binding, and Type Conversion - Resolving Codes to Error Messages
 
+- 우리는 데이터바인딩과 검증에 대해 다뤘음. 이 섹션에서는 검증 오류에 해당하는 메시지를 출력하는 것에 대해 설명함. 앞 섹션에 표시된 예제에서는 `name`과 `age` 필드를 거부했음. 오류 메시지를 `MessageSource`를 사용하여 출력하려면 필드를 거부할 때 제공한 오류 코드('name'과 'age'의 경우)를 사용하여 수행할 수 있음. `Errors` 인터페이스의 `rejectValue` 또는 다른 `reject` 메서드 중 하나를 (직접 또는 예를 들어 `ValidationUtils` 클래스를 사용하여 간접적으로) 호출하면, 기본 구현은 전달한 코드를 등록할 뿐만 아니라 추가 오류 코드도 여러 개 등록함. `MessageCodesResolver`는 `Errors` 인터페이스가 등록하는 오류 코드를 결정함. 기본적으로 `DefaultMessageCodesResolver`가 사용되며, 이는 (예를 들어) 제공한 코드로 메시지를 등록할 뿐만 아니라 거부 메서드에 전달한 필드 이름을 포함하는 메시지도 등록함. 따라서 `rejectValue("age", "too.darn.old")`를 사용하여 필드를 거부하면 `too.darn.old` 코드 외에도 Spring은 `too.darn.old.age`와 `too.darn.old.age.int`도 등록함(첫 번째는 필드 이름을 포함하고 두 번째는 필드의 유형을 포함함). 이는 개발자가 오류 메시지를 대상으로 할 때 편의를 제공하기 위해 수행됨.
+
+- `MessageCodesResolver`와 기본 전략에 대한 자세한 내용은 각각 `MessageCodesResolver`와 `DefaultMessageCodesResolver`의 javadoc에서 확인할 수 있음.
+
 ## Validation, Data Binding, and Type Conversion - Spring Type Conversion
+
+- Converter SPI
+- Using ConverterFactory
+- Using GenericConverter
+- Using ConditionalGenericConverter
+- The ConversionService API
+- Configuring a ConversionService
+- Using a ConversionService Programmatically
 
 ## Validation, Data Binding, and Type Conversion - Spring Field Formatting
 
