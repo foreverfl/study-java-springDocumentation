@@ -88,6 +88,7 @@ spring.datasource.password=***
   > - [Spring Expression Language (SpEL) - Language Reference - Collection Selection](#spring-expression-language-spel---language-reference---collection-selection)
   > - [Spring Expression Language (SpEL) - Language Reference - Collection Projection](#spring-expression-language-spel---language-reference---collection-projection)
   > - [Spring Expression Language (SpEL) - Language Reference - Expression Templating](#spring-expression-language-spel---language-reference---expression-templating)
+  > - [Spring Expression Language (SpEL) - Classes Used in the Examples](#spring-expression-language-spel---classes-used-in-the-examples)
   > - [Aspect Oriented Programming with Spring](#aspect-oriented-programming-with-spring)
   > - [Aspect Oriented Programming with Spring - AOP Concepts](#aspect-oriented-programming-with-spring---aop-concepts)
   > - [Aspect Oriented Programming with Spring - Spring AOP Capabilities and Goals](#aspect-oriented-programming-with-spring---spring-aop-capabilities-and-goals)
@@ -1793,173 +1794,17 @@ public class PrimaryTest {
 
 ## Spring Expression Language (SpEL) - Evaluation
 
-### Evaluation
-
-- SpEL의 인터페이스와 표현 언어를 프로그래밍 방식으로 사용하는 방법.
-
-#### 리터럴 문자열 표현식 Hello World를 평가하기
-
-```java
-ExpressionParser parser = new SpelExpressionParser();
-Expression exp = parser.parseExpression("'Hello World'");
-String message = (String) exp.getValue();
-System.out.println(message); // Hello World
-```
-
-#### 문자열 리터럴 Hello World에서 concat 메서드를 호출하기
-
-```java
-ExpressionParser parser = new SpelExpressionParser();
-Expression exp = parser.parseExpression("'Hello World'.concat('!')");
-String message = (String) exp.getValue();
-System.out.println(message); // Hello World!
-```
-
-#### 문자열 리터럴 Hello World의 Bytes JavaBean 속성에 액세스하기
-
-```java
-ExpressionParser parser = new SpelExpressionParser();
-Expression exp = parser.parseExpression("'Hello World'.bytes"); // 'getBytes()'를 호출
-byte[] bytes = (byte[]) exp.getValue();
-System.out.println(bytes);
-```
-
-#### 점 표기법을 사용하여 문자열 리터럴의 길이를 얻기
-
-```java
-ExpressionParser parser = new SpelExpressionParser();
-Expression exp = parser.parseExpression("'Hello World'.bytes.length"); // 'getBytes().length'를 호출
-int length = (Integer) exp.getValue();
-System.out.println(length);
-```
-
-#### 문자열 리터럴을 사용하는 대신 String의 생성자를 호출
-
-```java
-ExpressionParser parser = new SpelExpressionParser();
-Expression exp = parser.parseExpression("new String('hello world').toUpperCase()");
-String message = exp.getValue(String.class);
-```
-
-#### Inventor 클래스의 사용
-
-```java
-
-GregorianCalendar c = new GregorianCalendar(); // 달력을 생성
-c.set(1856, 7, 9);
-
-// The constructor arguments are name, birthday, and nationality.
-Inventor tesla = new Inventor("Nikola Tesla", c.getTime(), "Serbian"); // 생성자는 name, birthday, 그리고 nationality
-
-ExpressionParser parser = new SpelExpressionParser();
-
-Expression exp = parser.parseExpression("name"); // "name"을 파싱함.
-String name = (String) exp.getValue(tesla);
-System.out.println(name); // Nikola Tesla
-
-Expression exp = parser.parseExpression("name == 'Nikola Tesla'");
-Boolean result = exp.getValue(tesla, Boolean.class);
-System.out.println(result); // true
-```
-
-### Understanding EvaluationContext
-
-- `EvaluationContext` 인터페이스는 표현식을 평가할 때 속성, 메서드 또는 필드를 해결하고 타입 변환을 수행하는 데 사용됨. Spring은 두 가지 구현체를 제공함.
-  > - `SimpleEvaluationContext`: SpEL 언어 구문의 전체 범위를 필요로 하지 않고 의미 있게 제한되어야 하는 표현식 범주에 대해 필수적인 SpEL 언어 기능과 구성 옵션의 하위 집합을 노출함. 예로는 데이터 바인딩 표현식과 속성 기반 필터가 있음.
-  > - `StandardEvaluationContext`: SpEL 언어 기능과 구성 옵션의 전체 집합을 노출함. 기본 루트 객체를 지정하고 사용 가능한 모든 평가 관련 전략을 구성하는 데 사용할 수 있음.
-- `SimpleEvaluationContext`는 SpEL 언어 구문의 하위 집합만 지원하도록 설계됨. Java 타입 참조, 생성자 및 빈 참조는 제외됨. 또한 표현식에서 속성과 메서드에 대한 지원 수준을 명시적으로 선택해야 함. 기본적으로 `create()` 정적 팩토리 메서드는 속성에 대한 읽기 접근만 활성화함. 필요한 정확한 지원 수준을 구성하기 위해 빌더를 얻을 수도 있으며, 다음 중 하나 또는 일부 조합을 대상으로 함.
-  > - 사용자 정의 PropertyAccessor만 (리플렉션 없음)
-  > - 읽기 전용 접근을 위한 데이터 바인딩 속성
-  > - 읽기 및 쓰기를 위한 데이터 바인딩 속성
-
-### Type Conversion
-
-- 기본적으로 SpEL은 Spring 코어(`org.springframework.core.convert.ConversionService`)에서 사용 가능한 변환 서비스를 사용함. 이 변환 서비스에는 일반적인 변환을 위한 많은 기본 제공 변환기가 있지만, 사용자 정의 변환을 추가하여 타입 간의 변환을 완전히 확장할 수도 있음. 또한 제네릭을 인식함. 즉, 표현식에서 제네릭 타입으로 작업할 때 SpEL은 변환을 시도하여 만나는 모든 객체에 대해 타입 정확성을 유지함.
-- 예제 코드
-
-```java
-class Simple {
-	public List<Boolean> booleanList = new ArrayList<>();
-}
-
-public static void main(String[] args) {
-    // Simple 인스턴스 생성
-    Simple simple = new Simple();
-    simple.booleanList.add(true);
-
-    EvaluationContext context = SimpleEvaluationContext.forReadOnlyDataBinding().build();
-    ExpressionParser parser = new SpelExpressionParser();
-    parser.parseExpression("booleanList[0]").setValue(context, simple, "false"); // Simple 인스턴스 안의 배열에 "false"를 집어넣음
-    Boolean b = simple.booleanList.get(0);
-    System.out.println(b); // false
-}
-```
-
-### Parser Configuration
-
-- 파서 설정 객체(`org.springframework.expression.spel.SpelParserConfiguration`)를 사용하여 SpEL 표현식 파서를 설정할 수 있음. 설정 객체는 일부 표현식 구성 요소의 동작을 제어함. 예를 들어, 배열이나 컬렉션에 인덱스를 지정하고 지정된 인덱스의 요소가 null인 경우 SpEL은 자동으로 해당 요소를 생성할 수 있음. 이는 프로퍼티 참조의 체인으로 구성된 표현식을 사용할 때 유용함. 배열이나 리스트에 인덱스를 지정하고 현재 배열 또는 리스트의 크기를 벗어나는 인덱스를 지정하면 SpEL은 해당 인덱스를 수용하기 위해 배열 또는 리스트를 자동으로 증가시킬 수 있음. 지정된 인덱스에 요소를 추가하기 위해 SpEL은 지정된 값을 설정하기 전에 요소 타입의 기본 생성자를 사용하여 요소를 생성하려고 시도함. 요소 타입에 기본 생성자가 없으면 null이 배열 또는 리스트에 추가됨. 값을 설정하는 방법을 아는 내장 변환기나 사용자 정의 변환기가 없으면 지정된 인덱스의 배열이나 리스트에 null이 남게 됨.
-
-```java
-class Demo {
-	public List<String> list;
-}
-
-// SpelParserConfiguration의 두 매개변수는 '자동 null 참조 초기화'와 '자동 컬렉션 증가'를 활성화함.
-SpelParserConfiguration config = new SpelParserConfiguration(true, true);
-
-ExpressionParser parser = new SpelExpressionParser(config);
-
-Expression expression = parser.parseExpression("list[3]");
-
-Demo demo = new Demo();
-
-Object o = expression.getValue(demo); // demo.list는 이제 4개의 항목을 가진 실제 컬렉션이 됨. 각 항목은 새로운 빈 문자열임.
-```
-
-- 기본적으로 SpEL 표현식은 10,000자를 초과할 수 없지만 maxExpressionLength는 구성 가능함. `SpelExpressionParser`를 프로그래밍 방식으로 생성하는 경우 `SpelExpressionParser`에 제공하는 `SpelParserConfiguration`을 생성할 때 사용자 정의 maxExpressionLength를 지정할 수 있음. `ApplicationContext` 내에서 SpEL 표현식을 파싱하는 데 사용되는 maxExpressionLength를 설정하려는 경우(예: XML 빈 정의, @Value 등에서) JVM 시스템 속성 또는 Spring 속성 `spring.context.expression.maxLength`를 애플리케이션에 필요한 최대 표현식 길이로 설정할 수 있음.
-
-### SpEL Compilation
-
-- Spring은 SpEL 표현식을 위한 기본 컴파일러를 제공함. 표현식은 일반적으로 해석되며, 이는 평가 중에 많은 동적 유연성을 제공하지만 최적의 성능을 제공하지는 않음. 가끔 표현식을 사용하는 경우에는 괜찮지만, Spring Integration과 같은 다른 구성 요소에서 사용될 때는 성능이 매우 중요할 수 있으며 동적인 특성이 실제로 필요하지 않음.
-- SpEL 컴파일러는 이러한 요구를 해결하기 위한 것. 평가 중에 컴파일러는 런타임에 표현식 동작을 구현하는 Java 클래스를 생성하고 해당 클래스를 사용하여 훨씬 더 빠른 표현식 평가를 달성함. 표현식 주변의 타입 정보 부족으로 인해 컴파일러는 컴파일을 수행할 때 해석된 표현식 평가 중에 수집된 정보를 사용함. 예를 들어, 표현식에서 속성 참조의 타입을 순수하게 알 수는 없지만 첫 번째 해석된 평가 중에 해당 타입을 알아냄. 물론 이러한 파생된 정보를 기반으로 컴파일하면 시간이 지남에 따라 다양한 표현식 요소의 타입이 변경될 경우 나중에 문제가 발생할 수 있음. 이러한 이유로 컴파일은 반복적인 평가에서 타입 정보가 변경되지 않는 표현식에 가장 적합함.
-
-### Compiler Configuration
-
-- 컴파일러는 기본적으로 켜져 있지 않지만, 두 가지 다른 방법 중 하나로 켤 수 있음. 앞에서 설명한 파서 구성 프로세스를 사용하거나 SpEL 사용이 다른 구성 요소 내부에 포함되어 있을 때 Spring 속성을 사용하여 켤 수 있음.
-- 컴파일러는 `org.springframework.expression.spel.SpelCompilerMode` 열거형에 포함된 세 가지 모드 중 하나로 작동할 수 있음. 모드는 다음과 같음.
-  > - **OFF (기본값)**: 컴파일러가 꺼져 있음.
-  > - **IMMEDIATE**: 즉시 모드에서는 표현식이 가능한 한 빨리 컴파일됨. 일반적으로 첫 번째 해석된 평가 후에 이루어짐. 컴파일된 표현식이 실패하면(일반적으로 앞에서 설명한 대로 타입 변경으로 인해) 표현식 평가의 호출자는 예외를 받음.
-  > - **MIXED**: 혼합 모드에서는 표현식이 시간이 지남에 따라 해석된 모드와 컴파일된 모드 사이에서 자동으로 전환됨. 몇 번의 해석된 실행 후에 컴파일된 형식으로 전환되고, 컴파일된 형식에 문제가 발생하면(앞에서 설명한 대로 타입 변경 등) 표현식은 자동으로 다시 해석된 형식으로 전환됨. 나중에 다른 컴파일된 형식을 생성하고 그것으로 전환할 수 있음. 기본적으로 IMMEDIATE 모드에서 사용자가 받는 예외는 대신 내부적으로 처리됨.
-- IMMEDIATE 모드는 MIXED 모드가 부작용이 있는 표현식에 문제를 일으킬 수 있기 때문에 존재함. 컴파일된 표현식이 부분적으로 성공한 후 폭발하면 시스템의 상태에 이미 영향을 미친 것일 수 있음. 이런 일이 발생했다면 호출자는 표현식의 일부가 두 번 실행될 수 있으므로 해석된 모드에서 자동으로 다시 실행하는 것을 원하지 않을 수 있음.
-- 모드를 선택한 후에는 `SpelParserConfiguration`을 사용하여 파서를 구성함.
-
-```java
-SpelParserConfiguration config = new SpelParserConfiguration(SpelCompilerMode.IMMEDIATE,
-		this.getClass().getClassLoader());
-
-SpelExpressionParser parser = new SpelExpressionParser(config);
-
-Expression expr = parser.parseExpression("payload");
-
-MyMessage message = new MyMessage();
-
-Object payload = expr.getValue(message);
-```
-
-- 컴파일러 모드를 지정할 때 ClassLoader를 지정할 수도 있음(null 전달이 허용됨). 컴파일된 표현식은 제공된 ClassLoader 아래에 생성된 자식 ClassLoader에서 정의됨. ClassLoader를 지정하는 경우 표현식 평가 프로세스에 관련된 모든 타입을 볼 수 있는지 확인하는 것이 중요함. ClassLoader를 지정하지 않으면 기본 ClassLoader가 사용됨(일반적으로 표현식 평가 중에 실행 중인 스레드의 컨텍스트 ClassLoader).
-- 컴파일러를 구성하는 두 번째 방법은 SpEL이 다른 구성 요소 내부에 포함되어 있고 구성 객체를 통해 구성할 수 없는 경우에 사용하는 것. 이러한 경우에는 JVM 시스템 속성(또는 SpringProperties 메커니즘)을 통해 `spring.expression.compiler.mode` 속성을 SpelCompilerMode 열거형 값(off, immediate 또는 mixed) 중 하나로 설정할 수 있음.
-
-### Compiler Limitations
-
-- Spring은 모든 종류의 표현식을 컴파일하는 것을 지원하지 않음. 주요 초점은 성능에 중요한 컨텍스트에서 사용될 가능성이 높은 일반적인 표현식ㅇ;ㅁ. 다음과 같은 종류의 표현식은 컴파일할 수 없음.
-  > - 할당을 포함하는 표현식
-  > - 변환 서비스에 의존하는 표현식
-  > - 사용자 정의 리졸버 또는 접근자를 사용하는 표현식
-  > - 오버로드된 연산자를 사용하는 표현식
-  > - 배열 생성 구문을 사용하는 표현식
-  > - 선택 또는 프로젝션을 사용하는 표현식
+- Understanding EvaluationContext
+- Type Conversion
+- Parser Configuration
+- SpEL Compilation
+- Compiler Configuration
+- Compiler Limitations
 
 ## Spring Expression Language (SpEL) - Expressions in Bean Definitions
+
+- XML Configuration
+- Annotation Configuration
 
 ## Spring Expression Language (SpEL) - Language Reference
 
@@ -1983,6 +1828,8 @@ Object payload = expr.getValue(message);
 
 ## Spring Expression Language (SpEL) - Language Reference - Variables
 
+- The #this and #root Variables
+
 ## Spring Expression Language (SpEL) - Language Reference - Functions
 
 ## Spring Expression Language (SpEL) - Language Reference - Bean References
@@ -1993,11 +1840,174 @@ Object payload = expr.getValue(message);
 
 ## Spring Expression Language (SpEL) - Language Reference - Safe Navigation Operator
 
+- Safe Property and Method Access
+- Safe Collection Selection and Projection
+- Null-safe Operations in Compound Expressions
+
 ## Spring Expression Language (SpEL) - Language Reference - Collection Selection
 
 ## Spring Expression Language (SpEL) - Language Reference - Collection Projection
 
 ## Spring Expression Language (SpEL) - Language Reference - Expression Templating
+
+## Spring Expression Language (SpEL) - Classes Used in the Examples
+
+- 이 섹션은 이 챕터의 예제에서 사용된 클래스를 보여줌.
+
+### Inventor
+
+```java
+package org.spring.samples.spel.inventor;
+
+import java.util.Date;
+import java.util.GregorianCalendar;
+
+public class Inventor {
+
+	private String name;
+	private String nationality;
+	private String[] inventions;
+	private Date birthdate;
+	private PlaceOfBirth placeOfBirth;
+
+	public Inventor(String name, String nationality) {
+		GregorianCalendar c= new GregorianCalendar();
+		this.name = name;
+		this.nationality = nationality;
+		this.birthdate = c.getTime();
+	}
+
+	public Inventor(String name, Date birthdate, String nationality) {
+		this.name = name;
+		this.nationality = nationality;
+		this.birthdate = birthdate;
+	}
+
+	public Inventor() {
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getNationality() {
+		return nationality;
+	}
+
+	public void setNationality(String nationality) {
+		this.nationality = nationality;
+	}
+
+	public Date getBirthdate() {
+		return birthdate;
+	}
+
+	public void setBirthdate(Date birthdate) {
+		this.birthdate = birthdate;
+	}
+
+	public PlaceOfBirth getPlaceOfBirth() {
+		return placeOfBirth;
+	}
+
+	public void setPlaceOfBirth(PlaceOfBirth placeOfBirth) {
+		this.placeOfBirth = placeOfBirth;
+	}
+
+	public void setInventions(String[] inventions) {
+		this.inventions = inventions;
+	}
+
+	public String[] getInventions() {
+		return inventions;
+	}
+}
+```
+
+### PlaceOfBirth
+
+```java
+package org.spring.samples.spel.inventor;
+
+public class PlaceOfBirth {
+
+	private String city;
+	private String country;
+
+	public PlaceOfBirth(String city) {
+		this.city=city;
+	}
+
+	public PlaceOfBirth(String city, String country) {
+		this(city);
+		this.country = country;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String s) {
+		this.city = s;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+}
+```
+
+### Society
+
+```java
+package org.spring.samples.spel.inventor;
+
+import java.util.*;
+
+public class Society {
+
+	private String name;
+
+	public static String Advisors = "advisors";
+	public static String President = "president";
+
+	private List<Inventor> members = new ArrayList<>();
+	private Map officers = new HashMap();
+
+	public List getMembers() {
+		return members;
+	}
+
+	public Map getOfficers() {
+		return officers;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public boolean isMember(String name) {
+		for (Inventor inventor : members) {
+			if (inventor.getName().equals(name)) {
+				return true;
+			}
+		}
+		return false;
+	}
+}
+```
 
 ## Aspect Oriented Programming with Spring
 
