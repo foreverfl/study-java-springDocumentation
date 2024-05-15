@@ -1259,15 +1259,87 @@ public class AppConfig {
 
 ## The IoC Container - Dependencies - Autowiring Collaborators
 
+### Limitations and Disadvantages of Autowiring
+
+### Excluding a Bean from Autowiring
+
 ## The IoC Container - Dependencies - Method Injection
+
+### Lookup Method Injection
+
+### Arbitrary Method Replacement
 
 ## The IoC Container - Bean Scopes
 
+### The Singleton Scope
+
+### The Prototype Scope
+
+### Singleton Beans with Prototype-bean Dependencies
+
+### Request, Session, Application, and WebSocket Scopes
+
+### Initial Web Configuration
+
+### Request scope
+
+### Session Scope
+
+### Application Scope
+
+### WebSocket Scope
+
+### Scoped Beans as Dependencies
+
+### Choosing the Type of Proxy to Create
+
+### Injecting Request/Session References Directly
+
+### Custom Scopes
+
+### Creating a Custom Scope
+
+### Using a Custom Scope
+
 ## The IoC Container - Customizing the Nature of a Bean
+
+### Lifecycle Callbacks
+
+### Initialization Callbacks
+
+### Destruction Callbacks
+
+### Default Initialization and Destroy Methods
+
+### Combining Lifecycle Mechanisms
+
+### Startup and Shutdown Callbacks
+
+### Shutting Down the Spring IoC Container Gracefully in Non-Web Applications
+
+### Thread Safety and Visibility
+
+### ApplicationContextAware and BeanNameAware
+
+### Other Aware Interfaces
 
 ## The IoC Container - Bean Definition Inheritance
 
 ## The IoC Container - Container Extension Points
+
+### Customizing Beans by Using a BeanPostProcessor
+
+### Example: Hello World, BeanPostProcessor-style
+
+### Example: The AutowiredAnnotationBeanPostProcessor
+
+### Customizing Configuration Metadata with a BeanFactoryPostProcessor
+
+### Example: The Class Name Substitution PropertySourcesPlaceholderConfigurer
+
+### Example: The PropertyOverrideConfigurer
+
+### Customizing Instantiation Logic with a FactoryBean
 
 ## The IoC Container - Annotation-based Container Configuration
 
@@ -1281,6 +1353,37 @@ public class AppConfig {
 > ##### Note
 >
 > - 어노테이션 주입은 XML 주입보다 먼저 수행됨. 따라서 두 가지 접근 방식을 통해 연결된 속성의 경우 XML 구성이 어노테이션을 재정의함.
+
+- **Post-Processor**: 스프링에서는 빈을 생성하고 초기화할 때 다양한 작업을 수행할 수 있도록 여러 종류의 후처리기(post-processor)를 제공함. 후처리기는 빈이 생성된 후 또는 빈의 의존성이 주입된 후 추가 작업을 수행할 수 있음.
+- `<context:annotation-config/>`: 이 태그는 여러 가지 유용한 후처리기를 자동으로 등록하여, 빈 정의에서 어노테이션 기반 설정을 사용할 수 있도록 해줌.
+- 스프링 부트와 같은 환경에서는 `@SpringBootApplication` 어노테이션이 이미 이러한 후처리기를 포함하고 있음.
+- 항상 post-processor를 개별 빈 정의로 등록할 수 있지만, XML 기반 Spring 구성에 다음 태그를 포함하여 암시적으로 등록할 수도 있음(context 네임스페이스가 포함된 것에 주목할 것).
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context
+		https://www.springframework.org/schema/context/spring-context.xsd">
+
+	<context:annotation-config/>
+
+</beans>
+```
+
+- `<context:annotation-config/>` 요소는 다음과 같은 post-processor를 암시적으로 등록함.
+  > - `ConfigurationClassPostProcessor`: `@Configuration` 클래스를 처리하여 `@Bean` 메서드를 스프링 빈으로 등록함.
+  > - `AutowiredAnnotationBeanPostProcessor`: `@Autowired`, `@Value`, `@Inject` 등의 어노테이션을 처리하여 의존성을 자동으로 주입함.
+  > - `CommonAnnotationBeanPostProcessor`: JSR-250 어노테이션 (`@Resource`, `@PostConstruct`, `@PreDestroy` 등)을 처리함.
+  > - `PersistenceAnnotationBeanPostProcessor`: JPA 관련 어노테이션 (`@PersistenceContext`, `@PersistenceUnit`)을 처리함.
+  > - `EventListenerMethodProcessor`: `@EventListener` 어노테이션을 처리하여 이벤트 리스너 메서드를 등록함.
+
+> ##### Note
+>
+> - `<context:annotation-config/>`는 정의된 것과 동일한 애플리케이션 컨텍스트에 있는 빈의 어노테이션만 찾음. 이는 `DispatcherServlet`의 `WebApplicationContext`에 `<context:annotation-config/>`를 넣으면 서비스가 아닌 컨트롤러에서만 `@Autowired` 빈을 확인한다는 의미. 자세한 내용은 `DispatcherServlet`을 참조할 것.
 
 ## The IoC Container - Annotation-based Container Configuration - Using @Autowired
 
