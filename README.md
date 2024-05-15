@@ -2,11 +2,11 @@
 
 - Spring Framework 6.1.6 공식 문서를 한글로 번역 및 재구성한 자료입니다. 해당 자료 내용을 사용할 경우에는 출처를 남겨주세요. 그리고 유용하다고 생각하시면, 스타 부탁드려요. 🥲
 - 번역은 Claude Opus/ChatGPT4를 사용했고, 어색한 부분은 직접 손을 봤습니다.
-- 오역이 있을 수 있기 때문에, 이 페이지는 참고만 하시고, 실제 작업에서는 직접 [영어](https://docs.spring.io/spring-framework/reference/)로 참고해주세요.
+- 오역이 있을 수 있기 때문에, 이 페이지는 참고만 하시고, 실제 프로그래밍에서는 직접 [영어](https://docs.spring.io/spring-framework/reference/)로 참고해주세요.
 - 구성상 불필요하다고 생각하는 부분은 제외했습니다.
 - 여러 설명을 공식 문서 외에도 추가했습니다. 문서를 읽다가 추가 설명이 있으면 좋겠다고 생각한 부분에 대해서 추가했고, 최근에는 Spring Boot를 많이 쓰기 때문에 관련된 설명을 추가한 부분도 있습니다.
-- 기본적인 구성은 `Java` 파일을 통해 진행했습니다. `XML` 기반으로 파일 설정은 하는 부분은 모두 `Java`기반으로 변경했습니다. 제가 예제 코드도 만들진 않을 거에요. 레거시 코드를 운영하는 회사도 있을 거란 생각에 `XML`기반 설정도 알면 좋겠다고 생각은 합니다만, 제가 할 마음은 들지 않네요. `XML`기반 설정에 대해서 잘 아시는 분이 도와주시면 감사하겠습니다. 🥺
-- `curl`을 통해 요청을 보낼 때는 윈도우의 `cmd` 사용했습니다.
+- 기본적인 예제 코드 구성은 `Java` 파일을 통해 진행했습니다. `XML` 기반으로 파일 설정은 하는 부분 영어로는 번역을 했지만, 제가 만든 예제 코드는 모두 `Java` 기반입니다. 레거시 코드를 운영하는 회사도 있을 거란 생각에 `XML`기반 설정도 알면 좋겠다고 생각은 합니다만, 제가 할 마음은 들지 않네요. `XML`기반 설정에 대해서 잘 아시는 분이 도와주시면 감사하겠습니다. 🥺
+- `curl`을 통해 요청을 보낼 때는 윈도우의 `cmd`를 사용했습니다. Postman으로 연습을 해도 괜찮다 싶어요.
 - View단을 기본적으로는 Thymeleaf를 활용했습니다. 솔직히 혼자 개발하면 Restful하게 스프링에서 작성하고, React를 이용해서 View단에서 개발을 주로 개발을 하지만, 설명의 편의상 Thymeleaf를 사용했습니다. JSP로 예제가 필요한 분은 직접 만들어보시면 좋을 거라 생각합니다. 😊
 - 목차는 영어로 구성했습니다. 핵심 개념을 한글로 바꾸는 게 더 이상하다고 생각합니다. 목차에서 링크가 작동하는 부분만 번역이 된 부분 또는 번역이 될 예정인 부분입니다.
 - 예제 코드를 돌려보고 싶은 분들은 프로젝트를 `git clone`하고, 아래의 `application.properties` 구성을 참조해서 `application.properties`를 추가해주세요.
@@ -57,71 +57,70 @@ spring.datasource.password=***
   > - [The IoC Container - Registering a LoadTimeWeaver](#the-ioc-container---registering-a-loadtimeweaver)
   > - [The IoC Container - Additional Capabilities of the ApplicationContext](#the-ioc-container---additional-capabilities-of-the-applicationcontext)
   > - [The IoC Container - The BeanFactory API](#the-ioc-container---the-beanfactory-api)
-  > - Resources
-  > - Validation, Data Binding, and Type Conversion
-  > - Validation, Data Binding, and Type Conversion - Validation by Using Spring’s Validator Interface
-  > - Validation, Data Binding, and Type Conversion - Data Binding
-  > - Validation, Data Binding, and Type Conversion - Resolving Codes to Error Messages
-  > - Validation, Data Binding, and Type Conversion - Spring Type Conversion
-  > - Validation, Data Binding, and Type Conversion - Spring Field Formatting
-  > - Validation, Data Binding, and Type Conversion - Configuring a Global Date and Time Format
-  > - Validation, Data Binding, and Type Conversion - Java Bean Validation
+  > - [Resources](#resources)
+  > - [Validation, Data Binding, and Type Conversion](#validation-data-binding-and-type-conversion)
+  > - [Validation, Data Binding, and Type Conversion - Validation by Using Spring’s Validator Interface](#validation-data-binding-and-type-conversion)
+  > - [Validation, Data Binding, and Type Conversion - Data Binding](#validation-data-binding-and-type-conversion---data-binding)
+  > - [Validation, Data Binding, and Type Conversion - Resolving Codes to Error Messages](#validation-data-binding-and-type-conversion---resolving-codes-to-error-messages)
+  > - [Validation, Data Binding, and Type Conversion - Spring Type Conversion](#validation-data-binding-and-type-conversion---spring-type-conversion)
+  > - [Validation, Data Binding, and Type Conversion - Spring Field Formatting](#validation-data-binding-and-type-conversion---spring-field-formatting)
+  > - [Validation, Data Binding, and Type Conversion - Configuring a Global Date and Time Format](#validation-data-binding-and-type-conversion---configuring-a-global-date-and-time-format)
+  > - [Validation, Data Binding, and Type Conversion - Java Bean Validation](#validation-data-binding-and-type-conversion---java-bean-validation)
   > - [Spring Expression Language (SpEL)](#spring-expression-language-spel)
   > - [Spring Expression Language (SpEL) - Evaluation](#spring-expression-language-spel---evaluation)
-  > - Spring Expression Language (SpEL) - Expressions in Bean Definitions
-  > - Spring Expression Language (SpEL) - Language Reference
-  > - Spring Expression Language (SpEL) - Language Reference - Literal Expressions
-  > - Spring Expression Language (SpEL) - Language Reference - Properties, Arrays, Lists, Maps, and Indexers
-  > - Spring Expression Language (SpEL) - Language Reference - Inline Lists
-  > - Spring Expression Language (SpEL) - Language Reference - Inline Maps
-  > - Spring Expression Language (SpEL) - Language Reference - Array Construction
-  > - Spring Expression Language (SpEL) - Language Reference - Methods
-  > - Spring Expression Language (SpEL) - Language Reference - Operators
-  > - Spring Expression Language (SpEL) - Language Reference - Types
-  > - Spring Expression Language (SpEL) - Language Reference - Constructors
-  > - Spring Expression Language (SpEL) - Language Reference - Variables
-  > - Spring Expression Language (SpEL) - Language Reference - Functions
-  > - Spring Expression Language (SpEL) - Language Reference - Bean References
-  > - Spring Expression Language (SpEL) - Language Reference - Ternary Operator (If-Then-Else)
-  > - Spring Expression Language (SpEL) - Language Reference - The Elvis Operator
-  > - Spring Expression Language (SpEL) - Language Reference - Safe Navigation Operator
-  > - Spring Expression Language (SpEL) - Language Reference - Collection Selection
-  > - Spring Expression Language (SpEL) - Language Reference - Collection Projection
-  > - Spring Expression Language (SpEL) - Language Reference - Expression Templating
-  > - Aspect Oriented Programming with Spring
-  > - Aspect Oriented Programming with Spring - AOP Concepts
-  > - Aspect Oriented Programming with Spring - Spring AOP Capabilities and Goals
-  > - Aspect Oriented Programming with Spring - AOP Proxies
-  > - Aspect Oriented Programming with Spring - @AspectJ support
-  > - Aspect Oriented Programming with Spring - Enabling @AspectJ Support
-  > - Aspect Oriented Programming with Spring - Enabling @AspectJ Support - Declaring an Aspect
-  > - Aspect Oriented Programming with Spring - Enabling @AspectJ Support - Declaring a Pointcut
-  > - Aspect Oriented Programming with Spring - Enabling @AspectJ Support - Declaring Advice
-  > - Aspect Oriented Programming with Spring - Enabling @AspectJ Support - Introductions
-  > - Aspect Oriented Programming with Spring - Enabling @AspectJ Support - Aspect Instantiation Models
-  > - Aspect Oriented Programming with Spring - Enabling @AspectJ Support - An AOP Example
-  > - Aspect Oriented Programming with Spring - Schema-based AOP Support
-  > - Aspect Oriented Programming with Spring - Choosing which AOP Declaration Style to Use
-  > - Aspect Oriented Programming with Spring - Mixing Aspect Types
-  > - Aspect Oriented Programming with Spring - Proxying Mechanisms
-  > - Aspect Oriented Programming with Spring - Programmatic Creation of @AspectJ Proxies
-  > - Aspect Oriented Programming with Spring - Using AspectJ with Spring Applications
-  > - Aspect Oriented Programming with Spring - Further Resources
-  > - Spring AOP APIs
-  > - Spring AOP APIs - Pointcut API in Spring
-  > - Spring AOP APIs - Advice API in Spring
-  > - Spring AOP APIs - The Advisor API in Spring
-  > - Spring AOP APIs - Using the ProxyFactoryBean to Create AOP Proxies
-  > - Spring AOP APIs - Concise Proxy Definitions
-  > - Spring AOP APIs - Creating AOP Proxies Programmatically with the ProxyFactory
-  > - Spring AOP APIs - Manipulating Advised Objects
-  > - Spring AOP APIs - Using the "auto-proxy" facility
-  > - Spring AOP APIs - Using TargetSource Implementations
-  > - Spring AOP APIs - Defining New Advice Types
-  > - Null-safety
-  > - Data Buffers and Codecs
-  > - Logging
-  > - Ahead of Time Optimizations
+  > - [Spring Expression Language (SpEL) - Expressions in Bean Definitions](#spring-expression-language-spel---expressions-in-bean-definitions)
+  > - [Spring Expression Language (SpEL) - Language Reference](#spring-expression-language-spel---language-reference)
+  > - [Spring Expression Language (SpEL) - Language Reference - Literal Expressions](#spring-expression-language-spel---language-reference---literal-expressions)
+  > - [Spring Expression Language (SpEL) - Language Reference - Properties, Arrays, Lists, Maps, and Indexers](#spring-expression-language-spel---language-reference---properties-arrays-lists-maps-and-indexers)
+  > - [Spring Expression Language (SpEL) - Language Reference - Inline Lists](#spring-expression-language-spel---language-reference---inline-lists)
+  > - [Spring Expression Language (SpEL) - Language Reference - Inline Maps](#spring-expression-language-spel---language-reference---inline-maps)
+  > - [Spring Expression Language (SpEL) - Language Reference - Array Construction](#spring-expression-language-spel---language-reference---array-construction)
+  > - [Spring Expression Language (SpEL) - Language Reference - Methods](#spring-expression-language-spel---language-reference---methods)
+  > - [Spring Expression Language (SpEL) - Language Reference - Operators](#spring-expression-language-spel---language-reference---operators)
+  > - [Spring Expression Language (SpEL) - Language Reference - Types](#spring-expression-language-spel---language-reference---types)
+  > - [Spring Expression Language (SpEL) - Language Reference - Constructors](#spring-expression-language-spel---language-reference---constructors)
+  > - [Spring Expression Language (SpEL) - Language Reference - Variables](#spring-expression-language-spel---language-reference---variables)
+  > - [Spring Expression Language (SpEL) - Language Reference - Functions](#spring-expression-language-spel---language-reference---functions)
+  > - [Spring Expression Language (SpEL) - Language Reference - Bean References](#spring-expression-language-spel---language-reference---bean-references)
+  > - [Spring Expression Language (SpEL) - Language Reference - Ternary Operator (If-Then-Else)](#spring-expression-language-spel---language-reference---ternary-operator-if-then-else)
+  > - [Spring Expression Language (SpEL) - Language Reference - The Elvis Operator](#spring-expression-language-spel---language-reference---ternary-operator-if-then-else)
+  > - [Spring Expression Language (SpEL) - Language Reference - Safe Navigation Operator](#spring-expression-language-spel---language-reference---safe-navigation-operator)
+  > - [Spring Expression Language (SpEL) - Language Reference - Collection Selection](#spring-expression-language-spel---language-reference---collection-selection)
+  > - [Spring Expression Language (SpEL) - Language Reference - Collection Projection](#spring-expression-language-spel---language-reference---collection-projection)
+  > - [Spring Expression Language (SpEL) - Language Reference - Expression Templating](#spring-expression-language-spel---language-reference---expression-templating)
+  > - [Aspect Oriented Programming with Spring](#aspect-oriented-programming-with-spring)
+  > - [Aspect Oriented Programming with Spring - AOP Concepts](#aspect-oriented-programming-with-spring---aop-concepts)
+  > - [Aspect Oriented Programming with Spring - Spring AOP Capabilities and Goals](#aspect-oriented-programming-with-spring---spring-aop-capabilities-and-goals)
+  > - [Aspect Oriented Programming with Spring - AOP Proxies](#aspect-oriented-programming-with-spring---aop-proxies)
+  > - [Aspect Oriented Programming with Spring - @AspectJ support](#aspect-oriented-programming-with-spring---aspectj-support)
+  > - [Aspect Oriented Programming with Spring - Enabling @AspectJ Support](#aspect-oriented-programming-with-spring---enabling-aspectj-support)
+  > - [Aspect Oriented Programming with Spring - Enabling @AspectJ Support - Declaring an Aspect](#aspect-oriented-programming-with-spring---enabling-aspectj-support---declaring-an-aspect)
+  > - [Aspect Oriented Programming with Spring - Enabling @AspectJ Support - Declaring a Pointcut](#aspect-oriented-programming-with-spring---enabling-aspectj-support---declaring-a-pointcut)
+  > - [Aspect Oriented Programming with Spring - Enabling @AspectJ Support - Declaring Advice](#aspect-oriented-programming-with-spring---enabling-aspectj-support---declaring-advice)
+  > - [Aspect Oriented Programming with Spring - Enabling @AspectJ Support - Introductions](#aspect-oriented-programming-with-spring---enabling-aspectj-support---introductions)
+  > - [Aspect Oriented Programming with Spring - Enabling @AspectJ Support - Aspect Instantiation Models](#aspect-oriented-programming-with-spring---enabling-aspectj-support---aspect-instantiation-models)
+  > - [Aspect Oriented Programming with Spring - Enabling @AspectJ Support - An AOP Example](#aspect-oriented-programming-with-spring---enabling-aspectj-support---an-aop-example)
+  > - [Aspect Oriented Programming with Spring - Schema-based AOP Support](#aspect-oriented-programming-with-spring---schema-based-aop-support)
+  > - [Aspect Oriented Programming with Spring - Choosing which AOP Declaration Style to Use](#aspect-oriented-programming-with-spring---choosing-which-aop-declaration-style-to-use)
+  > - [Aspect Oriented Programming with Spring - Mixing Aspect Types](#aspect-oriented-programming-with-spring---mixing-aspect-types)
+  > - [Aspect Oriented Programming with Spring - Proxying Mechanisms](#aspect-oriented-programming-with-spring---proxying-mechanisms)
+  > - [Aspect Oriented Programming with Spring - Programmatic Creation of @AspectJ Proxies](#aspect-oriented-programming-with-spring---programmatic-creation-of-aspectj-proxies)
+  > - [Aspect Oriented Programming with Spring - Using AspectJ with Spring Applications](#aspect-oriented-programming-with-spring---using-aspectj-with-spring-applications)
+  > - [Spring AOP APIs](#spring-aop-apis)
+  > - [Spring AOP APIs - Pointcut API in Spring](#spring-aop-apis---pointcut-api-in-spring)
+  > - [Spring AOP APIs - Advice API in Spring](#spring-aop-apis---advice-api-in-spring)
+  > - [Spring AOP APIs - The Advisor API in Spring](#spring-aop-apis---the-advisor-api-in-spring)
+  > - [Spring AOP APIs - Using the ProxyFactoryBean to Create AOP Proxies](#spring-aop-apis---using-the-proxyfactorybean-to-create-aop-proxies)
+  > - [Spring AOP APIs - Concise Proxy Definitions](#spring-aop-apis---concise-proxy-definitions)
+  > - [Spring AOP APIs - Creating AOP Proxies Programmatically with the ProxyFactory](#spring-aop-apis---creating-aop-proxies-programmatically-with-the-proxyfactory)
+  > - [Spring AOP APIs - Manipulating Advised Objects](#spring-aop-apis---manipulating-advised-objects)
+  > - [Spring AOP APIs - Using the "auto-proxy" facility](#spring-aop-apis---using-the-auto-proxy-facility)
+  > - [Spring AOP APIs - Using TargetSource Implementations](#spring-aop-apis---using-targetsource-implementations)
+  > - [Spring AOP APIs - Defining New Advice Types](#spring-aop-apis---defining-new-advice-types)
+  > - [Null-safety](#null-safety)
+  > - [Data Buffers and Codecs](#data-buffers-and-codecs)
+  > - [Logging](#logging)
+  > - [Ahead of Time Optimizations](#ahead-of-time-optimizations)
   > - Appendix
   > - Appendix - XML Schemas
   > - Appendix - XML Schema Authoring
@@ -745,114 +744,96 @@ context.refresh();
 
 ## The IoC Container - Bean Overview
 
-### 개요
+- Spring IoC 컨테이너는 하나 이상의 빈을 관리함. 이러한 빈은 컨테이너에 제공하는 구성 메타데이터(예: XML `<bean/>` 정의 형식)를 사용하여 생성됨.
+- 컨테이너 내에서 이러한 빈 정의는 `BeanDefinition` 객체로 표현되며, 여기에는 (다른 정보 중에서) 다음과 같은 메타데이터가 포함됨.
+  > - **패키지 한정 클래스 이름**: 일반적으로 정의되는 빈의 실제 구현 클래스.
+  > - 빈이 컨테이너에서 동작해야 하는 방식(범위, 라이프사이클 콜백 등)을 명시하는 빈 동작 구성 요소.
+  > - 빈이 작업을 수행하는 데 필요한 다른 빈에 대한 참조. 이러한 참조를 협력자 또는 의존성이라고도 함.
+  > - 새로 생성된 객체에 설정할 기타 구성 설정. 예를 들어, 연결 풀을 관리하는 빈에서 사용할 풀의 크기 제한 또는 연결 수를 설정함.
+- 이 메타데이터는 각 빈 정의를 구성하는 일련의 속성으로 변환됨. 다음 표에서는 이러한 속성에 대해 설명함.
 
-- 빈(Bean)은 스프링 IoC 컨테이너에 의해 관리되는 객체. 스프링에서는 애플리케이션의 핵심 컴포넌트를 빈으로 정의하고, 컨테이너가 빈의 생성, 의존성 주입, 생명주기 관리 등을 담당함. 빈은 일반적으로 자바 클래스로 구현되며, POJO(Plain Old Java Object) 형태로 작성됨. 스프링 컨테이너는 빈 설정 메타데이터를 기반으로 빈 인스턴스를 생성하고, 의존성을 주입하며, 빈의 생명주기를 관리함.
-- `BeanDefinition` 객체는 스프링 컨테이너 내부에서 빈을 정의하는 데 사용되는 객체. 이 객체는 빈의 메타데이터를 포함하고 있으며, 스프링 컨테이너는 이 메타데이터를 기반으로 빈을 생성하고 관리함.
-- `@Bean`, `@Controller`, `@Service`, `@Component` 등의 어노테이션을 사용하여 클래스를 빈으로 등록하면, 스프링 컨테이너는 해당 클래스의 정보를 기반으로 BeanDefinition 객체를 생성함.
-- `BeanDefinition` 객체는 다음과 같은 메타데이터를 포함함.
-  > - **빈의 클래스 이름 (패키지 경로 포함)**: 빈으로 정의된 클래스의 실제 구현 클래스 이름.
-  > - **빈의 동작 설정**: 빈이 컨테이너에서 어떻게 동작해야 하는지에 대한 정보. 예를 들어 빈의 스코프(싱글톤, 프로토타입 등), 라이프사이클 콜백(초기화 메서드, 소멸 메서드 등) 등이 포함됨.
-  > - **의존성 참조**: 빈이 의존하는 다른 빈에 대한 참조. 이를 통해 의존성 주입(Dependency Injection)이 이루어짐.
-  > - **기타 설정**: 빈의 프로퍼티 값, 풀의 크기 제한, 커넥션 수 등 빈 생성 시 필요한 추가적인 설정 정보.
-- 기존의 메타데이터와 싱글톤 인스턴스를 오버라이드하는 것은 어느 정도 지원되지만, 런타임에 새로운 빈을 등록하는 것은 공식적으로 지원되지 않음. 런타임에 빈을 등록하면 컨테이너에 동시 접근이 발생할 수 있으며, 이로 인해 동시성 문제(concurrent access exceptions)나 빈 컨테이너의 상태 불일치(inconsistent state) 문제가 발생할 수 있음. 따라서 가능한 한 빈의 등록은 애플리케이션 초기화 시점에 이루어져야 하며, 런타임에 동적으로 빈을 등록하는 것은 피하는 것이 좋음. 스프링 컨테이너는 초기화 시점에 빈의 메타데이터를 분석하고 처리하여 일관된 상태를 유지하므로, 런타임에 새로운 빈을 등록하면 이러한 일관성이 깨질 수 있음.
+| Property                 | 설명이 포함된 위치       |
+| ------------------------ | ------------------------ |
+| Class                    | Instantiating Beans      |
+| Name                     | Naming Beans             |
+| Scope                    | Bean Scopes              |
+| Constructor arguments    | Dependency Injection     |
+| Properties               | Dependency Injection     |
+| Autowiring mode          | Autowiring Collaborators |
+| Lazy initialization mode | Lazy-initialized Beans   |
+| Initialization method    | Initialization Callbacks |
+| Destruction method       | Destruction Callbacks    |
+
+- 특정 빈을 생성하는 방법에 대한 정보가 포함된 빈 정의 외에도 `ApplicationContext` 구현을 통해 컨테이너 외부에서 (사용자가) 생성한 기존 객체의 등록이 허용됨. 이는 `getBeanFactory()` 메서드를 통해 `ApplicationContext`의 `BeanFactory`에 액세스하여 수행되며, 이 메서드는 `DefaultListableBeanFactory` 구현을 반환함. `DefaultListableBeanFactory`는 `registerSingleton(..)` 및 `registerBeanDefinition(..)` 메서드를 통해 이 등록을 지원함. 그러나 일반적인 애플리케이션은 일반 빈 정의 메타데이터를 통해 정의된 빈으로만 작동함.
+
+> ##### Note
+>
+> - 빈 메타데이터와 수동으로 제공된 싱글톤 인스턴스는 컨테이너가 자동 연결 및 기타 내성적 단계에서 올바르게 추론할 수 있도록 가능한 한 빨리 등록해야 합니다. 기존 메타데이터와 기존 싱글톤 인스턴스를 재정의하는 것은 어느 정도 지원되지만, 런타임에 새 빈을 등록하는 것(팩토리에 대한 실시간 액세스와 동시에)은 공식적으로 지원되지 않으며 동시 액세스 예외, 빈 컨테이너의 불일치 상태 또는 둘 다로 이어질 수 있습니다.
 
 ### Naming Beans
 
-- 모든 빈은 하나 이상의 식별자를 가져야 함. 이러한 식별자는 빈을 고유하게 식별하는 데 사용됨. 빈의 식별자는 XML 설정에서는 id 속성이나 name 속성으로 지정할 수 있음. 자바 설정에서는 `@Bean` 어노테이션의 `name` 속성을 사용하여 빈의 이름을 지정할 수 있음. 빈의 이름은 컨테이너 내에서 고유해야 하며, 일반적으로 소문자로 시작하고 카멜 케이스(camelCase) 규칙을 따름.
-- id 속성
-
-  > - 빈의 고유한 식별자를 지정하는 데 사용됨.
-  > - id 속성의 값은 빈의 유일한 이름이며, 컨테이너 내에서 고유해야 함.
-  > - id 속성은 하나의 값만 가질 수 있음.
-  > - id 속성은 XML 스키마에 의해 제약을 받음. 유효한 XML 식별자 규칙을 따라야 함. (예: 공백 문자를 포함할 수 없음)
-
-- name 속성
-
-  > - 빈의 하나 이상의 별칭을 지정하는 데 사용됨.
-  > - name 속성은 빈의 추가적인 이름을 지정할 때 사용됨.
-  > - name 속성은 여러 개의 값을 가질 수 있으며, 쉼표(,), 세미콜론(;), 공백 문자로 구분할 수 있음.
-  > - name 속성은 id 속성보다 더 유연한 명명 규칙을 허용함. (예: 공백 문자 포함 가능)
-
-- id와 name 속성이 모두 생략된 경우
-  > - 스프링 컨테이너는 클래스 이름을 기반으로 빈의 이름을 생성함.
-  > - 클래스 이름의 첫 글자를 소문자로 변환한 형태가 빈의 이름으로 사용됨.
-  > - 예를 들어, com.example.MyBean 클래스의 경우 빈의 이름은 myBean이 됨.
-  > - 이렇게 자동 생성된 빈의 이름은 컨테이너 내에서 고유해야 함.
-  > - 자동 생성된 빈의 이름을 사용하여 빈을 참조할 수 있음.
-- XML 예제
-
-```xml
-<bean id="myBean" name="alias1, alias2" class="com.example.MyBean">
-  <!-- ... -->
-</bean>
-```
-
-- 어노테이션 예제
-
-```java
-// 메소드 명인 'myBean'이 id로 사용됨
-@Bean(name = {"myBean", "alias1", "alias2"})
-public MyBean myBean() {
-  return new MyBean();
-}
-```
+모든 빈에는 하나 이상의 식별자가 있습니다. 이러한 식별자는 빈을 호스팅하는 컨테이너 내에서 고유해야 합니다. 빈은 일반적으로 하나의 식별자만 가집니다. 그러나 둘 이상 필요한 경우 추가 식별자를 별칭으로 간주할 수 있습니다.
+XML 기반 구성 메타데이터에서는 id 속성, name 속성 또는 둘 다를 사용하여 빈 식별자를 지정합니다. id 속성을 사용하면 정확히 하나의 ID를 지정할 수 있습니다. 일반적으로 이러한 이름은 영숫자('myBean', 'someService' 등)이지만 특수 문자도 포함할 수 있습니다. 빈에 대한 다른 별칭을 도입하려면 name 속성에서 쉼표(,), 세미콜론(;) 또는 공백으로 구분하여 지정할 수도 있습니다. id 속성은 xsd:string 유형으로 정의되어 있지만 XML 파서가 아닌 컨테이너에 의해 빈 ID의 고유성이 적용됩니다.
+빈에 이름이나 ID를 제공할 필요는 없습니다. 이름이나 ID를 명시적으로 제공하지 않으면 컨테이너가 해당 빈에 대해 고유한 이름을 생성합니다. 그러나 ref 요소를 사용하거나 Service Locator 스타일 조회를 통해 이름으로 해당 빈을 참조하려면 이름을 제공해야 합니다. 이름을 제공하지 않는 동기는 내부 빈 및 자동 연결 협력자 사용과 관련이 있습니다.
 
 ### Aliasing a Bean outside the Bean Definition
 
-- 빈에는 별칭(alias)을 지정할 수 있음. 별칭은 빈의 실제 이름과 다른 이름으로 빈을 참조할 수 있게 해줌. 이는 같은 빈을 다른 이름으로 사용해야 하는 경우에 유용함. XML 설정에서는 `<alias>` 태그를 사용하여 빈의 별칭을 정의할 수 있음. 자바 설정에서는 `@Bean` 어노테이션의 `name` 속성에 여러 개의 이름을 지정하여 별칭을 정의할 수 있음. 별칭은 빈의 실제 이름과 동일한 방식으로 사용할 수 있음.
-- 별칭을 사용하는 것은 다음과 같은 이점이 있음.
+모든 빈에는 하나 이상의 식별자가 있습니다. 이러한 식별자는 빈을 호스팅하는 컨테이너 내에서 고유해야 합니다. 빈은 일반적으로 하나의 식별자만 가집니다. 그러나 둘 이상 필요한 경우 추가 식별자를 별칭으로 간주할 수 있습니다.
+XML 기반 구성 메타데이터에서는 id 속성, name 속성 또는 둘 다를 사용하여 빈 식별자를 지정합니다. id 속성을 사용하면 정확히 하나의 ID를 지정할 수 있습니다. 일반적으로 이러한 이름은 영숫자('myBean', 'someService' 등)이지만 특수 문자도 포함할 수 있습니다. 빈에 대한 다른 별칭을 도입하려면 name 속성에서 쉼표(,), 세미콜론(;) 또는 공백으로 구분하여 지정할 수도 있습니다. id 속성은 xsd:string 유형으로 정의되어 있지만 XML 파서가 아닌 컨테이너에 의해 빈 ID의 고유성이 적용됩니다.
+빈에 이름이나 ID를 제공할 필요는 없습니다. 이름이나 ID를 명시적으로 제공하지 않으면 컨테이너가 해당 빈에 대해 고유한 이름을 생성합니다. 그러나 ref 요소를 사용하거나 Service Locator 스타일 조회를 통해 이름으로 해당 빈을 참조하려면 이름을 제공해야 합니다. 이름을 제공하지 않는 동기는 내부 빈 및 자동 연결 협력자 사용과 관련이 있습니다.
 
-  > - 서브시스템 간의 빈 이름 충돌을 방지할 수 있음. 서브시스템마다 고유한 명명 규칙을 사용할 수 있으며, 메인 애플리케이션에서는 별칭을 사용하여 충돌을 피할 수 있음.
-  > - 서브시스템의 빈 이름을 변경하더라도 메인 애플리케이션의 설정을 변경하지 않아도 됨. 별칭을 사용하면 서브시스템의 빈 이름이 변경되어도 메인 애플리케이션에서는 별칭을 통해 동일한 빈을 참조할 수 있음.
-  > - 서로 다른 컨텍스트나 설정 파일에서 동일한 빈을 참조할 때 별칭을 사용하면 코드의 가독성과 유지보수성을 높일 수 있음.
+> ##### Bean Naming Conventions
+>
+> - 관례적으로 빈을 명명할 때 인스턴스 필드 이름에 대한 표준 Java 규칙을 사용합니다. 즉, 빈 이름은 소문자로 시작하고 그 다음부터는 카멜 케이스를 사용합니다. 이러한 이름의 예로는 accountManager, accountService, userDao, loginController 등이 있습니다.
+> - 일관되게 빈의 이름을 지정하면 구성을 더 쉽게 읽고 이해할 수 있습니다. 또한 Spring AOP를 사용하는 경우 이름으로 관련된 빈 집합에 어드바이스를 적용할 때 많은 도움이 됩니다.
 
-- 예제
+> ##### Note
+>
+> - 클래스 경로에서 컴포넌트 스캐닝을 사용하면 Spring은 앞에서 설명한 규칙에 따라 이름 없는 컴포넌트에 대한 빈 이름을 생성합니다. 기본적으로 간단한 클래스 이름을 사용하고 첫 글자를 소문자로 변경합니다. 그러나 (드문 경우지만) 특별한 경우에 문자가 둘 이상이고 첫 번째와 두 번째 문자가 모두 대문자인 경우 원래 대소문자가 유지됩니다. 이는 Spring이 여기에서 사용하는 java.beans.Introspector.decapitalize에서 정의한 것과 동일한 규칙입니다.
+
+### Instantiating Beans
+
+- 빈 정의 자체에서 id 속성으로 지정된 최대 하나의 이름과 name 속성의 다른 이름을 조합하여 빈에 둘 이상의 이름을 제공할 수 있습니다. 이러한 이름은 동일한 빈에 대한 동등한 별칭일 수 있으며 애플리케이션의 각 구성 요소가 해당 구성 요소 자체에 특정한 빈 이름을 사용하여 공통 종속성을 참조할 수 있도록 하는 등 일부 상황에 유용합니다.
+- 그러나 빈이 실제로 정의된 위치에 모든 별칭을 지정하는 것이 항상 적절한 것은 아닙니다. 때로는 다른 곳에 정의된 빈에 대한 별칭을 도입하는 것이 바람직합니다. 이는 구성이 각 하위 시스템 간에 분할되고 각 하위 시스템에 자체 객체 정의 집합이 있는 대규모 시스템에서 일반적인 경우입니다. XML 기반 구성 메타데이터에서는 <alias/> 요소를 사용하여 이를 수행할 수 있습니다. 다음 예제에서는 이를 수행하는 방법을 보여줍니다:
+
+```xml
+<alias name="fromName" alias="toName"/>
+```
+
+- 이 경우 이 별칭 정의를 사용한 후 fromName이라는 이름의 빈(동일한 컨테이너 내)을 toName으로 참조할 수도 있습니다.
+- 예를 들어, 하위 시스템 A의 구성 메타데이터는 DataSource를 subsystemA-dataSource라는 이름으로 참조할 수 있습니다. 하위 시스템 B의 구성 메타데이터는 DataSource를 subsystemB-dataSource라는 이름으로 참조할 수 있습니다. 이 두 하위 시스템을 사용하는 메인 애플리케이션을 구성할 때 메인 애플리케이션은 DataSource를 myApp-dataSource라는 이름으로 참조합니다. 세 가지 이름이 모두 동일한 객체를 참조하도록 하려면 다음과 같은 별칭 정의를 구성 메타데이터에 추가할 수 있습니다:
 
 ```xml
 <alias name="myApp-dataSource" alias="subsystemA-dataSource"/>
 <alias name="myApp-dataSource" alias="subsystemB-dataSource"/>
 ```
 
-### Instantiating Beans
+- 이제 각 구성 요소와 메인 애플리케이션은 고유하고 충돌하지 않는 이름을 통해 dataSource를 참조할 수 있습니다(효과적으로 네임스페이스를 생성). 그러나 실제로는 동일한 빈을 참조합니다.
 
-- 스프링은 다양한 방법으로 빈을 인스턴스화할 수 있음. 가장 일반적인 방법은 빈 클래스의 기본 생성자를 사용하는 것. 스프링 컨테이너는 빈 클래스의 인스턴스를 생성하고, 필요한 의존성을 주입함. 또한 정적 팩토리 메서드나 인스턴스 팩토리 메서드를 사용하여 빈을 생성할 수도 있음. 이러한 방법을 사용하면 객체 생성 로직을 커스터마이즈할 수 있음.
-- 생성된 Bean을 인스턴스화 하는 것은 `new` 연산자를 쓰는 것과 동일함.
-- 일반적으로 빈은 해당 클래스의 생성자를 통해 생성되지만, 정적 팩토리 메서드를 사용하여 빈을 생성할 수도 있음. 정적 팩토리 메서드를 사용할 때는 해당 메서드가 위치한 클래스를 지정해야 함. 이 클래스는 실제로 빈을 생성하는 클래스일 수도 있고, 다른 클래스일 수도 있음. 스프링 컨테이너는 지정된 클래스의 정적 팩토리 메서드를 호출하여 빈을 생성함. 정적 팩토리 메서드가 반환하는 객체의 타입은 해당 메서드가 위치한 클래스와 동일할 수도 있고, 완전히 다른 클래스일 수도 있음. 이는 정적 팩토리 메서드를 사용하여 다양한 타입의 객체를 생성할 수 있음을 의미함.
-- 내부에 포함된 static한 클래스테임을 가져올 경우에는 `$`나 `.`을 사용함. `com.example.SomeThing$OtherThing` 또는 `com.example.SomeThing.OtherThing`와 같은 식으로 사용 가능함.
+> ##### Java-configuration
+>
+> - Java Configuration을 사용하는 경우 @Bean 주석을 사용하여 별칭을 제공할 수 있습니다. 자세한 내용은 @Bean 주석 사용을 참조하십시오.
 
 ### Instantiation with a Constructor
 
-- 일반적인 클래스를 사용하여 빈을 생성할 때 사용됨.
-- 클래스가 특정 인터페이스를 구현하거나 특정 방식으로 코딩될 필요는 없음.
-- 빈 클래스를 지정하는 것만으로 충분함.
-- 사용하는 IoC 유형에 따라 기본 생성자(인자가 없는 생성자)가 필요할 수 있음.
-- XML 기반 설정에서는 `<bean>` 태그의 `class` 속성을 사용하여 빈 클래스를 지정함.
-
 ### Instantiation with a Static Factory Method
-
-- 정적 팩토리 메서드를 사용하여 빈을 생성할 때 사용됨.
-- `class` 속성에는 정적 팩토리 메서드가 포함된 클래스를 지정하고, `factory-method` 속성에는 팩토리 메서드의 이름을 지정함.
-- 팩토리 메서드를 호출하여 객체를 반환받고, 이를 생성자를 통해 생성된 것처럼 다룸.
-- 레거시 코드에서 정적 팩토리를 호출하는 데 사용될 수 있음.
 
 ### Instantiation by Using an Instance Factory Method
 
-- 기존 빈의 인스턴스 팩토리 메서드를 사용하여 새로운 빈을 생성할 때 사용됨.
-- `class` 속성은 비워두고, `factory-bean` 속성에는 인스턴스 메서드를 포함하는 빈의 이름을 지정함.
-- `factory-method` 속성에는 호출할 인스턴스 메서드의 이름을 지정함.
-- 하나의 팩토리 클래스에 여러 개의 팩토리 메서드를 가질 수 있음.
-- 팩토리 빈 자체도 의존성 주입(DI)을 통해 관리되고 구성될 수 있음.
-
 ### Determining a Bean’s Runtime Type
-
-- 스프링 문서에서 `factory bean`은 인스턴스 또는 정적 팩토리 메서드를 통해 객체를 생성하도록 스프링 컨테이너에 구성된 빈을 의미함. 반면에 `FactoryBean`은 스프링에서 제공하는 특정 인터페이스를 구현한 클래스를 의미함.
-- 빈의 실제 런타임 타입을 결정하는 것은 간단하지 않음. 빈 메타데이터 정의에 지정된 클래스는 초기 클래스 참조일 뿐이며, 팩토리 메서드나 `FactoryBean` 클래스와 결합되어 실제 런타임 타입과 다를 수 있음. 또한 AOP 프록시가 빈 인스턴스를 래핑하여 실제 타입의 노출을 제한할 수 있음.
-- 특정 빈의 실제 런타임 타입을 알아내는 권장 방법은 `BeanFactory.getType` 메서드를 사용하는 것. 이 메서드는 위의 모든 경우를 고려하여 동일한 빈 이름에 대해 `BeanFactory.getBean` 호출이 반환할 객체의 타입을 반환함.
 
 ## The IoC Container - Dependencies
 
 - 일반적인 엔터프라이즈 애플리케이션은 단일 객체(또는 Spring에서는 빈(bean)이라고 부름)로 구성되지 않음. 가장 간단한 애플리케이션조차도 최종 사용자가 일관된 애플리케이션으로 보는 것을 표현하기 위해 함께 작동하는 몇 개의 객체를 가지고 있음. 다음 섹션에서는 독립적으로 존재하는 여러 개의 빈 정의를 정의하는 것에서부터 객체들이 목표를 달성하기 위해 협력하는 완전히 실현된 애플리케이션으로 나아가는 방법을 설명함.
+
+### Section Summary
+
+- Dependency Injection
+- Dependencies and Configuration in Detail
+- Using depends-on
+- Lazy-initialized Beans
+- Autowiring Collaborators
+- Method Injection
 
 ## The IoC Container - Dependencies - Dependency Injection
 
@@ -1183,7 +1164,96 @@ public class ExampleBean {
 
 ## The IoC Container - Dependencies - Dependencies and Configuration in Detail
 
+### Straight Values (Primitives, Strings, and so on)
+
+### The idref element
+
+### References to Other Beans (Collaborators)
+
+### Inner Beans
+
+### Collections
+
+### Collection Merging
+
+### Limitations of Collection Merging
+
+### Strongly-typed collection
+
+### Null and Empty String Values
+
+### XML Shortcut with the p-namespace
+
+### XML Shortcut with the c-namespace
+
+### Compound Property Names
+
 ## The IoC Container - Dependencies - Using depends-on
+
+- 한 빈이 다른 빈의 의존성인 경우, 일반적으로 한 빈이 다른 빈의 속성으로 설정된다는 의미. 일반적으로 XML 기반 구성 메타데이터에서 `<ref/>` 요소를 사용하여 이를 수행함. 그러나 때로는 빈 간의 의존성이 덜 직접적일 수 있음. 예를 들어, 데이터베이스 드라이버 등록과 같이 클래스의 정적 초기화 프로그램을 트리거해야 하는 경우. depends-on 속성을 사용하면 이 요소를 사용하는 빈이 초기화되기 전에 하나 이상의 빈을 명시적으로 강제로 초기화할 수 있음. 다음 예제에서는 depends-on 속성을 사용하여 단일 빈에 대한 의존성을 표현함.
+- 일반적으로 스프링 컨테이너는 빈을 필요한 시점에 지연 초기화(Lazy Initialization)하지만, 특정 순서로 빈을 초기화해야 하는 경우 depends-on을 사용하여 초기화 순서를 제어할 수 있음.
+- Java 설정에서는 빈이 다른 빈에 의존할 경우, 의존성을 주입하는 시점에 자동으로 빈이 생성되고 초기화됨. 그러나 여전히 특정 초기화 순서를 강제하고 싶을 때 `@DependsOn` 어노테이션을 사용할 수 있음. 예를 들어, 어떤 빈이 생성되기 전에 특정 클래스를 로드해야 하거나 특정 빈의 초기화 로직이 먼저 실행되어야 하는 경우 `@DependsOn`을 사용함.
+
+```xml
+<bean id="beanOne" class="ExampleBean" depends-on="manager"/>
+<bean id="manager" class="ManagerBean" />
+```
+
+```java
+// 여기서 depends-on 속성은 생략되었지만, 스프링이 자동으로 빈 초기화 순서를 처리해줌
+@Configuration
+public class AppConfig {
+
+    @Bean
+    public ManagerBean manager() {
+        return new ManagerBean();
+    }
+
+    @Bean
+    public ExampleBean beanOne() {
+        return new ExampleBean();
+    }
+}
+```
+
+- 여러 빈에 대한 의존성을 표현하려면 depends-on 속성의 값으로 빈 이름 목록을 제공하면 됨(쉼표, 공백 및 세미콜론은 유효한 구분 기호임)
+
+```xml
+<bean id="beanOne" class="ExampleBean" depends-on="manager,accountDao">
+	<property name="manager" ref="manager" />
+</bean>
+
+<bean id="manager" class="ManagerBean" />
+<bean id="accountDao" class="x.y.jdbc.JdbcAccountDao" />
+```
+
+```java
+@Configuration
+public class AppConfig {
+
+    @Bean
+    public ManagerBean manager() {
+        return new ManagerBean();
+    }
+
+    @Bean
+    public JdbcAccountDao accountDao() {
+        return new JdbcAccountDao();
+    }
+
+    @Bean
+    @DependsOn({"manager", "accountDao"})
+    public ExampleBean beanOne(ManagerBean manager) {
+        ExampleBean exampleBean = new ExampleBean();
+        exampleBean.setManager(manager);
+        return exampleBean;
+    }
+}
+```
+
+> ##### Note
+>
+> - depends-on 속성은 초기화 시점의 의존성과 싱글톤 빈의 경우에만 해당하는 소멸 시점의 의존성을 모두 지정할 수 있음. 주어진 빈과 depends-on 관계를 정의하는 의존 빈은 주어진 빈 자체가 소멸되기 전에 먼저 소멸됨. 따라서 depends-on은 종료 순서도 제어할 수 있음.
 
 ## The IoC Container - Dependencies - Lazy-initialized Beans
 
