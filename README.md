@@ -5,10 +5,12 @@
 - 오역이 있을 수 있기 때문에, 이 페이지는 참고만 하시고, 실제 프로그래밍에서는 직접 [영어](https://docs.spring.io/spring-framework/reference/)로 참고해주세요.
 - 구성상 불필요하다고 생각하는 부분은 제외했습니다.
 - 여러 설명을 공식 문서 외에도 추가했습니다. 문서를 읽다가 추가 설명이 있으면 좋겠다고 생각한 부분에 대해서 추가했고, 최근에는 Spring Boot를 많이 쓰기 때문에 관련된 설명을 추가한 부분도 있습니다.
-- 기본적인 예제 코드 구성은 `Java` 파일을 통해 진행했습니다. `XML` 기반으로 파일 설정은 하는 부분 영어로는 번역을 했지만, 제가 만든 예제 코드는 모두 `Java` 기반입니다. 레거시 코드를 운영하는 회사도 있을 거란 생각에 `XML`기반 설정도 알면 좋겠다고 생각은 합니다만, 제가 할 마음은 들지 않네요. `XML`기반 설정에 대해서 잘 아시는 분이 도와주시면 감사하겠습니다. 🥺
+- 기본적인 예제 코드 구성은 `Java` 파일을 통해 진행했습니다. `XML` 기반으로 파일 설정은 하는 부분 영어로는 번역을 했지만, 제가 만든 예제 코드는 모두 `Java` 기반입니다. 레거시 코드를 운영하는 회사도 있을 거란 생각에 `XML`기반 설정도 알면 좋겠다고 생각은 합니다만, 제가 예제 코드를 만들 마음은 들지 않네요. `XML`기반 설정에 대해서 잘 아시는 분이 도와주시면 감사하겠습니다. 🥺
 - `curl`을 통해 요청을 보낼 때는 윈도우의 `cmd`를 사용했습니다. Postman으로 연습을 해도 괜찮다 싶어요.
-- View단을 기본적으로는 Thymeleaf를 활용했습니다. 솔직히 혼자 개발하면 Restful하게 스프링에서 작성하고, React를 이용해서 View단에서 개발을 주로 개발을 하지만, 설명의 편의상 Thymeleaf를 사용했습니다. JSP로 예제가 필요한 분은 직접 만들어보시면 좋을 거라 생각합니다. 😊
-- 목차는 영어로 구성했습니다. 핵심 개념을 한글로 바꾸는 게 더 이상하다고 생각합니다. 목차에서 링크가 작동하는 부분만 번역이 된 부분 또는 번역이 될 예정인 부분입니다.
+- View단을 기본적으로는 Thymeleaf를 활용했습니다. 솔직히 개인 개발하면 Restful하게 스프링에서 작성하고, React를 이용해서 View단에서 개발을 주로 개발을 하지만, 설명의 편의상 Thymeleaf를 사용했습니다. JSP로 예제가 필요한 분은 직접 만들어보시면 좋을 거라 생각합니다. 😊
+- 목차는 영어로 구성했습니다. 핵심 개념을 한글로 바꾸는 게 더 이상하다고 생각합니다.
+- 일단 Appendix 부분은 대충 읽어봐서 필수는 아닌 것 같아서 제외했는데, 나중에 필요에 따라서 제가 작업을 할 수도 있고 안 할 수도 있습니다.
+- 추후 목표는 static한 사이트로 배포해서 공식 문서처럼 만들어보고 싶은데, 일단 계획만 하고 있습니다.
 - 예제 코드를 돌려보고 싶은 분들은 프로젝트를 `git clone`하고, 아래의 `application.properties` 구성을 참조해서 `application.properties`를 추가해주세요.
 
 ```properties
@@ -122,136 +124,103 @@ spring.datasource.password=***
   > - [Data Buffers and Codecs](#data-buffers-and-codecs)
   > - [Logging](#logging)
   > - [Ahead of Time Optimizations](#ahead-of-time-optimizations)
-  > - Appendix
-  > - Appendix - XML Schemas
-  > - Appendix - XML Schema Authoring
-  > - Appendix - Application Startup Steps
 
 - Testing
 
-  > - Introduction to Spring Testing
-  > - Unit Testing
-  > - Integration Testing
-  > - JDBC Testing Support
-  > - Spring TestContext Framework
-  > - Spring TestContext Framework - Key Abstractions
-  > - Spring TestContext Framework - Bootstrapping the TestContext Framework
-  > - Spring TestContext Framework - TestExecutionListener Configuration
-  > - Spring TestContext Framework - Application Events
-  > - Spring TestContext Framework - Test Execution Events
-  > - Spring TestContext Framework - Context Management
-  > - Spring TestContext Framework - Context Management - Context Configuration with XML resources
-  > - Spring TestContext Framework - Context Management - Context Configuration with Groovy Scripts
-  > - Spring TestContext Framework - Context Management - Context Configuration with Component Classes
-  > - Spring TestContext Framework - Context Management - Mixing XML, Groovy Scripts, and Component Classes
-  > - Spring TestContext Framework - Context Management - Configuration Configuration with Context Customizers
-  > - Spring TestContext Framework - Context Management - Context Configuration with Context Initializers
-  > - Spring TestContext Framework - Context Management - Context Configuration Inheritance
-  > - Spring TestContext Framework - Context Management - Context Configuration with Environment Profiles
-  > - Spring TestContext Framework - Context Management - Context Configuration with Test Property Sources
-  > - Spring TestContext Framework - Context Management - Context Configuration with Dynamic Property Sources
-  > - Spring TestContext Framework - Context Management - Loading a WebApplicationContext
-  > - Spring TestContext Framework - Context Management - Working with Web Mocks
-  > - Spring TestContext Framework - Context Management - Context Caching
-  > - Spring TestContext Framework - Context Management - Context Failure Threshold
-  > - Spring TestContext Framework - Context Management - Context Hierarchies
-  > - Spring TestContext Framework - Dependency Injection of Test Fixtures
-  > - Spring TestContext Framework - Testing Request- and Session-scoped Beans
-  > - Spring TestContext Framework - Transaction Management
-  > - Spring TestContext Framework - Executing SQL Scripts
-  > - Spring TestContext Framework - Parallel Test Execution
-  > - Spring TestContext Framework - TestContext Framework Support Classes
-  > - Spring TestContext Framework - Ahead of Time Support for Tests
-  > - WebTestClient
-  > - MockMvc
-  > - MockMvc - Overview
-  > - MockMvc - Static Imports
-  > - MockMvc - Setup Choices
-  > - MockMvc - Setup Features
-  > - MockMvc - Performing Requests
-  > - MockMvc - Defining Expectations
-  > - MockMvc - Async Requests
-  > - MockMvc - Streaming Responses
-  > - MockMvc - Filter Registrations
-  > - MockMvc - MockMvc vs End-to-End Tests
-  > - MockMvc - Further Examples
-  > - MockMvc - HtmlUnit Integration
-  > - MockMvc - HtmlUnit Integration - Why HtmlUnit Integration?
-  > - MockMvc - HtmlUnit Integration - MockMvc and HtmlUnit
-  > - MockMvc - HtmlUnit Integration - MockMvc and WebDriver
-  > - MockMvc - HtmlUnit Integration - MockMvc and Geb
-  > - Testing Client Applications
-  > - Appendix
-  > - Appendix - Annotations
-  > - Appendix - Annotations - Standard Annotation Support
-  > - Appendix - Annotations - Spring Testing Annotations
-  > - Appendix - Annotations - Spring Testing Annotations - @BootstrapWith
-  > - Appendix - Annotations - Spring Testing Annotations - @ContextConfiguration
-  > - Appendix - Annotations - Spring Testing Annotations - @WebAppConfiguration
-  > - Appendix - Annotations - Spring Testing Annotations - @ContextHierarchy
-  > - Appendix - Annotations - Spring Testing Annotations - @ContextCustomizerFactories
-  > - Appendix - Annotations - Spring Testing Annotations - @ActiveProfiles
-  > - Appendix - Annotations - Spring Testing Annotations - @TestPropertySource
-  > - Appendix - Annotations - Spring Testing Annotations - @DynamicPropertySource
-  > - Appendix - Annotations - Spring Testing Annotations - @DirtiesContext
-  > - Appendix - Annotations - Spring Testing Annotations - @TestExecutionListeners
-  > - Appendix - Annotations - Spring Testing Annotations - @RecordApplicationEvents
-  > - Appendix - Annotations - Spring Testing Annotations - @Commit
-  > - Appendix - Annotations - Spring Testing Annotations - @Rollback
-  > - Appendix - Annotations - Spring Testing Annotations - @BeforeTransaction
-  > - Appendix - Annotations - Spring Testing Annotations - @AfterTransaction
-  > - Appendix - Annotations - Spring Testing Annotations - @Sql
-  > - Appendix - Annotations - Spring Testing Annotations - @SqlConfig
-  > - Appendix - Annotations - Spring Testing Annotations - @SqlMergeMode
-  > - Appendix - Annotations - Spring Testing Annotations - @SqlGroup
-  > - Appendix - Annotations - Spring Testing Annotations - @DisabledInAotMode
-  > - Appendix - Annotations - Spring JUnit 4 Testing Annotations
-  > - Appendix - Annotations - Spring JUnit Jupiter Testing Annotations
-  > - Appendix - Annotations - Meta-Annotation Support for Testing
-  > - Appendix - Further Resources
+  > - [Introduction to Spring Testing](#introduction-to-spring-testing)
+  > - [Unit Testing](#unit-testing)
+  > - [Integration Testing](#integration-testing)
+  > - [JDBC Testing Support](#jdbc-testing-support)
+  > - [Spring TestContext Framework](#spring-testcontext-framework)
+  > - [Spring TestContext Framework - Key Abstractions](#spring-testcontext-framework---key-abstractions)
+  > - [Spring TestContext Framework - Bootstrapping the TestContext Framework](#spring-testcontext-framework---bootstrapping-the-testcontext-framework)
+  > - [Spring TestContext Framework - TestExecutionListener Configuration](#spring-testcontext-framework---testexecutionlistener-configuration)
+  > - [Spring TestContext Framework - Application Events](#spring-testcontext-framework---application-events)
+  > - [Spring TestContext Framework - Test Execution Events](#spring-testcontext-framework---test-execution-events)
+  > - [Spring TestContext Framework - Context Management](#spring-testcontext-framework---context-management)
+  > - [Spring TestContext Framework - Context Management - Context Configuration with XML resources](#spring-testcontext-framework---context-management---context-configuration-with-xml-resources)
+  > - [Spring TestContext Framework - Context Management - Context Configuration with Groovy Scripts](#spring-testcontext-framework---context-management---context-configuration-with-groovy-scripts)
+  > - [Spring TestContext Framework - Context Management - Context Configuration with Component Classes](#spring-testcontext-framework---context-management---context-configuration-with-component-classes)
+  > - [Spring TestContext Framework - Context Management - Mixing XML, Groovy Scripts, and Component Classes](#spring-testcontext-framework---context-management---mixing-xml-groovy-scripts-and-component-classes)
+  > - [Spring TestContext Framework - Context Management - Configuration Configuration with Context Customizers](#spring-testcontext-framework---context-management---configuration-configuration-with-context-customizers)
+  > - [Spring TestContext Framework - Context Management - Context Configuration with Context Initializers](#spring-testcontext-framework---context-management---configuration-configuration-with-context-customizers)
+  > - [Spring TestContext Framework - Context Management - Context Configuration Inheritance](#spring-testcontext-framework---context-management---context-configuration-inheritance)
+  > - [Spring TestContext Framework - Context Management - Context Configuration with Environment Profiles](#spring-testcontext-framework---context-management---context-configuration-with-environment-profiles)
+  > - [Spring TestContext Framework - Context Management - Context Configuration with Test Property Sources](#spring-testcontext-framework---context-management---context-configuration-with-test-property-sources)
+  > - [Spring TestContext Framework - Context Management - Context Configuration with Dynamic Property Sources](#spring-testcontext-framework---context-management---context-configuration-with-dynamic-property-sources)
+  > - [Spring TestContext Framework - Context Management - Loading a WebApplicationContext](#spring-testcontext-framework---context-management---loading-a-webapplicationcontext)
+  > - [Spring TestContext Framework - Context Management - Working with Web Mocks](#spring-testcontext-framework---context-management---working-with-web-mocks)
+  > - [Spring TestContext Framework - Context Management - Context Caching](#spring-testcontext-framework---context-management---context-caching)
+  > - [Spring TestContext Framework - Context Management - Context Failure Threshold](#spring-testcontext-framework---context-management---context-failure-threshold)
+  > - [Spring TestContext Framework - Context Management - Context Hierarchies](#spring-testcontext-framework---context-management---context-hierarchies)
+  > - [Spring TestContext Framework - Dependency Injection of Test Fixtures](#spring-testcontext-framework---dependency-injection-of-test-fixtures)
+  > - [Spring TestContext Framework - Testing Request- and Session-scoped Beans](#spring-testcontext-framework---testing-request--and-session-scoped-beans)
+  > - [Spring TestContext Framework - Transaction Management](#spring-testcontext-framework---transaction-management)
+  > - [Spring TestContext Framework - Executing SQL Scripts](#spring-testcontext-framework---executing-sql-scripts)
+  > - [Spring TestContext Framework - Parallel Test Execution](#spring-testcontext-framework---parallel-test-execution)
+  > - [Spring TestContext Framework - TestContext Framework Support Classes](#spring-testcontext-framework---testcontext-framework-support-classes)
+  > - [Spring TestContext Framework - Ahead of Time Support for Tests](#spring-testcontext-framework---ahead-of-time-support-for-tests)
+  > - [WebTestClient](#webtestclient)
+  > - [MockMvc](#mockmvc)
+  > - [MockMvc - Overview](#mockmvc---overview)
+  > - [MockMvc - Static Imports](#mockmvc---static-imports)
+  > - [MockMvc - Setup Choices](#mockmvc---setup-choices)
+  > - [MockMvc - Setup Features](#mockmvc---setup-features)
+  > - [MockMvc - Performing Requests](#mockmvc---performing-requests)
+  > - [MockMvc - Defining Expectations](#mockmvc---defining-expectations)
+  > - [MockMvc - Async Requests](#mockmvc---async-requests)
+  > - [MockMvc - Streaming Responses](#mockmvc---streaming-responses)
+  > - [MockMvc - Filter Registrations](#mockmvc---filter-registrations)
+  > - [MockMvc - MockMvc vs End-to-End Tests](#mockmvc---mockmvc-vs-end-to-end-tests)
+  > - [MockMvc - Further Examples](#mockmvc---further-examples)
+  > - [MockMvc - HtmlUnit Integration](#mockmvc---htmlunit-integration)
+  > - [MockMvc - HtmlUnit Integration - Why HtmlUnit Integration?](#mockmvc---htmlunit-integration---why-htmlunit-integration)
+  > - [MockMvc - HtmlUnit Integration - MockMvc and HtmlUnit](#mockmvc---htmlunit-integration---mockmvc-and-htmlunit)
+  > - [MockMvc - HtmlUnit Integration - MockMvc and WebDriver](#mockmvc---htmlunit-integration---mockmvc-and-webdriver)
+  > - [MockMvc - HtmlUnit Integration - MockMvc and Geb](#mockmvc---htmlunit-integration---mockmvc-and-geb)
+  > - [Testing Client Applications](#testing-client-applications)
 
 - Data Access
 
-  > - Transaction Management
-  > - Transaction Management - Advantages of the Spring Framework’s Transaction Support Model
-  > - Transaction Management - Understanding the Spring Framework Transaction Abstraction
-  > - Transaction Management - Synchronizing Resources with Transactions
-  > - Transaction Management - Declarative Transaction Management
-  > - Transaction Management - Declarative Transaction Management - Understanding the Spring Framework’s Declarative Transaction Implementation
-  > - Transaction Management - Declarative Transaction Management - Example of Declarative Transaction Implementation
-  > - Transaction Management - Declarative Transaction Management - Rolling Back a Declarative Transaction
-  > - Transaction Management - Declarative Transaction Management - Configuring Different Transactional Semantics for Different Beans
-  > - Transaction Management - Declarative Transaction Management - <tx:advice/> Settings
-  > - Transaction Management - Declarative Transaction Management - Using @Transactional
-  > - Transaction Management - Declarative Transaction Management - Transaction Propagation
-  > - Transaction Management - Declarative Transaction Management - Advising Transactional Operations
-  > - Transaction Management - Declarative Transaction Management - Using @Transactional with AspectJ
-  > - Transaction Management - Programmatic Transaction Management
-  > - Transaction Management - Choosing Between Programmatic and Declarative Transaction Management
-  > - Transaction Management - Transaction-bound Events
-  > - Transaction Management - Application server-specific integration
-  > - Transaction Management - Solutions to Common Problems
-  > - Transaction Management - Further Resources
-  > - DAO Support
-  > - Data Access with JDBC
-  > - Data Access with JDBC - Choosing an Approach for JDBC Database Access
-  > - Data Access with JDBC - Package Hierarchy
-  > - Data Access with JDBC - Using the JDBC Core Classes to Control Basic JDBC Processing and Error Handling
-  > - Data Access with JDBC - Controlling Database Connections
-  > - Data Access with JDBC - JDBC Batch Operations
-  > - Data Access with JDBC - Simplifying JDBC Operations with the SimpleJdbc Classes
-  > - Data Access with JDBC - Modeling JDBC Operations as Java Objects
-  > - Data Access with JDBC - Common Problems with Parameter and Data Value Handling
-  > - Data Access with JDBC - Embedded Database Support
-  > - Data Access with JDBC - Initializing a DataSource
-  > - Data Access with R2DBC
-  > - Object Relational Mapping (ORM) Data Access
-  > - Object Relational Mapping (ORM) Data Access - Introduction to ORM with Spring
-  > - Object Relational Mapping (ORM) Data Access - General ORM Integration Considerations
-  > - Object Relational Mapping (ORM) Data Access - Hibernate
-  > - Object Relational Mapping (ORM) Data Access - JPA
-  > - Marshalling XML by Using Object-XML Mappers
-  > - Appendix
+  > - [Transaction Management](#transaction-management)
+  > - [Transaction Management - Advantages of the Spring Framework’s Transaction Support Model](#transaction-management---advantages-of-the-spring-frameworks-transaction-support-model)
+  > - [Transaction Management - Understanding the Spring Framework Transaction Abstraction](#transaction-management---understanding-the-spring-framework-transaction-abstraction)
+  > - [Transaction Management - Synchronizing Resources with Transactions](#transaction-management---synchronizing-resources-with-transactions)
+  > - [Transaction Management - Declarative Transaction Management](#transaction-management---declarative-transaction-management)
+  > - [Transaction Management - Declarative Transaction Management - Understanding the Spring Framework’s Declarative Transaction Implementation](#transaction-management---understanding-the-spring-framework-transaction-abstraction)
+  > - [Transaction Management - Declarative Transaction Management - Example of Declarative Transaction Implementation](#transaction-management---declarative-transaction-management---example-of-declarative-transaction-implementation)
+  > - [Transaction Management - Declarative Transaction Management - Rolling Back a Declarative Transaction](#transaction-management---declarative-transaction-management---rolling-back-a-declarative-transaction)
+  > - [Transaction Management - Declarative Transaction Management - Configuring Different Transactional Semantics for Different Beans](#transaction-management---declarative-transaction-management---configuring-different-transactional-semantics-for-different-beans)
+  > - [Transaction Management - Declarative Transaction Management - <tx:advice/> Settings](#transaction-management---declarative-transaction-management---txadvice-settings)
+  > - [Transaction Management - Declarative Transaction Management - Using @Transactional](#transaction-management---declarative-transaction-management---using-transactional)
+  > - [Transaction Management - Declarative Transaction Management - Transaction Propagation](#transaction-management---declarative-transaction-management---transaction-propagation)
+  > - [Transaction Management - Declarative Transaction Management - Advising Transactional Operations](#transaction-management---declarative-transaction-management---advising-transactional-operations)
+  > - [Transaction Management - Declarative Transaction Management - Using @Transactional with AspectJ](#transaction-management---declarative-transaction-management---using-transactional-with-aspectj)
+  > - [Transaction Management - Programmatic Transaction Management](#transaction-management---programmatic-transaction-management)
+  > - [Transaction Management - Choosing Between Programmatic and Declarative Transaction Management](#transaction-management---choosing-between-programmatic-and-declarative-transaction-management)
+  > - [Transaction Management - Transaction-bound Events](#transaction-management---transaction-bound-events)
+  > - [Transaction Management - Application server-specific integration](#transaction-management---application-server-specific-integration)
+  > - [Transaction Management - Solutions to Common Problems](#transaction-management---solutions-to-common-problems)
+  > - [Transaction Management - Further Resources](#transaction-management---further-resources)
+  > - [DAO Support](#dao-support)
+  > - [Data Access with JDBC](#data-access-with-jdbc)
+  > - [Data Access with JDBC - Choosing an Approach for JDBC Database Access](#data-access-with-jdbc---choosing-an-approach-for-jdbc-database-access)
+  > - [Data Access with JDBC - Package Hierarchy](#data-access-with-jdbc---package-hierarchy)
+  > - [Data Access with JDBC - Using the JDBC Core Classes to Control Basic JDBC Processing and Error Handling](#data-access-with-jdbc---using-the-jdbc-core-classes-to-control-basic-jdbc-processing-and-error-handling)
+  > - [Data Access with JDBC - Controlling Database Connections](#data-access-with-jdbc---controlling-database-connections)
+  > - [Data Access with JDBC - JDBC Batch Operations](#data-access-with-jdbc---jdbc-batch-operations)
+  > - [Data Access with JDBC - Simplifying JDBC Operations with the SimpleJdbc Classes](#data-access-with-jdbc---simplifying-jdbc-operations-with-the-simplejdbc-classes)
+  > - [Data Access with JDBC - Modeling JDBC Operations as Java Objects](#data-access-with-jdbc---modeling-jdbc-operations-as-java-objects)
+  > - [Data Access with JDBC - Common Problems with Parameter and Data Value Handling](#data-access-with-jdbc---common-problems-with-parameter-and-data-value-handling)
+  > - [Data Access with JDBC - Embedded Database Support](#data-access-with-jdbc---embedded-database-support)
+  > - [Data Access with JDBC - Initializing a DataSource](#data-access-with-jdbc---initializing-a-datasource)
+  > - [Data Access with R2DBC](#data-access-with-r2dbc)
+  > - [Object Relational Mapping (ORM) Data Access](#object-relational-mapping-orm-data-access)
+  > - [Object Relational Mapping (ORM) Data Access - Introduction to ORM with Spring](#object-relational-mapping-orm-data-access---introduction-to-orm-with-spring)
+  > - [Object Relational Mapping (ORM) Data Access - General ORM Integration Considerations](#object-relational-mapping-orm-data-access---general-orm-integration-considerations)
+  > - [Object Relational Mapping (ORM) Data Access - Hibernate](#object-relational-mapping-orm-data-access---hibernate)
+  > - [Object Relational Mapping (ORM) Data Access - JPA](#object-relational-mapping-orm-data-access---jpa)
+  > - [Marshalling XML by Using Object-XML Mappers](#marshalling-xml-by-using-object-xml-mappers)
 
 - Web on Servlet Stack
 
@@ -298,71 +267,71 @@ spring.datasource.password=***
   > - [Spring Web MVC - Annotated Controllers - Validation](#spring-web-mvc---annotated-controllers---validation)
   > - [Spring Web MVC - Annotated Controllers - Exceptions](#spring-web-mvc---annotated-controllers---exceptions)
   > - [Spring Web MVC - Annotated Controllers - Controller Advice](#spring-web-mvc---annotated-controllers---controller-advice)
-  > - Spring Web MVC - Functional Endpoints
-  > - Spring Web MVC - URI Links
-  > - Spring Web MVC - Asynchronous Requests
-  > - Spring Web MVC - CORS
-  > - Spring Web MVC - Error Responses
-  > - Spring Web MVC - Web Security
-  > - Spring Web MVC - HTTP Caching
-  > - Spring Web MVC - View Technologies
-  > - Spring Web MVC - View Technologies - Thymeleaf
-  > - Spring Web MVC - View Technologies - FreeMarker
-  > - Spring Web MVC - View Technologies - Groovy Markup
-  > - Spring Web MVC - View Technologies - Script Views
-  > - Spring Web MVC - View Technologies - JSP and JSTL
-  > - Spring Web MVC - View Technologies - RSS and Atom
-  > - Spring Web MVC - View Technologies - PDF and Excel
-  > - Spring Web MVC - View Technologies - Jackson
-  > - Spring Web MVC - View Technologies - XML Marshalling
-  > - Spring Web MVC - View Technologies - XSLT Views
-  > - Spring Web MVC - MVC Config
-  > - Spring Web MVC - MVC Config - Enable MVC Configuration
-  > - Spring Web MVC - MVC Config - MVC Config API
-  > - Spring Web MVC - MVC Config - Type Conversion
-  > - Spring Web MVC - MVC Config - Validation
-  > - Spring Web MVC - MVC Config - Interceptors
-  > - Spring Web MVC - MVC Config - Content Types
-  > - Spring Web MVC - MVC Config - Message Converters
-  > - Spring Web MVC - MVC Config - View Controllers
-  > - Spring Web MVC - MVC Config - View Resolvers
-  > - Spring Web MVC - MVC Config - Static Resources
-  > - Spring Web MVC - MVC Config - Default Servlet
-  > - Spring Web MVC - MVC Config - Path Matching
-  > - Spring Web MVC - MVC Config - Advanced Java Config
-  > - Spring Web MVC - MVC Config - Advanced XML Config
-  > - Spring Web MVC - HTTP/2
-  > - REST Clients
-  > - Testing
-  > - WebSockets
-  > - WebSockets - WebSocket API
-  > - WebSockets - SockJS Fallback
-  > - WebSockets - STOMP
-  > - WebSockets - STOMP - Overview
-  > - WebSockets - STOMP - Benefits
-  > - WebSockets - STOMP - Enable STOMP
-  > - WebSockets - STOMP - WebSocket Transport
-  > - WebSockets - STOMP - Flow of Messages
-  > - WebSockets - STOMP - Annotated Controllers
-  > - WebSockets - STOMP - Sending Messages
-  > - WebSockets - STOMP - Simple Broker
-  > - WebSockets - STOMP - External Broker
-  > - WebSockets - STOMP - Connecting to a Broker
-  > - WebSockets - STOMP - Dots as Separators
-  > - WebSockets - STOMP - Authentication
-  > - WebSockets - STOMP - Token Authentication
-  > - WebSockets - STOMP - Authorization
-  > - WebSockets - STOMP - User Destinations
-  > - WebSockets - STOMP - Order of Messages
-  > - WebSockets - STOMP - Events
-  > - WebSockets - STOMP - Interception
-  > - WebSockets - STOMP - WebSocket Scope
-  > - WebSockets - STOMP - STOMP Client
-  > - WebSockets - STOMP - WebSocket Scope
-  > - WebSockets - STOMP - Performance
-  > - WebSockets - STOMP - Monitoring
-  > - WebSockets - STOMP - Testing
-  > - Other Web Frameworks
+  > - [Spring Web MVC - Functional Endpoints](#spring-web-mvc---functional-endpoints)
+  > - [Spring Web MVC - URI Links](#spring-web-mvc---uri-links)
+  > - [Spring Web MVC - Asynchronous Requests](#spring-web-mvc---asynchronous-requests)
+  > - [Spring Web MVC - CORS](#spring-web-mvc---cors)
+  > - [Spring Web MVC - Error Responses](#spring-web-mvc---error-responses)
+  > - [Spring Web MVC - Web Security](#spring-web-mvc---web-security)
+  > - [Spring Web MVC - HTTP Caching](#spring-web-mvc---http-caching)
+  > - [Spring Web MVC - View Technologies](#spring-web-mvc---view-technologies)
+  > - [Spring Web MVC - View Technologies - Thymeleaf](#spring-web-mvc---view-technologies---thymeleaf)
+  > - [Spring Web MVC - View Technologies - FreeMarker](#spring-web-mvc---view-technologies---freemarker)
+  > - [Spring Web MVC - View Technologies - Groovy Markup](#spring-web-mvc---view-technologies---groovy-markup)
+  > - [Spring Web MVC - View Technologies - Script Views](#spring-web-mvc---view-technologies---script-views)
+  > - [Spring Web MVC - View Technologies - JSP and JSTL](#spring-web-mvc---view-technologies---jsp-and-jstl)
+  > - [Spring Web MVC - View Technologies - RSS and Atom](#spring-web-mvc---view-technologies---rss-and-atom)
+  > - [Spring Web MVC - View Technologies - PDF and Excel](#spring-web-mvc---view-technologies---pdf-and-excel)
+  > - [Spring Web MVC - View Technologies - Jackson](#spring-web-mvc---view-technologies---jackson)
+  > - [Spring Web MVC - View Technologies - XML Marshalling](#spring-web-mvc---view-technologies---xml-marshalling)
+  > - [Spring Web MVC - View Technologies - XSLT Views](#spring-web-mvc---view-technologies---xslt-views)
+  > - [Spring Web MVC - MVC Config](#spring-web-mvc---mvc-config)
+  > - [Spring Web MVC - MVC Config - Enable MVC Configuration](#spring-web-mvc---mvc-config---enable-mvc-configuration)
+  > - [Spring Web MVC - MVC Config - MVC Config API](#spring-web-mvc---mvc-config---mvc-config-api)
+  > - [Spring Web MVC - MVC Config - Type Conversion](#validation-data-binding-and-type-conversion)
+  > - [Spring Web MVC - MVC Config - Validation](#spring-web-mvc---mvc-config---validation)
+  > - [Spring Web MVC - MVC Config - Interceptors](#spring-web-mvc---mvc-config---interceptors)
+  > - [Spring Web MVC - MVC Config - Content Types](#spring-web-mvc---mvc-config---content-types)
+  > - [Spring Web MVC - MVC Config - Message Converters](#spring-web-mvc---mvc-config---message-converters)
+  > - [Spring Web MVC - MVC Config - View Controllers](#spring-web-mvc---mvc-config---view-controllers)
+  > - [Spring Web MVC - MVC Config - View Resolvers](#spring-web-mvc---mvc-config---view-resolvers)
+  > - [Spring Web MVC - MVC Config - Static Resources](#spring-web-mvc---mvc-config---static-resources)
+  > - [Spring Web MVC - MVC Config - Default Servlet](#spring-web-mvc---mvc-config---default-servlet)
+  > - [Spring Web MVC - MVC Config - Path Matching](#spring-web-mvc---mvc-config---path-matching)
+  > - [Spring Web MVC - MVC Config - Advanced Java Config](#spring-web-mvc---mvc-config---advanced-java-config)
+  > - [Spring Web MVC - MVC Config - Advanced XML Config](#spring-web-mvc---mvc-config---advanced-xml-config)
+  > - [Spring Web MVC - HTTP/2](#spring-web-mvc---http2)
+  > - [REST Clients](#rest-clients)
+  > - [Testing](#testing)
+  > - [WebSockets](#websockets)
+  > - [WebSockets - WebSocket API](#websockets---websocket-api)
+  > - [WebSockets - SockJS Fallback](#websockets---sockjs-fallback)
+  > - [WebSockets - STOMP](#websockets---stomp)
+  > - [WebSockets - STOMP - Overview](#websockets---stomp---overview)
+  > - [WebSockets - STOMP - Benefits](#websockets---stomp---benefits)
+  > - [WebSockets - STOMP - Enable STOMP](#websockets---stomp---enable-stomp)
+  > - [WebSockets - STOMP - WebSocket Transport](#websockets---stomp---websocket-transport)
+  > - [WebSockets - STOMP - Flow of Messages](#websockets---stomp---flow-of-messages)
+  > - [WebSockets - STOMP - Annotated Controllers](#spring-web-mvc---annotated-controllers)
+  > - [WebSockets - STOMP - Sending Messages](#websockets---stomp---sending-messages)
+  > - [WebSockets - STOMP - Simple Broker](#websockets---stomp---simple-broker)
+  > - [WebSockets - STOMP - External Broker](#websockets---stomp---external-broker)
+  > - [WebSockets - STOMP - Connecting to a Broker](#websockets---stomp---connecting-to-a-broker)
+  > - [WebSockets - STOMP - Dots as Separators](#websockets---stomp---dots-as-separators)
+  > - [WebSockets - STOMP - Authentication](#websockets---stomp---authentication)
+  > - [WebSockets - STOMP - Token Authentication](#websockets---stomp---token-authentication)
+  > - [WebSockets - STOMP - Authorization](#websockets---stomp---authorization)
+  > - [WebSockets - STOMP - User Destinations](#websockets---stomp---user-destinations)
+  > - [WebSockets - STOMP - Order of Messages](#websockets---stomp---order-of-messages)
+  > - [WebSockets - STOMP - Events](#websockets---stomp---events)
+  > - [WebSockets - STOMP - Interception](#websockets---stomp---interception)
+  > - [WebSockets - STOMP - WebSocket Scope](#websockets---stomp---websocket-scope)
+  > - [WebSockets - STOMP - STOMP Client](#websockets---stomp---stomp-client)
+  > - [WebSockets - STOMP - WebSocket Scope](#websockets---stomp---websocket-scope)
+  > - [WebSockets - STOMP - Performance](#websockets---stomp---performance)
+  > - [WebSockets - STOMP - Monitoring](#websockets---stomp---monitoring)
+  > - [WebSockets - STOMP - Testing](#websockets---stomp---testing)
+  > - [Other Web Frameworks](#other-web-frameworks)
 
 - Web on Reactive Stack
 
@@ -452,7 +421,6 @@ spring.datasource.password=***
   > - Observability Support
   > - JVM Checkpoint Restore
   > - CDS
-  > - Appendix
 
 ## The IoC Container - Introduction to the Spring IoC Container and Beans
 
@@ -2052,17 +2020,75 @@ public class Society {
 
 ## Aspect Oriented Programming with Spring - Spring AOP Capabilities and Goals
 
+- Spring AOP는 순수 Java로 구현됨. 특별한 컴파일 프로세스가 필요하지 않음. Spring AOP는 클래스 로더 계층을 제어할 필요가 없으므로 서블릿 컨테이너나 애플리케이션 서버에서 사용하기에 적합합니다.
+- Spring AOP는 현재 메서드 실행 조인 포인트(Spring 빈의 메서드 실행에 대한 어드바이징)만 지원함. 필드 인터셉션은 구현되지 않았지만, Spring AOP API의 핵심을 깨뜨리지 않고도 필드 인터셉션 지원을 추가할 수 있음. 필드 접근 및 업데이트 조인 포인트에 대한 어드바이스가 필요한 경우 AspectJ와 같은 언어를 고려해야 함.
+- Spring AOP의 AOP 접근 방식은 대부분의 다른 AOP 프레임워크와 다름. 목표는 가장 완벽한 AOP 구현을 제공하는 것이 아님(Spring AOP는 매우 능력이 있지만). 오히려 목표는 AOP 구현과 Spring IoC 간의 긴밀한 통합을 제공하여 엔터프라이즈 애플리케이션의 일반적인 문제를 해결하는 데 도움을 주는 것.
+- 따라서 예를 들어 Spring 프레임워크의 AOP 기능은 일반적으로 Spring IoC 컨테이너와 함께 사용됨. aspect는 일반적인 빈 정의 구문을 사용하여 구성됨(강력한 "자동 프록시" 기능을 허용함). 이것은 다른 AOP 구현과의 중요한 차이점. Spring AOP를 사용하여 매우 세분화된 객체(일반적으로 도메인 객체)와 같은 일부 작업을 쉽게 또는 효율적으로 수행할 수 없음. 이러한 경우 AspectJ가 가장 좋은 선택. 그러나 우리의 경험상 Spring AOP는 AOP에 적합한 엔터프라이즈 Java 애플리케이션의 대부분의 문제에 대해 탁월한 솔루션을 제공함.
+- Spring AOP는 포괄적인 AOP 솔루션을 제공하기 위해 AspectJ와 경쟁하려고 노력하지 않음. 우리는 Spring AOP와 같은 프록시 기반 프레임워크와 AspectJ와 같은 완전한 프레임워크가 모두 가치가 있으며 경쟁이 아니라 상호 보완적이라고 믿음. Spring은 Spring AOP와 IoC를 AspectJ와 원활하게 통합하여 일관된 Spring 기반 애플리케이션 아키텍처 내에서 AOP의 모든 사용을 가능하게 함. 이 통합은 Spring AOP API 또는 AOP Alliance API에 영향을 미치지 않음. Spring AOP는 이전 버전과 호환성을 유지함. Spring AOP API에 대한 설명은 다음 장을 참조할 것.
+
+> ##### Note
+>
+> - Spring 프레임워크의 중심 원칙 중 하나는 비침투성. 이는 비즈니스 또는 도메인 모델에 프레임워크별 클래스와 인터페이스를 도입하도록 강요받아서는 안 된다는 아이디어. 그러나 Spring 프레임워크는 일부 장소에서 코드베이스에 Spring 프레임워크 고유의 종속성을 도입할 수 있는 옵션을 제공함. 이러한 옵션을 제공하는 근거는 특정 시나리오에서는 이러한 방식으로 일부 특정 기능을 읽거나 코딩하는 것이 더 쉬울 수 있기 때문임. 그러나 Spring 프레임워크는 (거의) 항상 선택권을 제공함. 어떤 옵션이 특정 사용 사례나 시나리오에 가장 적합한지에 대한 정보에 입각한 결정을 내릴 수 있는 자유가 있음.
+> - 이 장과 관련된 선택 사항 중 하나는 어떤 AOP 프레임워크(및 어떤 AOP 스타일)를 선택할 것인가임. AspectJ, Spring AOP 또는 둘 다를 선택할 수 있음. 또한 @AspectJ 주석 스타일 접근 방식이나 Spring XML 구성 스타일 접근 방식 중 하나를 선택할 수 있음. 이 장에서 @AspectJ 스타일 접근 방식을 먼저 소개하기로 선택한 사실은 Spring 팀이 Spring XML 구성 스타일보다 @AspectJ 주석 스타일 접근 방식을 선호한다는 표시로 받아들여서는 안 됨.
+> - 각 스타일의 장단점에 대한 보다 완전한 논의는 **Choosing which AOP Declaration Style to Use**를 참조할 것.
+
 ## Aspect Oriented Programming with Spring - AOP Proxies
+
+- **JDK 동적 프록시**: JDK 동적 프록시는 Java Development Kit에서 제공하는 기능으로, 인터페이스 기반의 프록시 객체를 동적으로 생성할 수 있게 해줌. 이를 통해 런타임 시에 특정 인터페이스를 구현하는 객체를 생성하고, 해당 객체에 메서드 호출을 가로채어 추가적인 작업을 수행할 수 있음.
+- **CGLIB: CGLIB(Code Generation Library)**: 런타임 시에 클래스의 바이트코드를 조작하여 동적으로 프록시 객체를 생성하는 라이브러리. 이는 JDK 동적 프록시와 달리 인터페이스가 아닌 구체적인 클래스를 프록시할 수 있음.
+- Spring AOP는 기본적으로 AOP 프록시에 표준 JDK 동적 프록시를 사용함. 이를 통해 모든 인터페이스(또는 인터페이스 집합)를 프록시할 수 있음.
+- Spring AOP는 CGLIB 프록시도 사용할 수 있음. 이는 인터페이스가 아닌 클래스를 프록시하는 데 필요함. 기본적으로 비즈니스 객체가 인터페이스를 구현하지 않으면 CGLIB가 사용됨. 클래스보다는 인터페이스에 프로그래밍하는 것이 좋은 방법이므로 비즈니스 클래스는 일반적으로 하나 이상의 비즈니스 인터페이스를 구현함. 인터페이스에 선언되지 않은 메서드에 대해 어드바이스를 제공해야 하거나 프록시된 객체를 구체적인 유형으로 메서드에 전달해야 하는 (희망하건대 드문) 경우에 CGLIB 사용을 강제할 수 있음.
+- Spring AOP가 프록시 기반이라는 사실을 이해하는 것이 중요함. 이 구현 세부 사항이 실제로 의미하는 바에 대해 철저히 검토하려면 AOP 프록시 이해를 참조할 것.
 
 ## Aspect Oriented Programming with Spring - @AspectJ support
 
+- @AspectJ는 어노테이션이 달린 일반 Java 클래스로 애스펙트를 선언하는 스타일을 의미함. @AspectJ 스타일은 AspectJ 5 릴리스의 일부로 AspectJ 프로젝트에서 도입되었음. Spring은 포인트컷 구문 분석 및 매칭을 위해 AspectJ에서 제공하는 라이브러리를 사용하여 AspectJ 5와 동일한 어노테이션을 해석함. 그러나 AOP 런타임은 여전히 순수한 Spring AOP이며 AspectJ 컴파일러나 weaver에 대한 의존성이 없음.
+
+> ##### Note
+>
+> - AspectJ 컴파일러와 weaver를 사용하면 전체 AspectJ 언어를 사용할 수 있으며, 이는 Spring 애플리케이션에서 AspectJ 사용에서 설명함.
+
+### Section Summary
+
+- Section Summary
+- Enabling @AspectJ Support
+- Declaring an Aspect
+- Declaring a Pointcut
+- Declaring Advice
+- Introductions
+- Aspect Instantiation Models
+- An AOP Example
+
 ## Aspect Oriented Programming with Spring - Enabling @AspectJ Support
+
+- Enabling @AspectJ Support with Java Configuration
+- Enabling @AspectJ Support with XML Configuration
 
 ## Aspect Oriented Programming with Spring - Enabling @AspectJ Support - Declaring an Aspect
 
 ## Aspect Oriented Programming with Spring - Enabling @AspectJ Support - Declaring a Pointcut
 
+- Supported Pointcut Designators
+- Combining Pointcut Expressions
+- Sharing Named Pointcut Definitions
+- Examples
+- Writing Good Pointcuts
+
 ## Aspect Oriented Programming with Spring - Enabling @AspectJ Support - Declaring Advice
+
+- Before Advice
+- After Returning Advice
+- After Throwing Advice
+- After (Finally) Advice
+- Around Advice
+- Advice Parameters
+- Access to the Current JoinPoint
+- Passing Parameters to Advice
+- Advice Parameters and Generics
+- Determining Argument Names
+- Explicit Argument Names
+- Proceeding with Arguments
+- Advice Ordering
 
 ## Aspect Oriented Programming with Spring - Enabling @AspectJ Support - Introductions
 
@@ -2072,7 +2098,59 @@ public class Society {
 
 ## Aspect Oriented Programming with Spring - Schema-based AOP Support
 
+- Declaring an Aspect
+- Declaring a Pointcut
+- Declaring Advice
+- Before Advice
+- After Returning Advice
+- After Throwing Advice
+- After (Finally) Advice
+- Around Advice
+- Advice Parameters
+- Advice Ordering
+- Introductions
+- Aspect Instantiation Models
+- Advisors
+- An AOP Schema Example
+
 ## Aspect Oriented Programming with Spring - Choosing which AOP Declaration Style to Use
+
+- 특정 요구 사항을 구현하기 위한 가장 좋은 방법이 aspect라고 결정했다면 Spring AOP와 AspectJ 중 무엇을 사용할지, Aspect 언어(코드) 스타일, `@AspectJ` 주석 스타일 또는 Spring XML 스타일 중 무엇을 사용할지 어떻게 결정할까? 이러한 결정은 애플리케이션 요구사항, 개발 도구 및 팀의 AOP 친숙도를 포함한 여러 요인의 영향을 받음.
+
+### Spring AOP or Full AspectJ?
+
+- 가장 간단한 방법을 사용할 것. Spring AOP는 개발 및 빌드 프로세스에 AspectJ 컴파일러/위버를 도입할 필요가 없기 때문에 전체 AspectJ를 사용하는 것보다 간단함. Spring 빈의 작업 실행에 대해서만 조언이 필요한 경우 Spring AOP가 올바른 선택. Spring 컨테이너에서 관리하지 않는 객체(일반적으로 도메인 객체)에 대한 advice가 필요한 경우 AspectJ를 사용해야 함. 단순 메서드 실행 이외의 join point(예: 필드 가져오기 또는 설정 조인 포인트 등)에 대한 advice을 원하는 경우에도 AspectJ를 사용해야 함.
+- AspectJ를 사용할 때는 AspectJ 언어 구문("코드 스타일"이라고도 함) 또는 @AspectJ 주석 스타일 중에서 선택할 수 있음. 측면이 설계에서 큰 역할을 하고 Eclipse용 AspectJ Development Tools(AJDT) 플러그인을 사용할 수 있는 경우 AspectJ 언어 구문이 선호되는 옵션. 이 언어는 측면 작성을 위해 의도적으로 설계되었기 때문에 더 깨끗하고 간단함. Eclipse를 사용하지 않거나 애플리케이션에서 주요 역할을 하지 않는 측면이 몇 개만 있는 경우 IDE에서 정규 Java 컴파일을 고수하고 빌드 스크립트에 측면 weaving 단계를 추가하면서 `@AspectJ` 스타일을 사용하는 것이 좋음.
+
+### @AspectJ or XML for Spring AOP?
+
+- Spring AOP를 사용하기로 선택한 경우 `@AspectJ` 또는 XML 스타일 중에서 선택할 수 있음. 고려해야 할 다양한 장단점이 있음.
+- XML 스타일은 기존 Spring 사용자에게 가장 익숙할 수 있으며 진정한 POJO에 의해 지원됨. AOP를 엔터프라이즈 서비스를 구성하는 도구로 사용할 때 XML은 좋은 선택이 될 수 있음(포인트컷 표현식이 독립적으로 변경하려는 구성의 일부라고 생각하는지 여부가 좋은 테스트임). XML 스타일을 사용하면 시스템에 어떤 측면이 있는지 구성에서 더 명확하게 알 수 있다고 주장할 수 있음.
+- XML 스타일에는 두 가지 단점이 있음. 첫째, 해결하려는 요구 사항의 구현을 한 곳에 완전히 캡슐화하지 않음. DRY 원칙에 따르면 시스템 내의 모든 지식은 단일하고 모호하지 않으며 권위 있는 표현이어야 함. XML 스타일을 사용할 때 요구 사항이 구현되는 방법에 대한 지식은 백업 빈 클래스의 선언과 구성 파일의 XML로 분할됨. `@AspectJ` 스타일을 사용하면 이 정보는 하나의 모듈인 애스펙트에 캡슐화됨. 둘째, XML 스타일은 `@AspectJ` 스타일보다 표현할 수 있는 내용이 약간 더 제한적임. "singleton" 측면 인스턴스화 모델만 지원되며 XML에 선언된 명명된 포인트컷을 결합할 수 없음. 예를 들어 `@AspectJ` 스타일에서는 다음과 같이 작성할 수 있음.
+
+```java
+@Pointcut("execution(* get*())")
+public void propertyAccess() {}
+
+@Pointcut("execution(com.xyz.Account+ *(..))")
+public void operationReturningAnAccount() {}
+
+@Pointcut("propertyAccess() && operationReturningAnAccount()")
+public void accountPropertyAccess() {}
+```
+
+- XML 스타일에서는 첫 번째 두 포인트컷을 선언할 수 있음.
+
+```xml
+<aop:pointcut id="propertyAccess"
+		expression="execution(* get*())"/>
+
+<aop:pointcut id="operationReturningAnAccount"
+		expression="execution(com.xyz.Account+ *(..))"/>
+```
+
+- XML 접근 방식의 단점은 이러한 정의를 결합하여 `accountPropertyAccess` 포인트컷을 정의할 수 없다는 것.
+- `@AspectJ` 스타일은 추가 인스턴스화 모델과 더 풍부한 포인트컷 구성을 지원함. 측면을 모듈식 단위로 유지할 수 있다는 장점이 있음. 또한 `@AspectJ` 측면은 Spring AOP와 AspectJ에서 모두 이해(따라서 사용)할 수 있다는 장점이 있음. 따라서 나중에 추가 요구 사항을 구현하기 위해 AspectJ의 기능이 필요하다고 결정하면 고전적인 AspectJ 설정으로 쉽게 마이그레이션할 수 있음. 일반적으로 Spring 팀은 엔터프라이즈 서비스의 간단한 구성을 넘어서는 사용자 정의 측면에 `@AspectJ` 스타일을 선호함.
 
 ## Aspect Oriented Programming with Spring - Mixing Aspect Types
 
@@ -2080,19 +2158,86 @@ public class Society {
 
 ## Aspect Oriented Programming with Spring - Programmatic Creation of @AspectJ Proxies
 
+- Understanding AOP Proxies
+
 ## Aspect Oriented Programming with Spring - Using AspectJ with Spring Applications
+
+- Using AspectJ to Dependency Inject Domain Objects with Spring
+- Unit Testing @Configurable Objects
+- Working with Multiple Application Contexts
+- Other Spring aspects for AspectJ
+- Configuring AspectJ Aspects by Using Spring IoC
+- Load-time Weaving with AspectJ in the Spring Framework
+- A First Example
+- Aspects
+- META-INF/aop.xml
+- Required libraries (JARS)
+- Spring Configuration
+- Environment-specific Configuration
+- Tomcat, JBoss, WildFly
+- Generic Java Applications
 
 ## Aspect Oriented Programming with Spring - Further Resources
 
+- AspectJ에 대한 자세한 내용은 AspectJ 웹사이트에서 찾을 수 있음.
+- Adrian Colyer 등이 저술한 *Eclipse AspectJ(Addison-Wesley, 2005)*는 AspectJ 언어에 대한 포괄적인 소개와 참조를 제공함.
+- Ramnivas Laddad의 _AspectJ in Action_, 2판(Manning, 2009)은 매우 추천할 만함. 이 책의 초점은 AspectJ에 맞춰져 있지만, 많은 일반적인 AOP 주제가 (어느 정도 깊이 있게) 탐구됨.
+
 ## Spring AOP APIs
+
+- 이전 장에서는 @AspectJ 및 스키마 기반 측면 정의를 사용한 Spring의 AOP 지원에 대해 설명했음. 이 장에서는 하위 수준의 Spring AOP API에 대해 설명함. 일반적인 애플리케이션의 경우 이전 장에서 설명한 대로 AspectJ 포인트컷과 함께 Spring AOP를 사용하는 것이 좋음.
+
+### Section Summary
+
+- Pointcut API in Spring
+- Advice API in Spring
+- The Advisor API in Spring
+- Using the ProxyFactoryBean to Create AOP Proxies
+- Concise Proxy Definitions
+- Creating AOP Proxies Programmatically with the ProxyFactory
+- Manipulating Advised Objects
+- Using the "auto-proxy" facility
+- Using TargetSource Implementations
+- Defining New Advice Types
 
 ## Spring AOP APIs - Pointcut API in Spring
 
+- Concepts
+- Operations on Pointcuts
+- AspectJ Expression Pointcuts
+- Convenience Pointcut Implementations
+- Static Pointcuts
+- Regular Expression Pointcuts
+- Attribute-driven Pointcuts
+- Dynamic pointcuts
+- Control Flow Pointcuts
+- Pointcut Superclasses
+- Custom Pointcuts
+
 ## Spring AOP APIs - Advice API in Spring
+
+- Advice Lifecycles
+- Advice Types in Spring
+- Interception Around Advice
+- Before Advice
+- Throws Advice
+- After Returning Advice
+- Introduction Advice
 
 ## Spring AOP APIs - The Advisor API in Spring
 
+- Spring에서 Advisor는 포인트컷 표현식과 연결된 단일 어드바이스 객체만 포함하는 aspect.
+- 인트로덕션의 특별한 경우를 제외하고, 모든 어드바이저는 모든 어드바이스와 함께 사용할 수 있음. `org.springframework.aop.support.DefaultPointcutAdvisor`는 가장 일반적으로 사용되는 어드바이저 클래스. 이는 `MethodInterceptor`, `BeforeAdvice` 또는 `ThrowsAdvice`와 함께 사용할 수 있음.
+- Spring에서는 동일한 AOP 프록시 내에서 어드바이저와 어드바이스 유형을 혼합할 수 있음. 예를 들어, 하나의 프록시 구성에서 인터셉션 어라운드 어드바이스, throws 어드바이스 및 before 어드바이스를 사용할 수 있음. Spring은 필요한 인터셉터 체인을 자동으로 생성함.
+
 ## Spring AOP APIs - Using the ProxyFactoryBean to Create AOP Proxies
+
+- Basics
+- JavaBean Properties
+- JDK- and CGLIB-based proxies
+- Proxying Interfaces
+- Proxying Classes
+- Using “Global” Advisors
 
 ## Spring AOP APIs - Concise Proxy Definitions
 
@@ -2102,25 +2247,527 @@ public class Society {
 
 ## Spring AOP APIs - Using the "auto-proxy" facility
 
+- Auto-proxy Bean Definitions
+- BeanNameAutoProxyCreator
+- DefaultAdvisorAutoProxyCreator
+
 ## Spring AOP APIs - Using TargetSource Implementations
+
+- Hot-swappable Target Sources
+- Pooling Target Sources
+- Prototype Target Sources
+- ThreadLocal Target Sources
 
 ## Spring AOP APIs - Defining New Advice Types
 
+- Spring AOP는 확장 가능하도록 설계되었음. 현재 인터셉션 구현 전략이 내부적으로 사용되고 있지만, 인터셉션 어라운드 어드바이스, 이전, throws 어드바이스 및 반환 후 어드바이스 외에도 임의의 어드바이스 유형을 지원할 수 있음.
+- `org.springframework.aop.framework.adapter` 패키지는 핵심 프레임워크를 변경하지 않고도 새로운 사용자 정의 어드바이스 유형에 대한 지원을 추가할 수 있는 SPI 패키지. 사용자 정의 Advice 유형에 대한 유일한 제약 조건은 `org.aopalliance.aop.Advice` 마커 인터페이스를 구현해야 한다는 것.
+- 자세한 내용은 `org.springframework.aop.framework.adapter` javadoc을 참조할 것.
+
 ## Null-safety
+
+- 비록 Java는 타입 시스템으로 null-안전성을 표현할 수 없지만, Spring 프레임워크는 `org.springframework.lang` 패키지에 다음과 같은 어노테이션을 제공하여 API와 필드의 null 가능성을 선언할 수 있음
+  > - `@Nullable`: 특정 매개변수, 반환값 또는 필드가 null일 수 있음을 나타내는 어노테이션.
+  > - `@NonNull`: 특정 매개변수, 반환값 또는 필드가 null일 수 없음을 나타내는 어노테이션(`@NonNullApi` 및 `@NonNullFields`가 각각 적용되는 매개변수, 반환값 및 필드에는 필요하지 않음).
+  > - `@NonNullApi`: 매개변수와 반환값에 대한 기본 의미론으로 non-null을 선언하는 패키지 수준의 어노테이션.
+  > - `@NonNullFields`: 필드에 대한 기본 의미론으로 non-null을 선언하는 패키지 수준의 어노테이션.
+- Spring 프레임워크 자체는 이러한 어노테이션을 활용하지만, 모든 Spring 기반 Java 프로젝트에서 null-안전 API와 선택적으로 null-안전 필드를 선언하는 데 사용할 수도 있음. 제네릭 타입 인수, 가변 인수 및 배열 요소에 대한 null 가능성 선언은 아직 지원되지 않음. Null 가능성 선언은 마이너 버전을 포함하여 Spring 프레임워크 릴리스 간에 미세 조정될 것으로 예상됨. 메서드 본문 내에서 사용되는 타입의 null 가능성은 이 기능의 범위를 벗어남.
+
+> ##### Note
+>
+> - Reactor와 Spring Data와 같은 다른 일반적인 라이브러리는 유사한 null 가능성 배열을 사용하는 null-안전 API를 제공하여 Spring 애플리케이션 개발자에게 일관된 전반적인 경험을 제공함.
+
+### Use cases
+
+- 이러한 어노테이션은 Spring 프레임워크 API의 null 가능성에 대한 명시적 선언을 제공하는 것 외에도, IDE(예: IDEA 또는 Eclipse)에서 런타임 시 NullPointerException을 피하기 위해 null-안전성과 관련된 유용한 경고를 제공하는 데 사용할 수 있음.
+- 또한 Kotlin은 기본적으로 null-안전성을 지원하므로 Kotlin 프로젝트에서 Spring API를 null-안전하게 만드는 데 사용됨. 자세한 내용은 Kotlin 지원 문서에서 확인할 수 있음.
+
+### JSR-305 meta-annotations
+
+- JSR-305는 Java 표준화 기구(JSR, Java Specification Requests)에서 제안한 표준으로, 자바 코드에서 null-안전성을 표시하는 어노테이션을 제공하기 위한 것. JSR-305는 현재 휴면 상태이지만, 여전히 널리 사용되고 있음. 이 어노테이션들은 주로 코드에서 null 가능성을 명시적으로 나타내고, 이를 통해 개발자가 null 관련 오류를 사전에 방지할 수 있도록 도움.
+- Spring 어노테이션은 JSR 305 어노테이션(휴면 상태이지만 널리 사용되는 JSR)으로 메타 어노테이션이 지정됨. JSR-305 메타 어노테이션을 사용하면 IDEA 또는 Kotlin과 같은 도구 공급업체가 Spring 어노테이션에 대한 지원을 하드코딩하지 않고도 일반적인 방식으로 null-안전성 지원을 제공할 수 있음.
+- Spring의 null-안전 API를 활용하기 위해 프로젝트 클래스 경로에 JSR-305 종속성을 추가할 필요는 없으며 권장되지도 않음. 코드베이스에서 null-안전성 어노테이션을 사용하는 Spring 기반 라이브러리와 같은 프로젝트만 컴파일러 경고를 피하기 위해 compileOnly Gradle 구성 또는 Maven provided 범위로 `com.google.code.findbugs:jsr305:3.0.2`를 추가해야 함.
 
 ## Data Buffers and Codecs
 
+- DataBufferFactory
+- DataBuffer
+- PooledDataBuffer
+- DataBufferUtils
+- Codecs
+- Using DataBuffer
+
 ## Logging
+
+- Spring Framework 5.0부터 Spring은 `spring-jcl` 모듈에 구현된 자체 Commons Logging 브리지와 함께 제공됨. 이 구현은 클래스 경로에 Log4j 2.x API와 SLF4J 1.7 API의 존재를 확인하고 로깅 구현으로 발견된 것 중 첫 번째를 사용하며, Log4j 2.x나 SLF4J를 사용할 수 없는 경우 Java 플랫폼의 핵심 로깅 기능(JUL 또는 java.util.logging이라고도 함)으로 대체함.
+- 추가 브리지 없이 Log4j 2.x 또는 Logback(또는 다른 SLF4J 공급자)을 클래스 경로에 넣으면 프레임워크가 선택한 것에 자동으로 적응함. 자세한 내용은 Spring Boot 로깅 참조 문서를 참조할 것.
+
+> ##### Note
+>
+> - Spring의 Commons Logging 변형은 핵심 프레임워크 및 확장의 인프라 로깅 목적으로만 사용하기 위한 것.
+> - 애플리케이션 코드 내의 로깅 요구 사항의 경우 Log4j 2.x, SLF4J 또는 JUL을 직접 사용하는 것이 좋음.
+
+- 다음 예제와 같이 `org.apache.commons.logging.LogFactory`를 통해 Log 구현을 검색할 수 있음.
+
+```java
+public class MyBean {
+	private final Log log = LogFactory.getLog(getClass());
+    // ...
+}
+```
 
 ## Ahead of Time Optimizations
 
-## Appendix
+- Introduction to Ahead of Time Optimizations
+- AOT engine overview
+- Refresh for AOT Processing
+- Bean Factory Initialization AOT Contributions
+- Bean Registration AOT Contributions
+- Running with AOT optimizations
+- Best Practices
+- Programmatic bean registration
+- Expose The Most Precise Bean Type
+- Avoid Multiple Constructors
+- FactoryBean
+- JPA
+- Runtime Hints
+- @ImportRuntimeHints
+- @Reflective
+- @RegisterReflectionForBinding
+- Testing Runtime Hints
 
-## Appendix - XML Schemas
+---
 
-## Appendix - XML Schema Authoring
+## Introduction to Spring Testing
 
-## Appendix - Application Startup Steps
+- 테스트는 엔터프라이즈 소프트웨어 개발의 필수적인 부분. 이 장에서는 IoC 원칙이 단위 테스트에 추가하는 가치와 Spring 프레임워크의 통합 테스트 지원이 제공하는 이점에 초점을 맞춤. (엔터프라이즈에서의 테스트에 대한 철저한 처리는 이 참조 매뉴얼의 범위를 벗어남.)
+
+## Unit Testing
+
+- Mock Objects
+- Environment
+- JNDI
+- Servlet API
+- Spring Web Reactive
+- Unit Testing Support Classes
+- General Testing Utilities
+- Spring MVC Testing Utilities
+
+## Integration Testing
+
+- Goals of Integration Testing
+- Context Management and Caching
+- Dependency Injection of Test Fixtures
+- Transaction Management
+- Support Classes for Integration Testing
+
+## JDBC Testing Support
+
+### JdbcTestUtils
+
+- `org.springframework.test.jdbc` 패키지에는 `JdbcTestUtils`가 포함되어 있는데, 이는 표준 데이터베이스 테스트 시나리오를 단순화하기 위한 JDBC 관련 유틸리티 함수 모음. 구체적으로 `JdbcTestUtils`는 다음과 같은 정적 유틸리티 메서드를 제공함.
+  > - `countRowsInTable(..)`: 주어진 테이블의 행 수를 계산함.
+  > - `countRowsInTableWhere(..)`: 제공된 WHERE 절을 사용하여 주어진 테이블의 행 수를 계산함.
+  > - `deleteFromTables(..)`: 지정된 테이블에서 모든 행을 삭제함.
+  > - `deleteFromTableWhere(..)`: 제공된 WHERE 절을 사용하여 주어진 테이블에서 행을 삭제함.
+  > - `dropTables(..)`: 지정된 테이블을 삭제함.
+
+> ##### Tip
+>
+> - `AbstractTransactionalJUnit4SpringContextTests`와 `AbstractTransactionalTestNGSpringContextTests`는 `JdbcTestUtils`의 앞서 언급한 메서드에 위임하는 편의 메서드를 제공함.
+
+### Embedded Databases
+
+- spring-jdbc 모듈은 내장형 데이터베이스를 구성하고 실행하기 위한 지원을 제공하며, 이를 데이터베이스와 상호 작용하는 통합 테스트에 사용할 수 있음. 자세한 내용은 내장형 데이터베이스 지원과 내장형 데이터베이스를 사용한 데이터 액세스 로직 테스트를 참조할 것.
+
+## Spring TestContext Framework
+
+- Spring TestContext Framework(`org.springframework.test.context` 패키지에 위치)는 사용 중인 테스팅 프레임워크에 구애받지 않는 일반적인 주석 기반 단위 및 통합 테스트 지원을 제공함. TestContext 프레임워크는 또한 구성보다 규칙을 중요시하며, 주석 기반 구성을 통해 재정의할 수 있는 합리적인 기본값을 제공함.
+- TestContext 프레임워크는 일반적인 테스트 인프라 외에도 JUnit 4, JUnit Jupiter(AKA JUnit 5) 및 TestNG에 대한 명시적인 지원을 제공함. JUnit 4와 TestNG의 경우 Spring은 추상 지원 클래스를 제공함. 또한 Spring은 JUnit 4용 사용자 정의 JUnit Runner와 사용자 정의 JUnit Rules, JUnit Jupiter용 사용자 정의 Extension을 제공하여 소위 POJO 테스트 클래스를 작성할 수 있음. POJO 테스트 클래스는 추상 지원 클래스와 같은 특정 클래스 계층을 확장할 필요가 없음.
+- 다음 섹션에서는 TestContext 프레임워크의 내부 구조에 대한 개요를 제공함. 프레임워크를 사용하는 데만 관심이 있고 사용자 정의 리스너나 사용자 정의 로더로 확장하는 데는 관심이 없다면 구성(컨텍스트 관리, 의존성 주입, 트랜잭션 관리), 지원 클래스 및 주석 지원 섹션으로 직접 이동하는 것이 좋음.
+
+### Section Summary
+
+- Key Abstractions
+- Bootstrapping the TestContext Framework
+- TestExecutionListener Configuration
+- Application Events
+- Test Execution Events
+- Context Management
+- Dependency Injection of Test Fixtures
+- Testing Request- and Session-scoped Beans
+- Transaction Management
+- Executing SQL Scripts
+- Parallel Test Execution
+- TestContext Framework Support Classes
+- Ahead of Time Support for Tests
+
+## Spring TestContext Framework - Key Abstractions
+
+- TestContext
+- TestContextManager
+- TestExecutionListener
+- Context Loaders
+
+## Spring TestContext Framework - Bootstrapping the TestContext Framework
+
+- Spring TestContext Framework의 내부 기본 구성은 모든 일반적인 사용 사례에 충분함. 그러나 개발 팀이나 제3자 프레임워크가 기본 `ContextLoader`를 변경하거나, 사용자 정의 `TestContext` 또는 `ContextCache`를 구현하거나, 기본 `ContextCustomizerFactory` 및 `TestExecutionListener` 구현 집합을 확장하는 등의 작업을 수행하고 싶을 때가 있음. `TestContext` 프레임워크가 작동하는 방식에 대한 이러한 저수준 제어를 위해 Spring은 부트스트래핑 전략을 제공함.
+- `TestContextBootstrapper`는 `TestContext` 프레임워크를 부트스트래핑하기 위한 SPI를 정의합니다. `TestContextBootstrapper`는 `TestContextManager`에서 현재 테스트에 대한 `TestExecutionListener` 구현을 로드하고 관리하는 `TestContext`를 구축하는 데 사용됨. `@BootstrapWith`를 직접 사용하거나 메타 주석으로 사용하여 테스트 클래스(또는 테스트 클래스 계층 구조)에 대한 사용자 정의 부트스트래핑 전략을 구성할 수 있음. `@BootstrapWith`를 사용하여 부트스트래퍼를 명시적으로 구성하지 않으면 `@WebAppConfiguration`의 존재 여부에 따라 `DefaultTestContextBootstrapper` 또는 `WebTestContextBootstrapper`가 사용됨.
+- `TestContextBootstrapper` SPI는 향후 변경될 가능성이 높으므로(새로운 요구 사항을 수용하기 위해) 구현자가 이 인터페이스를 직접 구현하지 않고 `AbstractTestContextBootstrapper` 또는 해당 구체적인 하위 클래스 중 하나를 확장하는 것이 좋음.
+
+## Spring TestContext Framework - TestExecutionListener Configuration
+
+- Registering TestExecutionListener Implementations
+- Automatic Discovery of Default TestExecutionListener Implementations
+- Ordering TestExecutionListener Implementations
+- Merging TestExecutionListener Implementations
+
+## Spring TestContext Framework - Application Events
+
+## Spring TestContext Framework - Test Execution Events
+
+- Exception Handling
+- Asynchronous Listeners
+
+## Spring TestContext Framework - Context Management
+
+## Spring TestContext Framework - Context Management - Context Configuration with XML resources
+
+## Spring TestContext Framework - Context Management - Context Configuration with Groovy Scripts
+
+## Spring TestContext Framework - Context Management - Context Configuration with Component Classes
+
+## Spring TestContext Framework - Context Management - Mixing XML, Groovy Scripts, and Component Classes
+
+- 때로는 테스트를 위해 `ApplicationContext`를 구성할 때 XML 구성 파일, Groovy 스크립트 및 컴포넌트 클래스(일반적으로 `@Configuration` 클래스)를 혼합하는 것이 바람직할 수 있음. 예를 들어, 프로덕션에서 XML 구성을 사용하는 경우 테스트를 위해 `@Configuration` 클래스를 사용하여 특정 Spring 관리 컴포넌트를 구성하거나 그 반대로 구성하기로 결정할 수 있음.
+- 또한 일부 서드 파티 프레임워크(예: Spring Boot)는 다양한 유형의 리소스(예: XML 구성 파일, Groovy 스크립트 및 `@Configuration` 클래스)에서 동시에 `ApplicationContext`를 로드하는 것을 일급 지원을 제공함. 역사적으로 Spring Framework는 표준 배포에 대해 이를 지원하지 않았음. 따라서 Spring Framework가 spring-test 모듈에서 제공하는 대부분의 `SmartContextLoader` 구현은 각 테스트 컨텍스트에 대해 하나의 리소스 유형만 지원함. 그러나 이는 둘 다 사용할 수 없다는 의미는 아님. 일반 규칙에 대한 한 가지 예외는 `GenericGroovyXmlContextLoader`와 `GenericGroovyXmlWebContextLoader`가 XML 구성 파일과 Groovy 스크립트를 동시에 지원한다는 것. 또한 타사 프레임워크는 `@ContextConfiguration`을 통해 위치와 클래스의 선언을 모두 지원하도록 선택할 수 있으며, `TestContext` 프레임워크의 표준 테스팅 지원을 통해 다음과 같은 옵션이 있음.
+- 리소스 위치(예: XML 또는 Groovy)와 `@Configuration` 클래스를 모두 사용하여 테스트를 구성하려면 하나를 진입점으로 선택해야 하며, 해당 진입점에는 다른 하나가 포함되거나 가져와야 함. 예를 들어 XML 또는 Groovy 스크립트에서는 컴포넌트 스캔을 사용하거나 일반 Spring 빈으로 정의하여 `@Configuration` 클래스를 포함할 수 있음. 반면에 `@Configuration` 클래스에서는 `@ImportResource`를 사용하여 XML 구성 파일이나 Groovy 스크립트를 가져올 수 있음. 이 동작은 프로덕션에서 애플리케이션을 구성하는 방식과 의미론적으로 동일함. 프로덕션 구성에서는 프로덕션 `ApplicationContext`가 로드되는 XML 또는 Groovy 리소스 위치 집합이나 `@Configuration` 클래스 집합 중 하나를 정의하지만, 다른 유형의 구성을 포함하거나 가져올 수 있는 자유도 여전히 있음.
+
+## Spring TestContext Framework - Context Management - Configuration Configuration with Context Customizers
+
+- Registering ContextCustomizerFactory Implementations
+- Automatic Discovery of Default ContextCustomizerFactory Implementations
+- Merging ContextCustomizerFactory Implementations
+
+## Spring TestContext Framework - Context Management - Context Configuration with Context Initializers
+
+## Spring TestContext Framework - Context Management - Context Configuration Inheritance
+
+## Spring TestContext Framework - Context Management - Context Configuration with Environment Profiles
+
+## Spring TestContext Framework - Context Management - Context Configuration with Test Property Sources
+
+- Declaring Test Property Sources
+- Default Properties File Detection
+- Precedence
+- Inheriting and Overriding Test Property Sources
+
+## Spring TestContext Framework - Context Management - Context Configuration with Dynamic Property Sources
+
+- Precedence
+
+## Spring TestContext Framework - Context Management - Loading a WebApplicationContext
+
+## Spring TestContext Framework - Context Management - Working with Web Mocks
+
+- 포괄적인 웹 테스트 지원을 제공하기 위해 `TestContext` 프레임워크에는 기본적으로 활성화되는 `ServletTestExecutionListener`가 있음. `WebApplicationContext`에 대해 테스트할 때 이 `TestExecutionListener`는 각 테스트 메서드 전에 Spring Web의 `RequestContextHolder`를 사용하여 기본 스레드 로컬 상태를 설정하고 `@WebAppConfiguration`으로 구성된 기본 리소스 경로를 기반으로 `MockHttpServletRequest`, `MockHttpServletResponse` 및 `ServletWebRequest`를 생성함. `ServletTestExecutionListener`는 또한 `MockHttpServletResponse`와 `ServletWebRequest`가 테스트 인스턴스에 주입될 수 있도록 보장하며, 테스트가 완료되면 스레드 로컬 상태를 정리함.
+- 테스트를 위해 `WebApplicationContext`를 로드하고 나면 웹 모의 객체와 상호 작용해야 할 수도 있음. 예를 들어 테스트 픽스처를 설정하거나 웹 구성 요소를 호출한 후 어설션을 수행하기 위해서임. 다음 예제는 테스트 인스턴스에 어떤 모의 객체를 자동 연결할 수 있는지 보여줌. `WebApplicationContext`와 `MockServletContext`는 모두 테스트 스위트 전체에서 캐시되는 반면, 다른 모의 객체는 `ServletTestExecutionListener`에 의해 테스트 메서드마다 관리됨.
+
+```java
+@SpringJUnitWebConfig
+class WacTests {
+
+	@Autowired
+	WebApplicationContext wac; // cached
+
+	@Autowired
+	MockServletContext servletContext; // cached
+
+	@Autowired
+	MockHttpSession session;
+
+	@Autowired
+	MockHttpServletRequest request;
+
+	@Autowired
+	MockHttpServletResponse response;
+
+	@Autowired
+	ServletWebRequest webRequest;
+
+	//...
+}
+```
+
+## Spring TestContext Framework - Context Management - Context Caching
+
+## Spring TestContext Framework - Context Management - Context Failure Threshold
+
+- Spring Framework 6.1부터는 실패한 `ApplicationContext`를 반복적으로 로드하려는 시도를 방지하는 컨텍스트 실패 임계값 정책이 적용됨. 기본적으로 실패 임계값은 1로 설정되어 있어 주어진 컨텍스트 캐시 키에 대해 `ApplicationContext`를 로드하려는 시도는 한 번만 이루어짐(컨텍스트 캐싱 참조). 동일한 컨텍스트 캐시 키에 대해 `ApplicationContext`를 로드하려는 후속 시도는 즉시 `IllegalStateException`과 함께 시도가 사전에 건너뛰었음을 설명하는 오류 메시지를 발생시킴. 이 동작을 통해 개별 테스트 클래스와 테스트 스위트는 절대 성공적으로 로드되지 않을 `ApplicationContext`를 반복적으로 로드하려는 시도를 피함으로써 더 빠르게 실패할 수 있음. 예를 들어, 현재 환경에서 컨텍스트 로딩을 방해하는 구성 오류나 누락된 외부 리소스로 인해 발생할 수 있음.
+- 명령줄이나 빌드 스크립트에서 JVM 시스템 속성인 `spring.test.context.failure.threshold`를 양의 정수 값으로 설정하여 컨텍스트 실패 임계값을 구성할 수 있습니다. 또는 `SpringProperties` 메커니즘을 통해 동일한 속성을 설정할 수 있습니다.
+
+> ##### Note
+>
+> - 컨텍스트 실패 임계값을 효과적으로 비활성화하려면 속성 값을 매우 큰 값으로 설정하면 됩니다. 예를 들어 명령줄에서 -Dspring.test.context.failure.threshold=1000000과 같이 시스템 속성을 설정할 수 있습니다.
+
+## Spring TestContext Framework - Context Management - Context Hierarchies
+
+## Spring TestContext Framework - Dependency Injection of Test Fixtures
+
+## Spring TestContext Framework - Testing Request- and Session-scoped Beans
+
+## Spring TestContext Framework - Transaction Management
+
+- Test-managed Transactions
+- Enabling and Disabling Transactions
+- Transaction Rollback and Commit Behavior
+- Programmatic Transaction Management
+- Running Code Outside of a Transaction
+- Configuring a Transaction Manager
+- Demonstration of All Transaction-related Annotations
+
+## Spring TestContext Framework - Executing SQL Scripts
+
+- Executing SQL scripts programmatically
+- Executing SQL scripts declaratively with @Sql
+- Path Resource Semantics
+- Default Script Detection
+- Logging SQL Scripts and Statements
+- Declaring Multiple @Sql Sets
+- Script Execution Phases
+- Script Configuration with @SqlConfig
+- Transaction management for @Sql
+- Merging and Overriding Configuration with @SqlMergeMode
+
+## Spring TestContext Framework - Parallel Test Execution
+
+## Spring TestContext Framework - TestContext Framework Support Classes
+
+- Spring JUnit 4 Runner
+- Spring JUnit 4 Rules
+- JUnit 4 Support Classes
+- SpringExtension for JUnit Jupiter
+- Dependency Injection with the SpringExtension
+- Constructor Injection
+- Method Injection
+- @Nested test class configuration
+- TestNG Support Classes
+
+## Spring TestContext Framework - Ahead of Time Support for Tests
+
+## WebTestClient
+
+- Setup
+- Bind to Controller
+- Bind to ApplicationContext
+- Bind to Router Function
+- Bind to Server
+- Client Config
+- Writing Tests
+- No Content
+- JSON Content
+- Streaming Responses
+- MockMvc Assertions
+
+## MockMvc
+
+- MockMvc라고도 알려진 Spring MVC Test 프레임워크는 Spring MVC 애플리케이션 테스트를 지원함. 실행 중인 서버 대신 모의 요청 및 응답 객체를 통해 전체 Spring MVC 요청 처리를 수행함.
+- MockMvc는 요청을 수행하고 응답을 검증하는 데 단독으로 사용할 수 있음. 또한 `WebTestClient`를 통해 사용할 수 있는데, MockMvc가 요청을 처리하기 위한 서버로 플러그인됨. `WebTestClient`의 장점은 원시 데이터 대신 높은 수준의 객체로 작업할 수 있는 옵션과 실제 서버에 대한 전체 엔드투엔드 HTTP 테스트로 전환하고 동일한 테스트 API를 사용할 수 있는 능력.
+
+### Section Summary
+
+- Overview
+- Static Imports
+- Setup Choices
+- Setup Features
+- Performing Requests
+- Defining Expectations
+- Async Requests
+- Streaming Responses
+- Filter Registrations
+- MockMvc vs End-to-End Tests
+- Further Examples
+- HtmlUnit Integration
+
+## MockMvc - Overview
+
+- 컨트롤러를 인스턴스화하고 의존성을 주입한 다음 해당 메서드를 호출하여 Spring MVC에 대한 일반 단위 테스트를 작성할 수 있음. 그러나 이러한 테스트는 요청 매핑, 데이터 바인딩, 메시지 변환, 유형 변환, 유효성 검사를 확인하지 않으며 지원되는 `@InitBinder`, `@ModelAttribute` 또는 `@ExceptionHandler` 메서드도 포함하지 않음.
+- MockMvc라고도 알려진 Spring MVC Test 프레임워크는 실행 중인 서버 없이 Spring MVC 컨트롤러에 대한 보다 완전한 테스트를 제공하는 것을 목표로 함. 이를 위해 DispatcherServlet을 호출하고 실행 중인 서버 없이 전체 Spring MVC 요청 처리를 복제하는 spring-test 모듈의 Servlet API "모의" 구현을 전달함.
+- MockMvc는 경량의 타겟팅된 테스트를 사용하여 Spring MVC 애플리케이션의 대부분의 기능을 검증할 수 있는 서버 측 테스트 프레임워크. 요청을 수행하고 응답을 검증하는 데 단독으로 사용할 수 있으며, MockMvc를 요청을 처리하기 위한 서버로 플러그인하여 WebTestClient API를 통해 사용할 수도 있습니다.
+
+## MockMvc - Static Imports
+
+- MockMvc를 직접 사용하여 요청을 수행할 때는 다음에 대한 정적 가져오기가 필요함
+  > - `MockMvcBuilders.*`
+  > - `MockMvcRequestBuilders.*`
+  > - `MockMvcResultMatchers.*`
+  > - `MockMvcResultHandlers.*`
+- 이를 기억하는 쉬운 방법은 `MockMvc*`를 검색하는 것. Eclipse를 사용하는 경우 Eclipse 환경 설정에서 위의 항목을 "즐겨찾는 정적 멤버"로 추가해야 함.
+- `WebTestClient`를 통해 MockMvc를 사용할 때는 정적 가져오기가 필요하지 않음. WebTestClient는 정적 가져오기 없이 유연한 API를 제공함.
+
+## MockMvc - Setup Choices
+
+## MockMvc - Setup Features
+
+## MockMvc - Performing Requests
+
+## MockMvc - Defining Expectations
+
+## MockMvc - Async Requests
+
+## MockMvc - Streaming Responses
+
+## MockMvc - Filter Registrations
+
+- MockMvc 인스턴스를 설정할 때 다음 예제와 같이 하나 이상의 Servlet `Filter` 인스턴스를 등록할 수 있음.
+
+```java
+mockMvc = standaloneSetup(new PersonController()).addFilters(new CharacterEncodingFilter()).build();
+```
+
+- 등록된 필터는 `spring-test`의 `MockFilterChain`을 통해 호출되며, 마지막 필터는 `DispatcherServlet`에 위임함.
+
+## MockMvc - MockMvc vs End-to-End Tests
+
+- MockMvc는 `spring-test` 모듈의 Servlet API 모의 구현을 기반으로 구축되며 실행 중인 컨테이너에 의존하지 않음. 따라서 실제 클라이언트와 실행 중인 라이브 서버로 전체 엔드투엔드 통합 테스트와 비교할 때 몇 가지 차이점이 있음.
+- 이를 가장 쉽게 생각하는 방법은 빈 `MockHttpServletRequest`로 시작하는 것. 여기에 추가하는 것은 요청이 되는 것. 놀랄 수 있는 점은 기본적으로 컨텍스트 경로가 없다는 것. `jsessionid` 쿠키가 없음. 전달, 오류 또는 비동기 디스패치가 없으며, 따라서 실제 JSP 렌더링이 없음. 대신 "전달된" 및 "리디렉션된" URL은 `MockHttpServletResponse`에 저장되며 기대치로 assertion할 수 있음.
+- 이는 JSP를 사용하는 경우 요청이 전달된 JSP 페이지를 확인할 수 있지만 HTML이 렌더링되지 않음을 의미함. 즉, JSP가 호출되지 않는다는 것. 그러나 Thymeleaf 및 Freemarker와 같이 전달에 의존하지 않는 다른 모든 렌더링 기술은 예상대로 HTML을 응답 본문에 렌더링함. `@ResponseBody` 메서드를 통해 JSON, XML 및 기타 형식을 렌더링하는 경우에도 마찬가지임.
+- 또는 `@SpringBootTest`를 사용한 Spring Boot의 전체 엔드투엔드 통합 테스트 지원을 고려해 볼 수 있음. Spring Boot 참조 가이드를 참조할 것.
+- 각 접근 방식에는 장단점이 있습니다. Spring MVC Test에서 제공하는 옵션은 고전적인 단위 테스팅에서 전체 통합 테스트까지의 스케일에서 서로 다른 중단점. 분명히 Spring MVC Test의 옵션 중 어느 것도 고전적인 단위 테스팅 범주에 속하지는 않지만 조금 더 가까움. 예를 들어, 컨트롤러에 모의 서비스를 주입하여 웹 계층을 분리할 수 있음. 이 경우 실제 Spring 구성을 사용하여 `DispatcherServlet`을 통해서만 웹 계층을 테스트하지만, 그 위의 계층에서 데이터 액세스 계층을 분리하여 테스트할 수 있음. 또한 독립 실행형 설정을 사용하여 한 번에 하나의 컨트롤러에 집중하고 작동하는 데 필요한 구성을 수동으로 제공할 수 있음.
+- Spring MVC Test를 사용할 때 또 다른 중요한 구별점은 개념적으로 이러한 테스트가 서버 측이라는 점. 따라서 어떤 핸들러가 사용되었는지, `HandlerExceptionResolver`로 예외가 처리되었는지, 모델의 내용은 무엇인지, 어떤 바인딩 오류가 있었는지 등의 세부 정보를 확인할 수 있음. 즉, 실제 HTTP 클라이언트를 통해 테스트할 때처럼 서버가 불투명한 상자가 아니기 때문에 기대치를 쓰기가 더 쉬움. 이것은 일반적으로 고전적인 단위 테스팅의 장점. 작성, 추론 및 디버깅이 쉽지만 전체 통합 테스트의 필요성을 대체하지는 않음. 동시에 응답이 가장 중요한 확인 사항이라는 사실을 간과하지 않는 것이 중요함. 요컨대, 여기에는 동일한 프로젝트 내에서도 다양한 테스트 스타일과 전략의 여지가 있음.
+
+## MockMvc - Further Examples
+
+- 프레임워크 자체 테스트에는 MockMvc를 단독으로 또는 `WebTestClient`를 통해 사용하는 방법을 보여주기 위한 많은 샘플 테스트가 포함되어 있음. 더 많은 아이디어를 얻으려면 이러한 예제를 살펴볼 것.
+
+## MockMvc - HtmlUnit Integration
+
+- Spring은 MockMvc와 HtmlUnit 간의 통합을 제공함. 이를 통해 HTML 기반 뷰를 사용할 때 엔드투엔드 테스트를 수행하는 것이 간단해짐. 이 통합을 통해 다음과 같은 작업을 수행할 수 있음.
+  > - Servlet 컨테이너에 배포할 필요 없이 HtmlUnit, WebDriver, Geb와 같은 도구를 사용하여 HTML 페이지를 쉽게 테스트할 수 있음.
+  > - 페이지 내에서 JavaScript를 테스트할 수 있음.
+  > - 선택적으로 모의 서비스를 사용하여 테스트 속도를 높일 수 있음.
+  > - 컨테이너 내 엔드투엔드 테스트와 컨테이너 외부 통합 테스트 간에 로직을 공유할 수 있음.
+
+> ##### Note
+>
+> - MockMvc는 Servlet 컨테이너에 의존하지 않는 템플릿 기술(예: Thymeleaf, FreeMarker 등)과 함께 작동하지만 Servlet 컨테이너에 의존하는 JSP와는 작동하지 않음.
+
+### Section Summary
+
+- Why HtmlUnit Integration?
+- MockMvc and HtmlUnit
+- MockMvc and WebDriver
+- MockMvc and Geb
+
+## MockMvc - HtmlUnit Integration - Why HtmlUnit Integration?
+
+- Integration Testing to the Rescue?
+- Enter HtmlUnit Integration
+- HtmlUnit Integration Options
+
+## MockMvc - HtmlUnit Integration - MockMvc and HtmlUnit
+
+- MockMvc and HtmlUnit Setup
+- MockMvc and HtmlUnit Usage
+- Advanced MockMvcWebClientBuilder
+
+## MockMvc - HtmlUnit Integration - MockMvc and WebDriver
+
+- Why WebDriver and MockMvc?
+- MockMvc and WebDriver Setup
+- MockMvc and WebDriver Usage
+- Advanced MockMvcHtmlUnitDriverBuilder
+
+## MockMvc - HtmlUnit Integration - MockMvc and Geb
+
+- Why Geb and MockMvc?
+- MockMvc and Geb Setup
+- MockMvc and Geb Usage
+
+## Testing Client Applications
+
+- Static Imports
+- Further Examples of Client-side REST Tests
+
+---
+
+## Transaction Management
+
+## Transaction Management - Advantages of the Spring Framework’s Transaction Support Model
+
+## Transaction Management - Understanding the Spring Framework Transaction Abstraction
+
+## Transaction Management - Synchronizing Resources with Transactions
+
+## Transaction Management - Declarative Transaction Management
+
+## Transaction Management - Declarative Transaction Management - Understanding the Spring Framework’s Declarative Transaction Implementation
+
+## Transaction Management - Declarative Transaction Management - Example of Declarative Transaction Implementation
+
+## Transaction Management - Declarative Transaction Management - Rolling Back a Declarative Transaction
+
+## Transaction Management - Declarative Transaction Management - Configuring Different Transactional Semantics for Different Beans
+
+## Transaction Management - Declarative Transaction Management - <tx:advice/> Settings
+
+## Transaction Management - Declarative Transaction Management - Using @Transactional
+
+## Transaction Management - Declarative Transaction Management - Transaction Propagation
+
+## Transaction Management - Declarative Transaction Management - Advising Transactional Operations
+
+## Transaction Management - Declarative Transaction Management - Using @Transactional with AspectJ
+
+## Transaction Management - Programmatic Transaction Management
+
+## Transaction Management - Choosing Between Programmatic and Declarative Transaction Management
+
+## Transaction Management - Transaction-bound Events
+
+## Transaction Management - Application server-specific integration
+
+## Transaction Management - Solutions to Common Problems
+
+## Transaction Management - Further Resources
+
+## DAO Support
+
+## Data Access with JDBC
+
+## Data Access with JDBC - Choosing an Approach for JDBC Database Access
+
+## Data Access with JDBC - Package Hierarchy
+
+## Data Access with JDBC - Using the JDBC Core Classes to Control Basic JDBC Processing and Error Handling
+
+## Data Access with JDBC - Controlling Database Connections
+
+## Data Access with JDBC - JDBC Batch Operations
+
+## Data Access with JDBC - Simplifying JDBC Operations with the SimpleJdbc Classes
+
+## Data Access with JDBC - Modeling JDBC Operations as Java Objects
+
+## Data Access with JDBC - Common Problems with Parameter and Data Value Handling
+
+## Data Access with JDBC - Embedded Database Support
+
+## Data Access with JDBC - Initializing a DataSource
+
+## Data Access with R2DBC
+
+## Object Relational Mapping (ORM) Data Access
+
+## Object Relational Mapping (ORM) Data Access - Introduction to ORM with Spring
+
+## Object Relational Mapping (ORM) Data Access - General ORM Integration Considerations
+
+## Object Relational Mapping (ORM) Data Access - Hibernate
+
+## Object Relational Mapping (ORM) Data Access - JPA
+
+## Marshalling XML by Using Object-XML Mappers
 
 ---
 
@@ -3439,7 +4086,7 @@ public Person addPerson(@RequestParam(required = false, defaultValue = "") Strin
 
 ## Spring Web MVC - Asynchronous Requests
 
-## pring Web MVC - CORS
+## Spring Web MVC - CORS
 
 ## Spring Web MVC - Error Responses
 
@@ -3562,3 +4209,173 @@ public Person addPerson(@RequestParam(required = false, defaultValue = "") Strin
 ## WebSockets - STOMP - Testing
 
 ## Other Web Frameworks
+
+---
+
+## Spring WebFlux
+
+## Spring WebFlux - Overview
+
+## Spring WebFlux - Reactive Core
+
+## Spring WebFlux - DispatcherHandler
+
+## Spring WebFlux - Annotated Controllers
+
+## Spring WebFlux - Annotated Controllers - @Controller
+
+## Spring WebFlux - Annotated Controllers - Mapping Requests
+
+## Spring WebFlux - Annotated Controllers - Handler Methods
+
+## Spring WebFlux - Annotated Controllers - Handler Methods - Method Arguments
+
+## Spring WebFlux - Annotated Controllers - Handler Methods - Return Values
+
+## Spring WebFlux - Annotated Controllers - Handler Methods - Type Conversion
+
+## Spring WebFlux - Annotated Controllers - Handler Methods - Matrix Variables
+
+## Spring WebFlux - Annotated Controllers - Handler Methods - @RequestParam
+
+## Spring WebFlux - Annotated Controllers - Handler Methods - @RequestHeader
+
+## Spring WebFlux - Annotated Controllers - Handler Methods - @CookieValue
+
+## Spring WebFlux - Annotated Controllers - Handler Methods - @ModelAttribute
+
+## Spring WebFlux - Annotated Controllers - Handler Methods - @SessionAttributes
+
+## Spring WebFlux - Annotated Controllers - Handler Methods - @SessionAttribute
+
+## Spring WebFlux - Annotated Controllers - Handler Methods - @RequestAttribute
+
+## Spring WebFlux - Annotated Controllers - Handler Methods - Multipart Content
+
+## Spring WebFlux - Annotated Controllers - Handler Methods - @RequestBody
+
+## Spring WebFlux - Annotated Controllers - Handler Methods - HttpEntity
+
+## Spring WebFlux - Annotated Controllers - Handler Methods - @ResponseBody
+
+## Spring WebFlux - Annotated Controllers - Handler Methods - ResponseEntity
+
+## Spring WebFlux - Annotated Controllers - Handler Methods - Jackson JSON
+
+## Spring WebFlux - Annotated Controllers - Model
+
+## Spring WebFlux - Annotated Controllers - DataBinder
+
+## Spring WebFlux - Annotated Controllers - Validation
+
+## Spring WebFlux - Annotated Controllers - Exceptions
+
+## Spring WebFlux - Annotated Controllers - Controller Advice
+
+## Spring WebFlux - Functional Endpoints
+
+## Spring WebFlux - URI Links
+
+## Spring WebFlux - CORS
+
+## Spring WebFlux - Error Responses
+
+## Spring WebFlux - Web Security
+
+## Spring WebFlux - HTTP Caching
+
+## Spring WebFlux - View Technologies
+
+## Spring WebFlux - WebFlux Config
+
+## Spring WebFlux - HTTP/2
+
+## WebClient
+
+## WebClient - Configuration
+
+## WebClient - retrieve()
+
+## WebClient - Exchange
+
+## WebClient - Request Body
+
+## WebClient - Filters
+
+## WebClient - Attributes
+
+## WebClient - Context
+
+## WebClient - Synchronous Use
+
+## WebClient - Testing
+
+## HTTP Interface Client
+
+## WebSockets
+
+## Testing
+
+## RSocket
+
+## Reactive Libraries
+
+---
+
+## REST Clients
+
+## JMS (Java Message Service)
+
+## JMS (Java Message Service) - Using Spring JMS
+
+## JMS (Java Message Service) - Sending a Message
+
+## JMS (Java Message Service) - Receiving a Message
+
+## JMS (Java Message Service) - Support for JCA Message Endpoints
+
+## JMS (Java Message Service) - Annotation-driven Listener Endpoints
+
+## JMS (Java Message Service) - JMS Namespace Support
+
+## JMX
+
+## JMX - Exporting Your Beans to JMX
+
+## JMX - Controlling the Management Interface of Your Beans
+
+## JMX - Controlling ObjectName Instances for Your Beans
+
+## JMX - Using JSR-160 Connectors
+
+## JMX - Accessing MBeans through Proxies
+
+## JMX - Notifications
+
+## JMX - Further Resources
+
+## Email
+
+## Task Execution and Scheduling
+
+## Cache Abstraction
+
+## Cache Abstraction - Understanding the Cache Abstraction
+
+## Declarative Annotation-based Caching
+
+## Cache Abstraction - JCache (JSR-107) Annotations
+
+## Cache Abstraction - Declarative XML-based Caching
+
+## Cache Abstraction - Configuring the Cache Storage
+
+## Cache Abstraction - Plugging-in Different Back-end Caches
+
+## Cache Abstraction - How can I Set the TTL/TTI/Eviction policy/XXX feature?
+
+## Observability Support
+
+## JVM Checkpoint Restore
+
+## CDS
