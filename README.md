@@ -2011,6 +2011,22 @@ public class Society {
 
 ## Aspect Oriented Programming with Spring
 
+- 관점 지향 프로그래밍(AOP)은 프로그램 구조에 대한 또 다른 사고방식을 제공함으로써 객체 지향 프로그래밍(OOP)을 보완함. OOP에서 모듈화의 핵심 단위는 클래스인 반면, AOP에서는 모듈화의 단위가 측면(aspect)임. 측면을 사용하면 여러 유형과 객체에 걸쳐있는 관심사(예: 트랜잭션 관리)를 모듈화할 수 있음. (이러한 관심사는 AOP 문헌에서 종종 "횡단 관심사"라고 함.)
+- Spring의 핵심 구성 요소 중 하나는 AOP 프레임워크. Spring IoC 컨테이너는 AOP에 의존하지 않지만(AOP를 사용하지 않아도 됨을 의미), AOP는 Spring IoC를 보완하여 매우 유능한 미들웨어 솔루션을 제공함.
+
+> ##### Spring AOP with AspectJ pointcuts
+>
+> - Spring은 스키마 기반 접근 방식이나 `@AspectJ` 주석 스타일을 사용하여 사용자 정의 측면을 작성할 수 있는 간단하고 강력한 방법을 제공함. 이 두 스타일 모두 완전히 타입화된 어드바이스와 AspectJ 포인트컷 언어를 제공하면서도 aspect를 엮을 때는에는 여전히 Spring AOP를 사용함.
+> - 이 장에서는 스키마 및 `@AspectJ` 기반 AOP 지원에 대해 설명함. 하위 수준의 AOP 지원은 다음 장에서 설명함.
+
+- Spring Framework에서 AOP는 다음과 같은 용도로 사용됨.
+  > - 선언적 엔터프라이즈 서비스를 제공함. 가장 중요한 서비스는 선언적 트랜잭션 관리.
+  > - 사용자가 OOP와 함께 AOP를 사용하여 사용자 정의 측면을 구현할 수 있음.
+
+> ##### Note
+>
+> - 일반적인 선언적 서비스나 풀링과 같은 다른 사전 패키지된 선언적 미들웨어 서비스에만 관심이 있다면 Spring AOP와 직접 작업할 필요가 없으며 이 장의 대부분을 건너뛸 수 있음.
+
 ## Aspect Oriented Programming with Spring - AOP Concepts
 
 ## Aspect Oriented Programming with Spring - Spring AOP Capabilities and Goals
