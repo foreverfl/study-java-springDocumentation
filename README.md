@@ -483,13 +483,265 @@ spring.datasource.password=***
 
 ### Configuration Metadata
 
+- 앞의 다이어그램에서 볼 수 있듯이 스프링 IoC 컨테이너는 일종의 구성 메타데이터를 사용함. 이 구성 메타데이터는 애플리케이션 개발자인 여러분이 스프링 컨테이너에게 애플리케이션의 객체를 인스턴스화하고 구성하고 조립하는 방법을 알려주는 것을 나타냄.
+- 구성 메타데이터는 전통적으로 간단하고 직관적인 XML 형식으로 제공되며, 이 장의 대부분은 이를 사용하여 스프링 IoC 컨테이너의 주요 개념과 기능을 전달함. 최근에는 Java 형식으로 `@Configuration`을 사용하여 나타내는 경우가 많음.
+
+> ##### Note
+>
+> - XML 기반 메타데이터는 허용되는 유일한 형식의 구성 메타데이터가 아님. 스프링 IoC 컨테이너 자체는 이 구성 메타데이터가 실제로 작성되는 형식과 완전히 분리되어 있음. 요즘에는 많은 개발자들이 스프링 애플리케이션에 자바 기반 구성을 선택함.
+
+- 스프링 컨테이너에서 다른 형식의 메타데이터를 사용하는 방법에 대한 정보는 다음을 참조할 것.
+
+  > - **애노테이션 기반 구성**: 애노테이션 기반 구성 메타데이터를 사용하여 빈을 정의함.
+  > - **자바 기반 구성**: XML 파일 대신 자바를 사용하여 애플리케이션 클래스 외부에서 빈을 정의함. 이러한 기능을 사용하려면 `@Configuration`, `@Bean`, `@Import` 및 `@DependsOn` 애노테이션을 참조할 것.
+
+- 스프링 구성은 컨테이너가 관리해야 하는 하나 이상의 빈 정의로 구성됨. XML 기반 구성 메타데이터는 최상위 `<beans/>` 요소 내에 `<bean/>` 요소로 이러한 빈을 구성함. 자바 구성은 일반적으로 `@Configuration` 클래스 내에서 `@Bean` 애노테이션이 붙은 메서드를 사용함.
+
+- 이러한 빈 정의는 애플리케이션을 구성하는 실제 객체에 해당함. 일반적으로 서비스 계층 객체, 리포지토리나 데이터 액세스 객체(DAO)와 같은 영속성 계층 객체, 웹 컨트롤러와 같은 프레젠테이션 객체, JPA EntityManagerFactory, JMS 큐 등과 같은 인프라 객체를 정의함. 일반적으로 컨테이너에서 세분화된 도메인 객체를 구성하지는 않음. 도메인 객체를 생성하고 로드하는 것은 보통 리포지토리와 비즈니스 로직의 책임이기 때문임.
+
+- 다음 예제는 XML 기반 구성 메타데이터의 기본 구조를 보여줌.
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- id 속성은 개별 빈 정의를 식별하는 문자열 -->
+    <!-- class 속성은 빈의 유형을 정의하고 완전한 클래스 이름을 사용함 -->
+	<bean id="..." class="...">
+		<!-- 이 bean을 위한 collaborators 및 configuration이 포함됨 -->
+	</bean>
+
+	<bean id="..." class="...">
+		<!-- 이 bean을 위한 collaborators 및 configuration이 포함됨 -->
+	</bean>
+
+	<!-- 더 많은 빈 정의가 여기에 위치함 -->
+
+</beans>
+```
+
+- 다음 예제는 Java 기반 구성 메타데이터의 기본 구조를 보여줌. XML 기반 설정에서의 `id`의 역할은 여기서는 메소드 이름이 하고, `class`역할은 메서드의 반환 타입이 수행함.
+
+```java
+@Configuration
+public class IoCContainerConfig {
+    @Bean
+    public MyBean1 myBean1() {
+        return new MyBean1();
+        // 필요한 경우 collaborators 및 configuration 설정
+    }
+
+    @Bean
+    public MyBean2 myBean2() {
+        return new MyBean2();
+        // 필요한 경우 collaborators 및 configuration 설정
+    }
+}
+```
+
+- id 속성의 값은 협력하는 객체를 참조하는 데 사용할 수 있음. 이 예제에는 협력하는 객체를 참조하는 XML이 표시되지 않음. 자세한 내용은 의존성을 참조할 것.
+
 ### Instantiating a Container
+
+- 컨테이너에 제공되는 위치 경로는 컨테이너가 로컬 파일 시스템, Java CLASSPATH 등과 같은 다양한 외부 리소스에서 구성 메타데이터를 로드할 수 있도록 하는 리소스 문자열.
+
+```java
+ApplicationContext context = new ClassPathXmlApplicationContext("services.xml", "daos.xml");
+```
+
+> ##### Note
+>
+> - Spring의 IoC 컨테이너에 대해 알아본 후에는 URI 구문으로 정의된 위치에서 InputStream을 읽기 위한 편리한 메커니즘을 제공하는 Spring의 Resource 추상화(Resources에 설명된 대로)에 대해 더 알고 싶을 수 있음. 특히 Resource 경로는 Application Contexts and Resource Paths에 설명된 대로 애플리케이션 컨텍스트를 구성하는 데 사용됨.
+
+- 다음 예제는 서비스 계층 객체(`services.xml`) 구성 파일을 보여줌.
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- services -->
+
+	<bean id="petStore" class="org.springframework.samples.jpetstore.services.PetStoreServiceImpl">
+		<property name="accountDao" ref="accountDao"/>
+		<property name="itemDao" ref="itemDao"/>
+		<!-- bean을 위한 추가적인 collaborators와 configuration이 여기 위치함 -->
+	</bean>
+
+	<!-- 서비스 계층을 위한 빈 정의들이 여기 위치함 -->
+
+</beans>
+```
+
+- 다음 예제는 위에서의 `services.xml`을 Java 파일 형태로 바꾼 것을 보여줌. `<property>` 에서 `name`은 설정하려는 속성명을 나타내고, `ref`는 참조할 빈의 `id`를 나타냄.
+
+```java
+@Configuration
+public class AppConfig {
+
+    @Bean
+    public PetStoreServiceImpl petStore(AccountDao accountDao, ItemDao itemDao) {
+        PetStoreServiceImpl petStore = new PetStoreServiceImpl();
+        petStore.setAccountDao(accountDao);
+        petStore.setItemDao(itemDao);
+        return petStore;
+    }
+
+    @Bean
+    public AccountDao accountDao() {
+        return new AccountDaoImpl(); // 실제 구현체를 반환
+    }
+
+    @Bean
+    public ItemDao itemDao() {
+        return new ItemDaoImpl(); // 실제 구현체를 반환
+    }
+}
+```
+
+- 다음 예제는 데이터 액세스 객체 `daos.xml` 파일을 보여줌.
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="accountDao"
+		class="org.springframework.samples.jpetstore.dao.jpa.JpaAccountDao">
+		<!-- bean을 위한 추가적인 collaborators와 configuration이 여기 위치함 -->
+	</bean>
+
+	<bean id="itemDao" class="org.springframework.samples.jpetstore.dao.jpa.JpaItemDao">
+		<!-- bean을 위한 추가적인 collaborators와 configuration이 여기 위치함 -->
+	</bean>
+
+	<!-- 데이터 엑세스를 위한 빈 정의들이 여기 위치함 -->
+</beans>
+```
+
+- 앞의 예에서 서비스 계층은 `PetStoreServiceImpl` 클래스와 `JpaAccountDao` 및 `JpaItemDao` 유형(JPA Object-Relational Mapping 표준 기반)의 두 가지 데이터 액세스 객체로 구성됨. `property name` 요소는 JavaBean 속성의 이름을 나타내고 `ref` 요소는 다른 빈 정의의 이름을 나타냄. `id`와 `ref` 요소 간의 이러한 연결은 협력하는 객체 간의 의존성을 나타넴. 객체의 의존성 구성에 대한 자세한 내용은 Dependencies를 참조할 것.
 
 ### Composing XML-based Configuration Metadata
 
+- 빈 정의가 여러 XML 파일에 걸쳐 있는 것이 유용할 수 있음. 종종 각 개별 XML 구성 파일은 아키텍처의 논리적 계층 또는 모듈을 나타냄.
+- 이전 섹션에서 보여준 것처럼 애플리케이션 컨텍스트 생성자를 사용하여 이러한 모든 XML 조각에서 빈 정의를 로드할 수 있음. 이 생성자는 여러 Resource 위치를 사용합니다. 또는 `<import/>` 요소를 한 번 이상 사용하여 다른 파일에서 빈 정의를 로드할 수 있음. 다음 예제는 이를 수행하는 방법을 보여줌.
+
+```xml
+<beans>
+	<import resource="services.xml"/>
+	<import resource="resources/messageSource.xml"/>
+	<import resource="/resources/themeSource.xml"/>
+
+	<bean id="bean1" class="..."/>
+	<bean id="bean2" class="..."/>
+</beans>
+```
+
+- 다음 예제는 위에서의 xml 설정을 Java 기반 설정으로 바꾼 것을 보여줌.
+
+```java
+@Configuration
+@ImportResource({
+    "classpath:services.xml",
+    "classpath:resources/messageSource.xml",
+    "classpath:/resources/themeSource.xml"
+})
+public class AppConfig {
+
+    @Bean
+    public Bean1 bean1() {
+        return new Bean1();
+    }
+
+    @Bean
+    public Bean2 bean2() {
+        return new Bean2();
+    }
+}
+```
+
+- 앞의 예에서 외부 빈 정의는 `services.xml`, `messageSource.xml` 및 `themeSource.xml`의 세 파일에서 로드됨. 모든 위치 경로는 가져오기를 수행하는 정의 파일을 기준으로 하므로 `services.xml`은 가져오기를 수행하는 파일과 동일한 디렉터리 또는 클래스 경로 위치에 있어야 하며, `messageSource.xml`과 `themeSource.xml`은 가져오기 파일 위치 아래의 리소스 위치에 있어야 함. 보시다시피 선행 슬래시는 무시됨. 그러나 이러한 경로는 상대 경로이므로 슬래시를 사용하지 않는 것이 더 좋은 형식임. 가져오는 파일의 내용은 최상위 `<beans/>` 요소를 포함하여 Spring 스키마에 따라 유효한 XML 빈 정의여야 함.
+
+> ##### Note
+>
+> - 상대 경로 "../"를 사용하여 상위 디렉터리의 파일을 참조하는 것은 가능하지만 권장되지 않음. 이렇게 하면 현재 애플리케이션 외부에 있는 파일에 대한 종속성이 생성됨. 특히 런타임 해결 프로세스가 "가장 가까운" 클래스 경로 루트를 선택한 다음 해당 상위 디렉터리를 살펴보는 classpath: URL(예: `classpath:../services.xml`)에는 이 참조가 권장되지 않음. 클래스 경로 구성이 변경되면 잘못된 디렉터리가 선택될 수 있음.
+> - 항상 상대 경로 대신 정규화된 리소스 위치를 사용할 수 있음. 예를 들어 `file:C:/config/services.xml` 또는 `classpath:/config/services.xml`을 사용할 수 있음. 그러나 애플리케이션의 구성을 특정 절대 위치에 연결하고 있음을 명심해야 함. 일반적으로 런타임에 JVM 시스템 속성에 대해 해석되는 "${…}" 플레이스홀더를 통해 이러한 절대 위치에 대한 간접 참조를 유지하는 것이 좋음.
+
+- 네임스페이스 자체는 가져오기 지시문 기능을 제공함. 일반 빈 정의 이상의 추가 구성 기능은 Spring에서 제공하는 XML 네임스페이스 선택 항목에서 사용할 수 있음. 예를 들어 `context` 및 `util` 네임스페이스가 있음.
+
 ### The Groovy Bean Definition DSL
 
+- 외부화된 구성 메타데이터의 추가 예로, 빈 정의는 Grails 프레임워크에서 알려진 대로 Spring의 Groovy Bean Definition DSL로도 표현할 수 있음. 일반적으로 이러한 구성은 다음 예제에 표시된 구조를 가진 ".groovy" 파일에 있음
+
+```groovy
+beans {
+	dataSource(BasicDataSource) {
+		driverClassName = "org.hsqldb.jdbcDriver"
+		url = "jdbc:hsqldb:mem:grailsDB"
+		username = "sa"
+		password = ""
+		settings = [mynew:"setting"]
+	}
+	sessionFactory(SessionFactory) {
+		dataSource = dataSource
+	}
+	myService(MyService) {
+		nestedBean = { AnotherBean bean ->
+			dataSource = dataSource
+		}
+	}
+}
+```
+
+- 이 구성 스타일은 XML 빈 정의와 거의 동등하며 Spring의 XML 구성 네임스페이스도 지원함. 또한 `importBeans` 지시문을 통해 XML 빈 정의 파일을 가져올 수 있음.
+
 ### Using the Container
+
+- `ApplicationContext`는 서로 다른 빈과 그 종속성의 레지스트리를 유지할 수 있는 고급 팩토리를 위한 인터페이스. `T getBean(String name, Class<T> requiredType)` 메서드를 사용하면 빈의 인스턴스를 검색할 수 있음.
+- `ApplicationContext`를 사용하면 다음 예제와 같이 빈 정의를 읽고 액세스할 수 있음.
+
+```java
+// create and configure beans
+ApplicationContext context = new ClassPathXmlApplicationContext("services.xml", "daos.xml");
+
+// retrieve configured instance
+PetStoreService service = context.getBean("petStore", PetStoreService.class);
+
+// use configured instance
+List<String> userList = service.getUsernameList();
+```
+
+- Groovy 구성에서 부트스트래핑은 매우 유사해 보임. Groovy를 인식하지만 XML 빈 정의도 이해하는 다른 컨텍스트 구현 클래스가 있음. 다음 예제는 Groovy 구성을 보여줌.
+
+```java
+ApplicationContext context = new GenericGroovyApplicationContext("services.groovy", "daos.groovy");
+```
+
+- 가장 유연한 변형은 대신해서 읽어주는 역할을 하는 것(예를 들어, XML 파일을 읽어주는 `XmlBeanDefinitionReader`가 있음)과 결합된 `GenericApplicationContext`.
+
+```java
+GenericApplicationContext context = new GenericApplicationContext();
+new XmlBeanDefinitionReader(context).loadBeanDefinitions("services.xml", "daos.xml");
+context.refresh();
+```
+
+- 다음 예제와 같이 Groovy 파일에는 `GroovyBeanDefinitionReader`를 사용할 수도 있음.
+
+```java
+GenericApplicationContext context = new GenericApplicationContext();
+new GroovyBeanDefinitionReader(context).loadBeanDefinitions("services.groovy", "daos.groovy");
+context.refresh();
+```
+
+- 동일한 `ApplicationContext`에서 이러한 `XmlBeanDefinitionReader`이나 ` GroovyBeanDefinitionReader`같이 대신 설정을 읽어는 것들과 혼합하고 일치시켜 다양한 구성 소스에서 빈 정의를 읽을 수 있음.
+- 그런 다음 getBean을 사용하여 빈의 인스턴스를 검색할 수 있음. `ApplicationContext` 인터페이스에는 빈을 검색하기 위한 몇 가지 다른 메서드가 있지만, 이상적으로는 애플리케이션 코드에서 절대 사용해서는 안 됨. 실제로 애플리케이션 코드에는 `getBean()` 메서드에 대한 호출이 전혀 없어야 하며 Spring API에 대한 종속성도 전혀 없어야 함. 예를 들어 Spring과 웹 프레임워크의 통합은 컨트롤러 및 JSF 관리 빈과 같은 다양한 웹 프레임워크 구성 요소에 대한 종속성 주입을 제공하므로 메타데이터(예: 자동 연결 주석)를 통해 특정 빈에 대한 종속성을 선언할 수 있음.
 
 ## The IoC Container - Bean Overview
 
