@@ -1739,17 +1739,57 @@ public class PrimaryTest {
 
 ## Validation, Data Binding, and Type Conversion - Spring Field Formatting
 
+- The Formatter SPI
+- Annotation-driven Formatting
+- Format Annotation API
+- The FormatterRegistry SPI
+- The FormatterRegistrar SPI
+- Configuring Formatting in Spring MVC
+
 ## Validation, Data Binding, and Type Conversion - Configuring a Global Date and Time Format
 
 ## Validation, Data Binding, and Type Conversion - Java Bean Validation
 
+- Overview of Bean Validation
+- Configuring a Bean Validation Provider
+- Inject Jakarta Validator
+- Inject Spring Validator
+- Configure Custom Constraints
+- Spring-driven Method Validation
+- Method Validation Exceptions
+- Customizing Validation Errors
+- Additional Configuration Options
+- Configuring a DataBinder
+- Spring MVC 3 Validation
+
 ## Spring Expression Language (SpEL)
 
-- Spring Expression Language (SpEL)은 Spring 프레임워크에서 제공하는 강력한 표현 언어. 런타임에 객체 그래프를 쿼리하고 조작하는 기능을 지원함. SpEL의 언어 구문은 Jakarta Expression Language와 유사하지만 메서드 호출과 기본적인 문자열 템플릿 기능 등 추가적인 기능을 제공함.
-- 다른 Java 표현 언어(OGNL, MVEL, JBoss EL 등)도 있지만, SpEL은 Spring 커뮤니티에 단일하고 잘 지원되는 표현 언어를 제공하기 위해 만들어짐. SpEL은 Spring 포트폴리오의 모든 프로젝트에서 사용될 수 있으며, Eclipse용 Spring Tools에서 코드 자동 완성 지원과 같은 도구 요구 사항에 의해 언어 기능이 결정됨. 그럼에도 불구하고 SpEL은 기술에 구애받지 않는 API를 기반으로 하므로 필요한 경우 다른 표현 언어 구현을 통합할 수 있음.
-- SpEL은 Spring 포트폴리오 내에서 표현식 평가의 기반으로 사용되지만 Spring에 직접 연결되어 있지는 않으며 독립적으로 사용할 수 있음. 이 장의 많은 예제에서는 SpEL을 독립적인 표현 언어인 것처럼 사용함. 이를 위해서는 파서와 같은 부트스트래핑 인프라 클래스를 만들어야 함. 대부분의 Spring 사용자는 이러한 인프라를 다룰 필요가 없으며, 대신 평가할 표현식 문자열만 작성하면 됨. 이러한 일반적인 사용의 예로는 XML 또는 어노테이션 기반 빈 정의를 생성할 때 SpEL을 통합하는 것이 있음.
-- 여러 곳에서 Inventor와 Society 클래스가 표현식 평가의 대상 객체로 사용됨.
-- SpEL은 리터럴 표현식, 프로퍼티/배열/리스트/맵 접근, 인라인 리스트와 맵, 배열 생성, 관계 연산자, 정규식, 논리 연산자, 문자열 연산자, 수학 연산자, 할당, 타입 표현식, 메서드 호출, 생성자 호출, 변수, 사용자 정의 함수, 빈 참조, 삼항/Elvis/안전 탐색 연산자, 컬렉션 프로젝션과 선택, 템플릿 표현식 등 다양한 기능을 지원함.
+- 스프링 표현식 언어(줄여서 "SpEL")는 런타임에 객체 그래프를 쿼리하고 조작할 수 있는 강력한 표현식 언어. 언어 구문은 `Jakarta Expression Language`와 유사하지만 메서드 호출 및 기본 문자열 템플릿 기능 등 추가 기능을 제공함.
+- OGNL, MVEL, JBoss EL 등 여러 다른 Java 표현식 언어를 사용할 수 있지만 Spring 표현식 언어는 Spring 커뮤니티에 Spring 포트폴리오의 모든 제품에서 사용할 수 있는 단일의 잘 지원되는 표현식 언어를 제공하기 위해 만들어짐. 언어 기능은 Eclipse용 Spring Tools 내 코드 완성 지원을 위한 툴링 요구사항을 포함하여 Spring 포트폴리오의 프로젝트 요구사항에 의해 주도됨. 즉, SpEL은 기술에 구애받지 않는 API를 기반으로 하므로 필요한 경우 다른 표현식 언어 구현을 통합할 수 있음.
+- SpEL은 Spring 포트폴리오 내의 표현식 평가를 위한 기반으로 사용되지만 Spring에 직접 연결되어 있지 않으며 독립적으로 사용할 수 있음. 자체적으로 완전해지기 위해 이 장의 많은 예제에서는 SpEL을 독립적인 표현식 언어인 것처럼 사용함. 이를 위해서는 파서와 같은 부트스트래핑 인프라 클래스를 몇 개 생성해야 함. 대부분의 Spring 사용자는 이 인프라를 다룰 필요가 없으며 대신 평가를 위한 표현식 문자열만 작성하면 됨. 이러한 일반적인 사용의 예로는 **Expression support for defining bean definitions**에 표시된 것처럼 XML 또는 어노테이션 기반 빈 정의 생성에 SpEL을 통합하는 것이 있음.
+- 이 장에서는 표현식 언어의 기능, API 및 언어 구문에 대해 설명함. 여러 곳에서 `Inventor`와 `Society` 클래스가 표현식 평가를 위한 대상 객체로 사용됨. 이러한 클래스 선언과 데이터를 채우는 데 사용되는 데이터는 장의 끝 부분에 나열되어 있음.
+- 표현식 언어는 다음과 같은 기능을 지원함.
+  > - Literal expressions (리터럴 표현식)
+  > - Accessing properties, arrays, lists, and maps (속성, 배열, 리스트 및 맵 접근)
+  > - Inline lists (인라인 리스트)
+  > - Inline maps (인라인 맵)
+  > - Array construction (배열 생성)
+  > - Relational operators (관계 연산자)
+  > - Regular expressions (정규식)
+  > - Logical operators (논리 연산자)
+  > - String operators (문자열 연산자)
+  > - Mathematical operators (수학 연산자)
+  > - Assignment (할당)
+  > - Type expressions (유형 표현식)
+  > - Method invocation (메서드 호출)
+  > - Constructor invocation (생성자 호출)
+  > - Variables (변수)
+  > - User-defined functions (사용자 정의 함수)
+  > - Bean references (빈 참조)
+  > - Ternary, Elvis, and safe-navigation operators (삼항, Elvis 및 안전 탐색 연산자)
+  > - Collection projection (컬렉션 프로젝션)
+  > - Collection selection (컬렉션 선택)
+  > - Templated expressions (템플릿 표현식)
 
 ## Spring Expression Language (SpEL) - Evaluation
 
