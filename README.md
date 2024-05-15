@@ -2016,7 +2016,7 @@ public class Society {
 
 > ##### Spring AOP with AspectJ pointcuts
 >
-> - Spring은 스키마 기반 접근 방식이나 `@AspectJ` 주석 스타일을 사용하여 사용자 정의 측면을 작성할 수 있는 간단하고 강력한 방법을 제공함. 이 두 스타일 모두 완전히 타입화된 어드바이스와 AspectJ 포인트컷 언어를 제공하면서도 aspect를 엮을 때는에는 여전히 Spring AOP를 사용함.
+> - Spring은 스키마 기반 접근 방식이나 `@AspectJ` 주석 스타일을 사용하여 사용자 정의 측면을 작성할 수 있는 간단하고 강력한 방법을 제공함. 이 두 스타일 모두 완전히 타입화된 어드바이스와 AspectJ 포인트컷 언어를 제공하면서도 weaving에는 여전히 Spring AOP를 사용합니다.
 > - 이 장에서는 스키마 및 `@AspectJ` 기반 AOP 지원에 대해 설명함. 하위 수준의 AOP 지원은 다음 장에서 설명함.
 
 - Spring Framework에서 AOP는 다음과 같은 용도로 사용됨.
@@ -2028,6 +2028,27 @@ public class Society {
 > - 일반적인 선언적 서비스나 풀링과 같은 다른 사전 패키지된 선언적 미들웨어 서비스에만 관심이 있다면 Spring AOP와 직접 작업할 필요가 없으며 이 장의 대부분을 건너뛸 수 있음.
 
 ## Aspect Oriented Programming with Spring - AOP Concepts
+
+- 먼저 몇 가지 중심적인 AOP 개념과 용어를 정의함. 이러한 용어는 Spring에만 국한되지 않음. 안타깝게도 AOP 용어는 특별히 직관적이지 않음. 그러나 Spring이 자체 용어를 사용한다면 더 혼란스러울 것.
+
+  > - **Aspect**: 여러 클래스에 걸쳐 있는 관심사의 모듈화. 트랜잭션 관리는 엔터프라이즈 Java 애플리케이션에서 횡단 관심사의 좋은 예. Spring AOP에서 Aspect는 일반 클래스(스키마 기반 접근 방식) 또는 `@Aspect` 주석이 달린 일반 클래스(`@AspectJ` 스타일)를 사용하여 구현됨.
+  > - **Join point**: 프로그램 실행 중 메서드 실행이나 예외 처리와 같은 시점. Spring AOP에서 join point는 항상 메서드 실행을 나타냄.
+  > - **Advice**: 특정 join point에서 Aspect에 의해 취해지는 조치. "around", "before", "after" 등 다양한 유형의 Advice가 있음. (Advice 유형은 나중에 설명합니다.) Spring을 포함한 많은 AOP 프레임워크는 Advice를 인터셉터로 모델링하고 join point 주위에 인터셉터 체인을 유지 관리함.
+  > - **Pointcut**: join point와 일치하는 조건자(predicate). Advice는 pointcut 표현식과 연결되며 pointcut과 일치하는 모든 join point에서 실행됨(예: 특정 이름의 메서드 실행). pointcut 표현식과 일치하는 join point의 개념은 AOP의 중심이며, Spring은 기본적으로 AspectJ pointcut 표현식 언어를 사용함.
+  > - **Introduction**: 유형을 대신하여 추가 메서드나 필드를 선언함. Spring AOP를 사용하면 어떤 advised 객체에도 새로운 인터페이스(및 해당 구현)를 도입할 수 있음. 예를 들어, Introduction을 사용하여 캐싱을 단순화하기 위해 bean이 IsModified 인터페이스를 구현하도록 할 수 있음. (Introduction은 AspectJ 커뮤니티에서 inter-type declaration으로 알려져 있음.)
+  > - **Target object**: 하나 이상의 Aspect에 의해 advised되는 객체. "advised 객체"라고도 함. Spring AOP는 런타임 프록시를 사용하여 구현되므로 이 객체는 항상 프록시된 객체.
+  > - **AOP proxy**: Aspect 계약(Advice 메서드 실행 등)을 구현하기 위해 AOP 프레임워크에서 생성한 객체. Spring Framework에서 AOP 프록시는 JDK 동적 프록시 또는 CGLIB 프록시.
+  > - **Weaving**: Aspect를 다른 애플리케이션 유형이나 객체와 연결하여 advised 객체를 생성하는 것. 이는 컴파일 시간(예: AspectJ 컴파일러 사용), 로드 시간 또는 런타임에 수행할 수 있습니다. 다른 순수 Java AOP 프레임워크와 마찬가지로 Spring AOP는 런타임에 위빙을 수행함.
+
+- Spring AOP에는 다음과 같은 유형의 Advice가 포함됨.
+  > - **Before advice**: join point 전에 실행되지만 예외를 throw하지 않는 한 실행 흐름이 join point로 진행되는 것을 막을 수 없는 Advice.
+  > - **After returning advice**: join point가 정상적으로 완료된 후에 실행되는 Advice(예: 메서드가 예외를 throw하지 않고 반환되는 경우).
+  > - **After throwing advice**: 메서드가 예외를 throw하여 종료되는 경우 실행되는 Advice.
+  > - **After (finally) advice**: join point가 정상적으로 종료되든 예외적으로 종료되든 상관없이 실행되는 Advice.
+  > - **Around advice**: 메서드 호출과 같은 join point를 둘러싸는 Advice. 이것은 가장 강력한 종류의 Advice. Around advice는 메서드 호출 전후에 사용자 정의 동작을 수행할 수 있음. 또한 join point로 진행할지 여부를 선택하거나 자체 반환값을 반환하거나 예외를 throw하여 advised 메서드 실행을 단축할 책임도 있음.
+- Around advice는 가장 일반적인 종류의 Advice. AspectJ와 마찬가지로 Spring AOP는 모든 범위의 Advice 유형을 제공하므로 필요한 동작을 구현할 수 있는 가장 약한 Advice 유형을 사용하는 것이 좋음. 예를 들어, 메서드의 반환값으로 캐시를 업데이트하기만 하면 되는 경우 Around advice를 구현하는 것보다 After returning advice를 구현하는 것이 좋음. 가장 구체적인 Advice 유형을 사용하면 오류 가능성이 적은 더 간단한 프로그래밍 모델을 제공함. 예를 들어 Around advice에 사용되는 JoinPoint에서 proceed() 메서드를 호출할 필요가 없으므로 호출하지 않을 수 없음.
+- 모든 Advice 매개변수는 정적으로 입력되므로 Object 배열이 아닌 적절한 유형의 Advice 매개변수(예: 메서드 실행의 반환값 유형)로 작업함.
+- Pointcut과 일치하는 join point의 개념은 AOP의 핵심이며, 이는 AOP를 인터셉션만 제공하는 이전 기술과 구별함. Pointcut을 사용하면 객체 지향 계층과 독립적으로 Advice를 적용할 수 있음. 예를 들어, 여러 객체에 걸쳐 있는 메서드 집합(예: 서비스 계층의 모든 비즈니스 작업)에 선언적 트랜잭션 관리를 제공하는 Around advice를 적용할 수 있음.
 
 ## Aspect Oriented Programming with Spring - Spring AOP Capabilities and Goals
 
