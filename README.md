@@ -2344,22 +2344,138 @@ public class MyBean {
 
 ## Unit Testing
 
-- Mock Objects
-- Environment
-- JNDI
-- Servlet API
-- Spring Web Reactive
-- Unit Testing Support Classes
-- General Testing Utilities
-- Spring MVC Testing Utilities
+- 의존성 주입은 전통적인 J2EE / Java EE 개발에 비해 코드가 컨테이너에 덜 의존하도록 만들어야 함. 애플리케이션을 구성하는 POJO는 Spring이나 다른 컨테이너 없이 new 연산자를 사용하여 객체를 인스턴스화하여 JUnit 또는 TestNG 테스트에서 테스트할 수 있어야 함. 모의 객체를 사용하여(다른 유용한 테스트 기술과 함께) 코드를 독립적으로 테스트할 수 있음. Spring의 아키텍처 권장 사항을 따르면 결과적으로 코드베이스의 깔끔한 계층화와 컴포넌트화로 인해 단위 테스트가 쉬워짐. 예를 들어, 단위 테스트를 실행하는 동안 영속 데이터에 액세스할 필요 없이 DAO 또는 리포지토리 인터페이스를 스터빙하거나 모의로 만들어 서비스 계층 객체를 테스트할 수 있음.
+- 진정한 단위 테스트는 일반적으로 설정할 런타임 인프라가 없기 때문에 매우 빠르게 실행됨. 개발 방법론의 일부로 진정한 단위 테스트를 강조하면 생산성을 높일 수 있음. IoC 기반 애플리케이션에 대한 효과적인 단위 테스트를 작성하는 데 도움이 되는 테스트 장의 이 섹션이 필요하지 않을 수 있음. 그러나 특정 단위 테스트 시나리오의 경우 Spring Framework는 이 장에서 설명하는 모의 객체와 테스트 지원 클래스를 제공함.
+
+### Mock Objects
+
+- Spring에는 모의 제작을 위한 여러 패키지가 포함되어 있음.
+  > - Environment
+  > - JNDI
+  > - Servlet API
+  > - Spring Web Reactive
+
+### Environment
+
+- `org.springframework.mock.env` 패키지에는 `Environment` 및 `PropertySource` 추상화의 모의 구현이 포함되어 있음(Bean Definition Profiles 및 `PropertySource` Abstraction 참조). `MockEnvironment`와 `MockPropertySource`는 환경별 속성에 의존하는 코드에 대한 컨테이너 외부 테스트를 개발하는 데 유용함.
+- `Environment`: 실제 애플리케이션 컨텍스트에서 값을 가져옴. 이는 애플리케이션이 실행될 때 설정된 모든 프로퍼티 소스(`application.properties`, 환경 변수 등)에서 값을 로드함.
+- `MockEnvironment`: 테스트 설정 중에 직접 설정한 값을 사용함. `MockPropertySource`를 사용하여 필요한 프로퍼티 값을 설정할 수 있음.
+
+### JNDI (Java Naming and Directory Interface)
+
+- **JNDI**: JNDI는 자바 응용 프로그램이 이름과 디렉토리 서비스를 통해 데이터베이스, 자원 관리자, EJB, 메시지 큐 등의 외부 자원에 접근할 수 있도록 하는 Java API. JNDI는 다양한 디렉토리 서비스와의 상호 작용을 가능하게 하며, 주요 기능은 다음과 같음.
+  > - **이름 서비스**: 객체를 특정 이름에 바인딩하고, 나중에 그 이름을 통해 객체를 찾을 수 있음.
+  > - **디렉토리 서비스**: 계층적 디렉토리 구조를 통해 객체를 저장하고, 탐색할 수 있음.
+  > - **자원 관리**: 데이터베이스 커넥션 풀, 메시지 큐, EJB 등 외부 자원을 JNDI를 통해 관리하고 접근할 수 있음.
+- **Simple-JNDI**: Simple-JNDI는 JNDI를 쉽게 사용할 수 있도록 하는 타사 라이브러리. 이는 JNDI 환경을 설정하고 관리하는 데 있어 단순성을 제공하며, 특히 테스트 환경에서 유용함. Spring에서 제공하던 mock JNDI 기능과 유사하지만, 더 완전하고 사용하기 쉬운 솔루션을 제공함.
+- JNDI와 Simple-JNDI의 차이
+  > - **JNDI**: Java 표준 API로, 이름과 디렉토리 서비스를 통해 자원에 접근하는 데 사용됨. 주로 Jakarta EE(이전의 Java EE) 컨테이너 환경에서 사용됨.
+  > - **Simple-JNDI**: JNDI를 더 쉽게 사용하도록 만든 타사 라이브러리로, 간단한 설정으로 JNDI 환경을 제공하여 테스트 및 독립 실행형 애플리케이션에서 사용하기 편리함.
+- `org.springframework.mock.jndi` 패키지에는 JNDI SPI의 부분 구현이 포함되어 있으며, 이를 사용하여 테스트 스위트 또는 독립 실행형 애플리케이션에 대한 간단한 JNDI 환경을 설정할 수 있음. 예를 들어, JDBC DataSource 인스턴스가 테스트 코드에서 Jakarta EE 컨테이너에서와 동일한 JNDI 이름에 바인딩되는 경우 수정 없이 테스트 시나리오에서 애플리케이션 코드와 구성을 모두 재사용할 수 있음.
+
+> ##### Warning
+>
+> - `org.springframework.mock.jndi` 패키지의 모의 JNDI 지원은 Spring Framework 5.2부터 Simple-JNDI와 같은 타사의 완전한 솔루션을 선호하여 공식적으로 사용되지 않음.
+
+### Servlet API
+
+- `org.springframework.mock.web` 패키지에는 웹 컨텍스트, 컨트롤러 및 필터를 테스트하는 데 유용한 포괄적인 Servlet API 모의 객체 세트가 포함되어 있음. 이러한 모의 객체는 Spring의 Web MVC 프레임워크와 함께 사용하기 위한 것이며 일반적으로 동적 모의 객체(예: EasyMock) 또는 대체 Servlet API 모의 객체(예: MockObjects)보다 사용하기 편리함.
+
+> ##### Tip
+>
+> - Spring Framework 6.0부터 `org.springframework.mock.web`의 모의 객체는 Servlet 6.0 API를 기반으로 함.
+
+- Spring MVC 테스트 프레임워크는 mock Servlet API 객체를 기반으로 구축되어 Spring MVC에 대한 통합 테스트 프레임워크를 제공함. 자세한 내용은 MockMvc를 참조할 것.
+
+### Spring Web Reactive
+
+- `org.springframework.mock.http.server.reactive` 패키지에는 WebFlux 애플리케이션에서 사용할 `ServerHttpRequest` 및 `ServerHttpResponse`의 모의 구현이 포함되어 있음. `org.springframework.mock.web.server` 패키지에는 이러한 모의 요청 및 응답 객체에 의존하는 모의 `ServerWebExchange`가 포함되어 있음.
+- `MockServerHttpRequest`와 `MockServerHttpResponse`는 모두 서버별 구현과 동일한 추상 기본 클래스에서 확장되며 해당 동작을 공유함. 예를 들어, 모의 요청은 생성 후 변경할 수 없지만 `ServerHttpRequest`의 `mutate()` 메서드를 사용하여 수정된 인스턴스를 만들 수 있음.
+- 모의 응답이 쓰기 계약을 제대로 구현하고 쓰기 완료 핸들(즉, `Mono<Void>`)을 반환하려면 기본적으로 `cache().then()`이 있는 Flux를 사용하여 데이터를 버퍼링하고 테스트에서 assertion에 사용할 수 있도록 함. 애플리케이션은 사용자 정의 쓰기 함수를 설정할 수 있음(예: 무한 스트림 테스트).
+- `WebTestClient`는 모의 요청 및 응답을 기반으로 HTTP 서버 없이 WebFlux 애플리케이션을 테스트하기 위한 지원을 제공함. 클라이언트는 실행 중인 서버로 엔드투엔드 테스트에도 사용할 수 있음.
+
+### Unit Testing Support Classes
+
+- Spring에는 단위 테스트에 도움이 되는 여러 클래스가 포함되어 있습니다. 이들은 다음 두 가지 범주로 나뉨.
+  > - 일반 테스트 유틸리티
+  > - Spring MVC 테스트 유틸리티
+
+### General Testing Utilities
+
+- `org.springframework.test.util` 패키지에는 단위 및 통합 테스트에 사용할 수 있는 여러 범용 유틸리티가 포함되어 있음.
+- `AopTestUtils`는 AOP 관련 유틸리티 메서드 모음. 이러한 메서드를 사용하여 하나 이상의 Spring 프록시 뒤에 숨겨진 기본 대상 객체에 대한 참조를 얻을 수 있음. 예를 들어, EasyMock 또는 Mockito와 같은 라이브러리를 사용하여 빈을 동적 모의로 구성하고 모의가 Spring 프록시에 래핑된 경우 기대치를 구성하고 검증을 수행하기 위해 기본 모의에 직접 액세스해야 할 수 있음. Spring의 핵심 AOP 유틸리티는 `AopUtils` 및 `AopProxyUtils`를 참조할 것.
+- `ReflectionTestUtils`는 리플렉션 기반 유틸리티 메서드 모음. 다음과 같은 사용 사례에 대한 애플리케이션 코드를 테스트할 때 상수 값을 변경하거나, 비공개 필드를 설정하거나, 비공개 `setter` 메서드를 호출하거나, 비공개 구성 또는 라이프사이클 콜백 메서드를 호출해야 하는 테스트 시나리오에서 이러한 메서드를 사용할 수 있음.
+  > - 도메인 엔터티의 속성에 대한 공용 `setter` 메서드 대신 비공개 또는 보호된 필드 액세스를 용인하는 ORM 프레임워크(JPA 및 Hibernate 등).
+  > - 비공개 또는 보호된 필드, `setter` 메서드 및 구성 메서드에 대한 의존성 주입을 제공하는 Spring의 어노테이션(`@Autowired`, `@Inject` 및 `@Resource` 등) 지원.
+  > - 라이프사이클 콜백 메서드에 @PostConstruct 및 @PreDestroy와 같은 어노테이션 사용.
+- `TestSocketUtils`는 통합 테스트 시나리오에서 사용할 수 있는 localhost의 사용 가능한 TCP 포트를 찾는 간단한 유틸리티.
+
+> ##### Note
+>
+> - `TestSocketUtils`는 사용 가능한 무작위 포트에서 외부 서버를 시작하는 통합 테스트에서 사용할 수 있음. 그러나 이러한 유틸리티는 특정 포트의 후속 가용성에 대해 보장하지 않으므로 신뢰할 수 없음. `TestSocketUtils`를 사용하여 서버에 사용할 수 있는 로컬 포트를 찾는 대신 서버가 선택하거나 운영 체제에서 할당한 무작위 임시 포트에서 시작하는 서버의 기능에 의존하는 것이 좋음. 해당 서버와 상호 작용하려면 서버에 현재 사용 중인 포트를 쿼리해야 함.
+
+### Spring MVC Testing Utilities
+
+- `org.springframework.test.web` 패키지에는 JUnit, TestNG 또는 Spring MVC ModelAndView 객체를 다루는 단위 테스트를 위해 다른 테스트 프레임워크와 함께 사용할 수 있는 `ModelAndViewAssert`가 포함되어 있음.
+
+> ##### Tip
+>
+> - POJO로 Spring MVC Controller 클래스를 단위 테스트하려면 Spring의 Servlet API 모의와 함께 `MockHttpServletRequest`, `MockHttpSession` 등과 결합된 `ModelAndViewAssert`를 사용할 것. Spring MVC용 `WebApplicationContext` 구성과 함께 Spring MVC 및 REST Controller 클래스를 철저하게 통합 테스트하려면 대신 Spring MVC Test Framework를 사용할 것.
 
 ## Integration Testing
 
-- Goals of Integration Testing
-- Context Management and Caching
-- Dependency Injection of Test Fixtures
-- Transaction Management
-- Support Classes for Integration Testing
+- 애플리케이션 서버에 배포하거나 다른 엔터프라이즈 인프라에 연결하지 않고도 일부 통합 테스트를 수행할 수 있는 것이 중요함. 이렇게 하면 다음과 같은 사항을 테스트할 수 있음.
+  > - Spring IoC 컨테이너 컨텍스트의 올바른 연결.
+  > - JDBC 또는 ORM 도구를 사용한 데이터 액세스. 여기에는 SQL 문, Hibernate 쿼리, JPA 엔터티 매핑 등의 정확성과 같은 사항이 포함될 수 있음.
+- Spring 프레임워크는 `spring-test` 모듈에서 통합 테스팅을 위한 우수한 지원을 제공함. 실제 JAR 파일의 이름에는 릴리스 버전이 포함될 수 있으며, 획득한 곳에 따라 긴 `org.springframework.test` 형식으로 될 수도 있음(설명은 의존성 관리 섹션 참조). 이 라이브러리에는 Spring 컨테이너와의 통합 테스팅에 유용한 클래스가 포함된 `org.springframework.test` 패키지가 포함되어 있음. 이러한 테스트는 애플리케이션 서버 또는 기타 배포 환경에 의존하지 않음. 이러한 테스트는 단위 테스트보다 실행 속도가 느리지만 동등한 `Selenium` 테스트 또는 애플리케이션 서버에 배포에 의존하는 원격 테스트보다 훨씬 빠름.
+- 단위 및 통합 테스팅 지원은 주석 기반 Spring TestContext 프레임워크 형태로 제공됨. `TestContext` 프레임워크는 사용 중인 실제 테스팅 프레임워크에 구애받지 않으므로 JUnit, TestNG 등 다양한 환경에서 테스트를 계측할 수 있음.
+- 다음 섹션에서는 Spring의 통합 지원의 상위 수준 목표에 대한 개요를 제공하며, 이 장의 나머지 부분에서는 전용 주제에 중점을 둠.
+  > - JDBC 테스팅 지원
+  > - Spring TestContext 프레임워크
+  > - WebTestClient
+  > - MockMvc
+  > - 클라이언트 애플리케이션 테스트
+  > - 어노테이션
+
+### Goals of Integration Testing
+
+- Spring의 통합테스트는 다음의 주요 목표들을 지원함.
+  > - 테스트 간 Spring IoC 컨테이너 캐싱 관리.
+  > - 테스트 픽스처 인스턴스의 의존성 주입 제공.
+  > - 통합 테스팅에 적합한 트랜잭션 관리 제공.
+  > - 개발자가 통합 테스트를 작성하는 데 도움이 되는 Spring 전용 기본 클래스 제공.
+- 다음 몇 섹션에서는 각 목표에 대해 설명하고 구현 및 구성 세부 정보에 대한 링크를 제공함.
+
+### Context Management and Caching
+
+- Spring TestContext 프레임워크는 Spring `ApplicationContext` 인스턴스와 `WebApplicationContext` 인스턴스의 일관된 로딩과 해당 컨텍스트의 캐싱을 제공함. 로드된 컨텍스트의 캐싱에 대한 지원은 중요함. 왜냐하면 Spring 자체의 오버헤드 때문이 아니라 Spring 컨테이너에 의해 인스턴스화된 객체를 인스턴스화하는 데 시간이 걸리기 때문에 시작 시간이 문제가 될 수 있기 때문임. 예를 들어, 50100개의 Hibernate 매핑 파일이 있는 프로젝트는 매핑 파일을 로드하는 데 1020초가 걸릴 수 있으며, 모든 테스트 픽스처의 모든 테스트를 실행하기 전에 해당 비용을 발생시키면 개발자 생산성을 저하시키는 전체 테스트 실행 속도가 느려짐.
+- 테스트 클래스는 일반적으로 XML 또는 Groovy 구성 메타데이터의 리소스 위치 배열(종종 클래스 경로에 있음) 또는 애플리케이션을 구성하는 데 사용되는 컴포넌트 클래스 배열을 선언함. 이러한 위치 또는 클래스는 프로덕션 배포를 위해 `web.xml` 또는 기타 구성 파일에 지정된 것과 동일하거나 유사함.
+- 기본적으로 한 번 로드되면 구성된 `ApplicationContext`가 각 테스트에 재사용됨. 따라서 설정 비용은 테스트 스위트당 한 번만 발생하며 후속 테스트 실행은 훨씬 빨라짐. 이 컨텍스트에서 "테스트 스위트"라는 용어는 동일한 JVM에서 실행되는 모든 테스트를 의미함. 예를 들어, 주어진 프로젝트 또는 모듈에 대해 Ant, Maven 또는 Gradle 빌드에서 실행되는 모든 테스트. 테스트가 애플리케이션 컨텍스트를 손상시키고 다시 로드해야 하는 경우(예: 빈 정의 또는 애플리케이션 객체의 상태 수정)에는 TestContext 프레임워크를 구성하여 다음 테스트를 실행하기 전에 구성을 다시 로드하고 애플리케이션 컨텍스트를 재구축할 수 있음.
+- TestContext 프레임워크를 사용한 컨텍스트 관리 및 컨텍스트 캐싱을 참조할 것.
+
+### Dependency Injection of Test Fixtures
+
+- TestContext 프레임워크가 애플리케이션 컨텍스트를 로드하면 의존성 주입을 사용하여 테스트 클래스의 인스턴스를 선택적으로 구성할 수 있음. 이렇게 하면 애플리케이션 컨텍스트의 미리 구성된 빈을 사용하여 테스트 픽스처를 설정할 수 있는 편리한 메커니즘이 제공됨. 여기서 큰 이점은 다양한 테스트 시나리오에서 애플리케이션 컨텍스트를 재사용할 수 있다는 점(예: Spring 관리 객체 그래프, 트랜잭션 프록시, DataSource 인스턴스 등 구성). 따라서 개별 테스트 케이스에 대해 복잡한 테스트 픽스처 설정을 복제할 필요가 없음.
+- 예를 들어, Title 도메인 엔터티에 대한 데이터 액세스 로직을 구현하는 클래스(`HibernateTitleRepository`)가 있는 시나리오를 고려해 보겠음. 다음 영역을 테스트하는 통합 테스트를 작성하고 싶음.
+  > - Spring 구성: 기본적으로 `HibernateTitleRepository` 빈의 구성과 관련된 모든 것이 올바르고 존재하는지?
+  > - Hibernate 매핑 파일 구성: 모든 것이 올바르게 매핑되고 올바른 지연 로딩 설정이 적용되어 있는지?
+  > - `HibernateTitleRepository`의 로직: 이 클래스의 구성된 인스턴스가 예상대로 수행되는지?
+- TestContext 프레임워크를 사용한 테스트 픽스처의 의존성 주입을 참조할 것.
+
+### Transaction Management
+
+- 실제 데이터베이스에 액세스하는 테스트의 한 가지 일반적인 문제는 지속성 저장소의 상태에 미치는 영향. 개발 데이터베이스를 사용하는 경우에도 상태 변경은 향후 테스트에 영향을 미칠 수 있음. 또한 지속적인 데이터 삽입 또는 수정과 같은 많은 작업은 트랜잭션 외부에서 수행(또는 확인)할 수 없음.
+- TestContext 프레임워크는 이 문제를 해결함. 기본적으로 프레임워크는 각 테스트에 대해 트랜잭션을 생성하고 롤백함. 트랜잭션의 존재를 가정할 수 있는 코드를 작성할 수 있음. 테스트에서 트랜잭션으로 프록시된 객체를 호출하면 구성된 트랜잭션 의미론에 따라 올바르게 동작함. 또한 테스트 메서드가 테스트를 위해 관리되는 트랜잭션 내에서 실행되는 동안 선택한 테이블의 내용을 삭제하는 경우, 기본적으로 트랜잭션이 롤백되고 데이터베이스는 테스트 실행 전 상태로 돌아감. 트랜잭션 지원은 테스트의 애플리케이션 컨텍스트에 정의된 `PlatformTransactionManager` 빈을 사용하여 테스트에 제공됨.
+- 트랜잭션을 커밋하려는 경우(드물지만 때로는 특정 테스트에서 데이터베이스를 채우거나 수정하려는 경우 유용함), `@Commit` 어노테이션을 사용하여 `TestContext` 프레임워크에 롤백 대신 트랜잭션을 커밋하도록 지시할 수 있음.
+- TestContext 프레임워크를 사용한 트랜잭션 관리를 참조할 것.
+
+### Support Classes for Integration Testing
+
+- Spring TestContext 프레임워크는 통합 테스트 작성을 단순화하는 몇 가지 추상 지원 클래스를 제공함. 이러한 기본 테스트 클래스는 테스팅 프레임워크에 잘 정의된 훅을 제공할 뿐만 아니라 다음에 액세스할 수 있는 편리한 인스턴스 변수와 메서드를 제공함.
+  > - 명시적 빈 조회를 수행하거나 컨텍스트의 전체 상태를 테스트하기 위한 `ApplicationContext`.
+  > - 데이터베이스를 쿼리하기 위한 SQL 문을 실행하기 위한 `JdbcTemplate`. 이러한 쿼리를 사용하여 데이터베이스 관련 애플리케이션 코드 실행 전후의 데이터베이스 상태를 확인할 수 있으며, Spring은 이러한 쿼리가 애플리케이션 코드와 동일한 트랜잭션 범위에서 실행되도록 보장함. ORM 도구와 함께 사용할 때는 거짓 양성을 피해야 함.
+- 또한 프로젝트별 인스턴스 변수와 메서드가 있는 자체 사용자 정의 애플리케이션 전체 슈퍼클래스를 만들 수 있음.
+- TestContext 프레임워크의 지원 클래스를 참조할 것.
 
 ## JDBC Testing Support
 
@@ -2404,10 +2520,40 @@ public class MyBean {
 
 ## Spring TestContext Framework - Key Abstractions
 
-- TestContext
-- TestContextManager
-- TestExecutionListener
-- Context Loaders
+- 프레임워크의 핵심은 `TestContextManager` 클래스와 `TestContext`, `TestExecutionListener`, `SmartContextLoader` 인터페이스로 구성됨. `TestContextManager`는 각 테스트 클래스에 대해 생성됨(예: JUnit Jupiter에서 단일 테스트 클래스 내의 모든 테스트 메서드 실행). `TestContextManager`는 현재 테스트의 컨텍스트를 보유하는 `TestContext`를 관리함. `TestContextManager`는 또한 테스트가 진행됨에 따라 `TestContext`의 상태를 업데이트하고 `TestExecutionListener` 구현에 위임하여 의존성 주입, 트랜잭션 관리 등을 제공하여 실제 테스트 실행을 계측함. `SmartContextLoader`는 주어진 테스트 클래스에 대한 `ApplicationContext`를 로드할 책임이 있음. 자세한 내용과 다양한 구현 예제는 javadoc과 Spring 테스트 스위트를 참조할 것.
+
+### TestContext
+
+- `TestContext`는 테스트가 실행되는 컨텍스트를 캡슐화하고(실제 사용 중인 테스트 프레임워크에 구애받지 않음) 책임이 있는 테스트 인스턴스에 대한 컨텍스트 관리 및 캐싱 지원을 제공함. `TestContext`는 또한 `SmartContextLoader`에 위임하여 요청 시 `ApplicationContext`를 로드함.
+
+### TestContextManager
+
+- `TestContextManager`는 Spring TestContext 프레임워크의 주요 진입점이며 단일 `TestContext`를 관리하고 잘 정의된 테스트 실행 시점에 등록된 각 `TestExecutionListener`에 이벤트를 신호하는 역할을 함.
+  > - 특정 테스팅 프레임워크의 "before class" 또는 "before all" 메서드보다 먼저 실행됨.
+  > - 테스트 인스턴스 후처리.
+  > - 특정 테스팅 프레임워크의 "before" 또는 "before each" 메서드보다 먼저 실행됨.
+  > - 테스트 설정 후 테스트 메서드 실행 직전에 실행됨.
+  > - 테스트 메서드 실행 직후 테스트 해체 전에 실행됨.
+  > - 특정 테스팅 프레임워크의 "after" 또는 "after each" 메서드 이후에 실행됨.
+  > - 특정 테스팅 프레임워크의 "after class" 또는 "after all" 메서드 이후에 실행됨.
+
+### TestExecutionListener
+
+- `TestExecutionListener`는 리스너가 등록된 `TestContextManager`에서 발행한 테스트 실행 이벤트에 반응하기 위한 API를 정의함. `TestExecutionListener` 구성을 참조할 것.
+
+### Context Loaders
+
+- `ContextLoader`는 Spring TestContext 프레임워크에서 관리하는 통합 테스트를 위한 `ApplicationContext`를 로드하기 위한 전략 인터페이스. 컴포넌트 클래스, 활성 빈 정의 프로필, 테스트 속성 소스, 컨텍스트 계층 구조 및 `WebApplicationContext` 지원을 제공하려면 이 인터페이스 대신 `SmartContextLoader`를 구현해야 함.
+- `SmartContextLoader`는 원래의 최소 `ContextLoader` SPI를 대체하는 `ContextLoader` 인터페이스의 확장. 구체적으로 `SmartContextLoader`는 리소스 위치, 컴포넌트 클래스 또는 컨텍스트 이니셜라이저를 처리하도록 선택할 수 있음. 또한 `SmartContextLoader`는 로드하는 컨텍스트에서 활성 빈 정의 프로필과 테스트 속성 소스를 설정할 수 있음.
+  Spring은 다음과 같은 구현을 제공합니다:
+  > - `DelegatingSmartContextLoader`: 두 개의 기본 로더 중 하나로, 테스트 클래스에 대해 선언된 구성 또는 기본 위치나 기본 구성 클래스의 존재 여부에 따라 내부적으로 `AnnotationConfigContextLoader`, `GenericXmlContextLoader` 또는 `GenericGroovyXmlContextLoader`에 위임함. Groovy 지원은 Groovy가 클래스 경로에 있는 경우에만 활성화됨.
+  > - `WebDelegatingSmartContextLoader`: 두 개의 기본 로더 중 하나로, 테스트 클래스에 대해 선언된 구성 또는 기본 위치나 기본 구성 클래스의 존재 여부에 따라 내부적으로 `AnnotationConfigWebContextLoader`, `GenericXmlWebContextLoader` 또는 `GenericGroovyXmlWebContextLoader`에 위임함. 웹 `ContextLoader`는 테스트 클래스에 `@WebAppConfiguration`이 있는 경우에만 사용됨. Groovy 지원은 Groovy가 클래스 경로에 있는 경우에만 활성화됨.
+  > - `AnnotationConfigContextLoader`: 컴포넌트 클래스에서 표준 `ApplicationContext`를 로드함.
+  > - `AnnotationConfigWebContextLoader`: 컴포넌트 클래스에서 `WebApplicationContext`를 로드함.
+  > - `GenericGroovyXmlContextLoader`: Groovy 스크립트 또는 XML 구성 파일인 리소스 위치에서 표준 `ApplicationContext`를 로드함.
+  > - `GenericGroovyXmlWebContextLoader`: Groovy 스크립트 또는 XML 구성 파일인 리소스 위치에서 `WebApplicationContext`를 로드함.
+  > - `GenericXmlContextLoader`: XML 리소스 위치에서 표준 `ApplicationContext`를 로드함.
+  > - `GenericXmlWebContextLoader`: XML 리소스 위치에서 `WebApplicationContext`를 로드함.
 
 ## Spring TestContext Framework - Bootstrapping the TestContext Framework
 
@@ -2417,10 +2563,68 @@ public class MyBean {
 
 ## Spring TestContext Framework - TestExecutionListener Configuration
 
-- Registering TestExecutionListener Implementations
-- Automatic Discovery of Default TestExecutionListener Implementations
-- Ordering TestExecutionListener Implementations
-- Merging TestExecutionListener Implementations
+- Spring은 다음과 같이 기본적으로 등록된 `TestExecutionListener` 구현을 정확히 다음 순서로 제공함.
+  > - `ServletTestExecutionListener`: `WebApplicationContext`에 대한 Servlet API 모의 객체를 구성함.
+  > - `DirtiesContextBeforeModesTestExecutionListener`: "before" 모드에 대한 `@DirtiesContext` 어노테이션을 처리함.
+  > - `ApplicationEventsTestExecutionListener`: `ApplicationEvents`에 대한 지원을 제공함.
+  > - `DependencyInjectionTestExecutionListener`: 테스트 인스턴스에 대한 의존성 주입을 제공함.
+  > - `MicrometerObservationRegistryTestExecutionListener`: Micrometer의 `ObservationRegistry`에 대한 지원을 제공함.
+  > - `DirtiesContextTestExecutionListener`: "after" 모드에 대한 `@DirtiesContext` 어노테이션을 처리함.
+  > - `TransactionalTestExecutionListener`: 기본 롤백 의미론을 사용하여 트랜잭션 테스트 실행을 제공함.
+  > - `SqlScriptsTestExecutionListener`: `@Sql` 어노테이션을 사용하여 구성된 SQL 스크립트를 실행함.
+  > - `EventPublishingTestExecutionListener`: 테스트의 `ApplicationContext`에 테스트 실행 이벤트를 게시함(테스트 실행 이벤트 참조).
+
+### Registering TestExecutionListener Implementations
+
+- `@TestExecutionListeners` 어노테이션을 사용하여 테스트 클래스, 해당 하위 클래스 및 중첩 클래스에 대해 `TestExecutionListener` 구현을 명시적으로 등록할 수 있음. 자세한 내용과 예제는 어노테이션 지원 및 `@TestExecutionListeners`의 javadoc을 참조할 것.
+
+> ##### Note
+>
+> - `@TestExecutionListeners`로 주석이 달린 클래스를 확장하고 기본 리스너 세트를 사용하도록 전환해야 하는 경우 다음과 같이 클래스에 주석을 달 수 있음.
+>
+> ```java
+> // Switch to default listeners
+> @TestExecutionListeners(
+>   listeners = {},
+>   inheritListeners = false,
+>   mergeMode = MERGE_WITH_DEFAULTS)
+> class MyTest extends BaseTest {
+>   // class body...
+> }
+> ```
+
+### Automatic Discovery of Default TestExecutionListener Implementations
+
+- `@TestExecutionListeners`를 사용하여 `TestExecutionListener` 구현을 등록하는 것은 제한된 테스트 시나리오에서 사용되는 사용자 정의 리스너에 적합함. 그러나 사용자 정의 리스너를 전체 테스트 스위트에서 사용해야 하는 경우 번거로워질 수 있음. 이 문제는 `SpringFactoriesLoader` 메커니즘을 통해 기본 `TestExecutionListener` 구현의 자동 검색 지원을 통해 해결됨.
+- 예를 들어, `spring-test` 모듈은 `META-INF/spring.factories` 속성 파일의 `org.springframework.test.context.TestExecutionListener` 키 아래에 모든 핵심 기본 `TestExecutionListener` 구현을 선언함. 타사 프레임워크 및 개발자는 자체 `spring.factories` 파일을 통해 동일한 방식으로 기본 리스너 목록에 자체 `TestExecutionListener` 구현을 제공할 수 있음.
+
+### Ordering TestExecutionListener Implementations
+
+- TestContext 프레임워크가 앞서 언급한 `SpringFactoriesLoader` 메커니즘을 통해 기본 `TestExecutionListener` 구현을 검색하면 인스턴스화된 리스너가 Spring의 `AnnotationAwareOrderComparator`를 사용하여 정렬됨. 이는 Spring의 `Ordered` 인터페이스와 순서를 지정하기 위한 `@Order` 어노테이션을 적용함. `AbstractTestExecutionListener`와 Spring에서 제공하는 모든 기본 `TestExecutionListener` 구현은 적절한 값으로 Ordered를 구현함. 따라서 타사 프레임워크 및 개발자는 `Ordered`를 구현하거나 `@Order`를 선언하여 기본 `TestExecutionListener` 구현이 적절한 순서로 등록되도록 해야 함. 각 핵심 리스너에 할당된 값에 대한 자세한 내용은 핵심 기본 `TestExecutionListener` 구현의 `getOrder()` 메서드에 대한 javadoc을 참조할 것.
+
+### Merging TestExecutionListener Implementations
+
+- `@TestExecutionListeners`를 통해 사용자 정의 `TestExecutionListener`가 등록되면 기본 리스너는 등록되지 않음. 대부분의 일반적인 테스트 시나리오에서 이는 개발자가 사용자 정의 리스너 외에 모든 기본 리스너를 수동으로 선언하도록 함. 다음 목록은 이러한 구성 스타일을 보여즘.
+
+```java
+@ContextConfiguration
+@TestExecutionListeners({
+	MyCustomTestExecutionListener.class,
+	ServletTestExecutionListener.class,
+	DirtiesContextBeforeModesTestExecutionListener.class,
+	DependencyInjectionTestExecutionListener.class,
+	DirtiesContextTestExecutionListener.class,
+	TransactionalTestExecutionListener.class,
+	SqlScriptsTestExecutionListener.class
+})
+class MyTest {
+	// class body...
+}
+```
+
+- 이 접근 방식의 문제점은 개발자가 기본적으로 등록된 리스너를 정확히 알아야 한다는 것. 게다가 기본 리스너 집합은 릴리스마다 변경될 수 있음. 예를 들어, `SqlScriptsTestExecutionListener`는 Spring Framework 4.1에서 도입되었고 `DirtiesContextBeforeModesTestExecutionListener`는 Spring Framework 4.2에서 도입되었음. 또한 Spring Boot 및 Spring Security와 같은 타사 프레임워크는 앞서 언급한 자동 검색 메커니즘을 사용하여 자체 기본 `TestExecutionListener` 구현을 등록함.
+- 모든 기본 리스너를 인식하고 재선언하는 것을 피하기 위해 `@TestExecutionListeners`의 `mergeMode` 속성을 `MergeMode.MERGE_WITH_DEFAULTS`로 설정할 수 음. `MERGE_WITH_DEFAULTS`는 로컬에서 선언된 리스너를 기본 리스너와 병합해야 함을 나타냄. 병합 알고리즘은 목록에서 중복을 제거하고 결과 병합된 리스너 집합이 TestExecutionListener 구현 순서 지정에 설명된 대로 `AnnotationAwareOrderComparator`의 의미에 따라 정렬되도록 함. 리스너가 `Ordered`를 구현하거나 `@Order`로 주석이 달린 경우 기본값과 병합되는 위치에 영향을 줄 수 있음. 그렇지 않으면 로컬에서 선언된 리스너가 병합 시 기본 리스너 목록에 추가됨.
+- 예를 들어, 이전 예제의 `MyCustomTestExecutionListener` 클래스가 순서 값(예: 500)을 `ServletTestExecutionListener`(1000)의 순서보다 작게 구성하는 경우, `MyCustomTestExecutionListener`는 `ServletTestExecutionListener` 앞에 기본값 목록과 자동으로 병합될 수 있으며 이전 예제는 다음으로 대체될 수 있음.
 
 ## Spring TestContext Framework - Application Events
 
