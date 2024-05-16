@@ -27,6 +27,11 @@ public class EnvironmentTest {
     }
 
     @Test
+    public void testAssertThat() {
+        assertThat("test", equalTo("test"));
+    }
+
+    @Test
     public void testGetApplicationName() {
         String applicationName = mockEnvironment.getProperty("spring.application.name");
         assertThat(applicationName, equalTo("springDocumentation"));

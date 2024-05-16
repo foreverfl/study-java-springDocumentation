@@ -522,7 +522,7 @@ ApplicationContext context = new ClassPathXmlApplicationContext("services.xml", 
 
 > ##### Note
 >
-> - Spring의 IoC 컨테이너에 대해 알아본 후에는 URI 구문으로 정의된 위치에서 InputStream을 읽기 위한 편리한 메커니즘을 제공하는 Spring의 Resource 추상화(Resources에 설명된 대로)에 대해 더 알고 싶을 수 있음. 특히 Resource 경로는 Application Contexts and Resource Paths에 설명된 대로 애플리케이션 컨텍스트를 구성하는 데 사용됨.
+> - Spring의 IoC 컨테이너에 대해 알아본 후에는 URI 구문으로 정의된 위치에서 `InputStream`을 읽기 위한 편리한 메커니즘을 제공하는 Spring의 Resource 추상화(Resources에 설명된 대로)에 대해 더 알고 싶을 수 있음. 특히 Resource 경로는 Application Contexts and Resource Paths에 설명된 대로 애플리케이션 컨텍스트를 구성하는 데 사용됨.
 
 - 다음 예제는 서비스 계층 객체(`services.xml`) 구성 파일을 보여줌.
 
@@ -599,7 +599,7 @@ public class AppConfig {
 ### Composing XML-based Configuration Metadata
 
 - 빈 정의가 여러 XML 파일에 걸쳐 있는 것이 유용할 수 있음. 종종 각 개별 XML 구성 파일은 아키텍처의 논리적 계층 또는 모듈을 나타냄.
-- 이전 섹션에서 보여준 것처럼 애플리케이션 컨텍스트 생성자를 사용하여 이러한 모든 XML 조각에서 빈 정의를 로드할 수 있음. 이 생성자는 여러 Resource 위치를 사용합니다. 또는 `<import/>` 요소를 한 번 이상 사용하여 다른 파일에서 빈 정의를 로드할 수 있음. 다음 예제는 이를 수행하는 방법을 보여줌.
+- 이전 섹션에서 보여준 것처럼 애플리케이션 컨텍스트 생성자를 사용하여 이러한 모든 XML 조각에서 빈 정의를 로드할 수 있음. 이 생성자는 여러 Resource 위치를 사용함. 또는 `<import/>` 요소를 한 번 이상 사용하여 다른 파일에서 빈 정의를 로드할 수 있음. 다음 예제는 이를 수행하는 방법을 보여줌.
 
 ```xml
 <beans>
@@ -676,13 +676,13 @@ beans {
 - `ApplicationContext`를 사용하면 다음 예제와 같이 빈 정의를 읽고 액세스할 수 있음.
 
 ```java
-// create and configure beans
+// bean을 생성하고 환경을 설정함
 ApplicationContext context = new ClassPathXmlApplicationContext("services.xml", "daos.xml");
 
-// retrieve configured instance
+// 환경설정된 인스턴스를 가져옴
 PetStoreService service = context.getBean("petStore", PetStoreService.class);
 
-// use configured instance
+// 환경설정된 인스턴스를 사용함
 List<String> userList = service.getUsernameList();
 ```
 
@@ -709,7 +709,7 @@ context.refresh();
 ```
 
 - 동일한 `ApplicationContext`에서 이러한 `XmlBeanDefinitionReader`이나 ` GroovyBeanDefinitionReader`같이 대신 설정을 읽어는 것들과 혼합하고 일치시켜 다양한 구성 소스에서 빈 정의를 읽을 수 있음.
-- 그런 다음 getBean을 사용하여 빈의 인스턴스를 검색할 수 있음. `ApplicationContext` 인터페이스에는 빈을 검색하기 위한 몇 가지 다른 메서드가 있지만, 이상적으로는 애플리케이션 코드에서 절대 사용해서는 안 됨. 실제로 애플리케이션 코드에는 `getBean()` 메서드에 대한 호출이 전혀 없어야 하며 Spring API에 대한 종속성도 전혀 없어야 함. 예를 들어 Spring과 웹 프레임워크의 통합은 컨트롤러 및 JSF 관리 빈과 같은 다양한 웹 프레임워크 구성 요소에 대한 종속성 주입을 제공하므로 메타데이터(예: 자동 연결 주석)를 통해 특정 빈에 대한 종속성을 선언할 수 있음.
+- 그런 다음 `getBean`을 사용하여 빈의 인스턴스를 검색할 수 있음. `ApplicationContext` 인터페이스에는 빈을 검색하기 위한 몇 가지 다른 메서드가 있지만, 이상적으로는 애플리케이션 코드에서 절대 사용해서는 안 됨. 실제로 애플리케이션 코드에는 `getBean()` 메서드에 대한 호출이 전혀 없어야 하며 Spring API에 대한 종속성도 전혀 없어야 함. 예를 들어 Spring과 웹 프레임워크의 통합은 컨트롤러 및 JSF 관리 빈과 같은 다양한 웹 프레임워크 구성 요소에 대한 종속성 주입을 제공하므로 메타데이터(예: 자동 연결 주석)를 통해 특정 빈에 대한 종속성을 선언할 수 있음.
 
 ## The IoC Container - Bean Overview
 
@@ -2400,21 +2400,21 @@ public class MyBean {
   > - 일반 테스트 유틸리티
   > - Spring MVC 테스트 유틸리티
 
-### General Testing Utilities
+#### General Testing Utilities
 
 - `org.springframework.test.util` 패키지에는 단위 및 통합 테스트에 사용할 수 있는 여러 범용 유틸리티가 포함되어 있음.
 - `AopTestUtils`는 AOP 관련 유틸리티 메서드 모음. 이러한 메서드를 사용하여 하나 이상의 Spring 프록시 뒤에 숨겨진 기본 대상 객체에 대한 참조를 얻을 수 있음. 예를 들어, EasyMock 또는 Mockito와 같은 라이브러리를 사용하여 빈을 동적 모의로 구성하고 모의가 Spring 프록시에 래핑된 경우 기대치를 구성하고 검증을 수행하기 위해 기본 모의에 직접 액세스해야 할 수 있음. Spring의 핵심 AOP 유틸리티는 `AopUtils` 및 `AopProxyUtils`를 참조할 것.
 - `ReflectionTestUtils`는 리플렉션 기반 유틸리티 메서드 모음. 다음과 같은 사용 사례에 대한 애플리케이션 코드를 테스트할 때 상수 값을 변경하거나, 비공개 필드를 설정하거나, 비공개 `setter` 메서드를 호출하거나, 비공개 구성 또는 라이프사이클 콜백 메서드를 호출해야 하는 테스트 시나리오에서 이러한 메서드를 사용할 수 있음.
   > - 도메인 엔터티의 속성에 대한 공용 `setter` 메서드 대신 비공개 또는 보호된 필드 액세스를 용인하는 ORM 프레임워크(JPA 및 Hibernate 등).
   > - 비공개 또는 보호된 필드, `setter` 메서드 및 구성 메서드에 대한 의존성 주입을 제공하는 Spring의 어노테이션(`@Autowired`, `@Inject` 및 `@Resource` 등) 지원.
-  > - 라이프사이클 콜백 메서드에 @PostConstruct 및 @PreDestroy와 같은 어노테이션 사용.
+  > - 라이프사이클 콜백 메서드에 `@PostConstruct` 및 `@PreDestroy`와 같은 어노테이션 사용.
 - `TestSocketUtils`는 통합 테스트 시나리오에서 사용할 수 있는 localhost의 사용 가능한 TCP 포트를 찾는 간단한 유틸리티.
 
 > ##### Note
 >
 > - `TestSocketUtils`는 사용 가능한 무작위 포트에서 외부 서버를 시작하는 통합 테스트에서 사용할 수 있음. 그러나 이러한 유틸리티는 특정 포트의 후속 가용성에 대해 보장하지 않으므로 신뢰할 수 없음. `TestSocketUtils`를 사용하여 서버에 사용할 수 있는 로컬 포트를 찾는 대신 서버가 선택하거나 운영 체제에서 할당한 무작위 임시 포트에서 시작하는 서버의 기능에 의존하는 것이 좋음. 해당 서버와 상호 작용하려면 서버에 현재 사용 중인 포트를 쿼리해야 함.
 
-### Spring MVC Testing Utilities
+#### Spring MVC Testing Utilities
 
 - `org.springframework.test.web` 패키지에는 JUnit, TestNG 또는 Spring MVC ModelAndView 객체를 다루는 단위 테스트를 위해 다른 테스트 프레임워크와 함께 사용할 수 있는 `ModelAndViewAssert`가 포함되어 있음.
 
