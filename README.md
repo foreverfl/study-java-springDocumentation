@@ -2813,7 +2813,7 @@ class WacTests {
 
 - MockMvc는 두 가지 방법 중 하나로 설정할 수 있음. 첫 번째는 테스트하려는 컨트롤러를 직접 지정하고 Spring MVC 인프라를 프로그래밍 방식으로 구성하는 것. 두 번째는 Spring MVC와 컨트롤러 인프라가 포함된 Spring 설정을 가리키는 것.
 
-- 특정 컨트롤러를 테스트하기 위해 MockMvc를 설정하려면 다음을 사용할 것. (예제 코드)
+- 특정 컨트롤러를 테스트하기 위해 MockMvc를 설정하려면 다음을 사용할 것. ([예제 코드](https://github.com/foreverfl/study-java-springDocumentation/blob/main/src/test/java/com/example/springDocumentation/mockMvcTest/StandaloneSetupTest.java))
 
 ```java
 class MyWebTests {
@@ -2849,7 +2849,7 @@ class MyWebTests {
 }
 ```
 
-- Spring Boot 프로젝트에서는 `@SpringBootTest`와 `@AutoConfigureMockMvc`를 사용하는 것이 일반적임. 이는 설정이 간단하고, Spring Boot의 자동 설정 기능을 활용하여 통합 테스트를 쉽게 구성할 수 있기 때문임. (예제 코드)
+- Spring Boot 프로젝트에서는 `@SpringBootTest`와 `@AutoConfigureMockMvc`를 사용하는 것이 일반적임. 이는 설정이 간단하고, Spring Boot의 자동 설정 기능을 활용하여 통합 테스트를 쉽게 구성할 수 있기 때문임. ([예제 코드](https://github.com/foreverfl/study-java-springDocumentation/blob/main/src/test/java/com/example/springDocumentation/mockMvcTest/IntegrationTest.java))
 
 - 또는 위에 표시된 것과 동일한 빌더에 위임하는 WebTestClient를 통해 테스트할 때도 이 설정을 사용할 수 있음.
 - 어떤 설정 옵션을 사용해야 할까?
@@ -2888,7 +2888,7 @@ class AccountTests {
 
 ## MockMvc - Setup Features
 
-- 사용하는 MockMvc 빌더와 상관없이 모든 `MockMvcBuilder` 구현체는 몇 가지 공통적이고 매우 유용한 기능을 제공함. 예를 들어 다음과 같이 모든 요청에 대해 Accept 헤더를 선언하고 200 상태 코드와 모든 응답에 Content-Type 헤더를 기대할 수 있음.
+- 사용하는 MockMvc 빌더와 상관없이 모든 `MockMvcBuilder` 구현체는 몇 가지 공통적이고 매우 유용한 기능을 제공함. 예를 들어 다음과 같이 모든 요청에 대해 Accept 헤더를 선언하고 200 상태 코드와 모든 응답에 Content-Type 헤더를 기대할 수 있음. (예제 코드)
 
 ```java
 // MockMvcBuilders.standaloneSetup 정적 임포트
@@ -2910,7 +2910,7 @@ MockMvc mockMvc = MockMvcBuilders.standaloneSetup(new TestController())
 // mockMvc를 사용하여 요청 수행...
 ```
 
-- 모든 MockMvc 빌더 기능의 목록은 ConfigurableMockMvcBuilder의 javadoc을 참조하거나 IDE를 사용하여 사용 가능한 옵션을 탐색하세요.
+- 모든 MockMvc 빌더 기능의 목록은 ConfigurableMockMvcBuilder의 javadoc을 참조하거나 IDE를 사용하여 사용 가능한 옵션을 탐색할 것.
 
 ## MockMvc - Performing Requests
 
