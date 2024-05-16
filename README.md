@@ -2888,7 +2888,7 @@ class AccountTests {
 
 ## MockMvc - Setup Features
 
-- 사용하는 MockMvc 빌더와 상관없이 모든 `MockMvcBuilder` 구현체는 몇 가지 공통적이고 매우 유용한 기능을 제공함. 예를 들어 다음과 같이 모든 요청에 대해 Accept 헤더를 선언하고 200 상태 코드와 모든 응답에 Content-Type 헤더를 기대할 수 있음. (예제 코드)
+- 사용하는 MockMvc 빌더와 상관없이 모든 `MockMvcBuilder` 구현체는 몇 가지 공통적이고 매우 유용한 기능을 제공함. 예를 들어 다음과 같이 모든 요청에 대해 Accept 헤더를 선언하고 200 상태 코드와 모든 응답에 Content-Type 헤더를 기대할 수 있음. ([예제 코드](https://github.com/foreverfl/study-java-springDocumentation/blob/main/src/test/java/com/example/springDocumentation/mockMvcTest/DefaultRequestTest.java))
 
 ```java
 // MockMvcBuilders.standaloneSetup 정적 임포트
