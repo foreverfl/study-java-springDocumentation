@@ -2796,7 +2796,7 @@ class WacTests {
 ## MockMvc - Overview
 
 - 컨트롤러를 인스턴스화하고 의존성을 주입한 다음 해당 메서드를 호출하여 Spring MVC에 대한 일반 단위 테스트를 작성할 수 있음. 그러나 이러한 테스트는 요청 매핑, 데이터 바인딩, 메시지 변환, 유형 변환, 유효성 검사를 확인하지 않으며 지원되는 `@InitBinder`, `@ModelAttribute` 또는 `@ExceptionHandler` 메서드도 포함하지 않음.
-- MockMvc라고도 알려진 Spring MVC Test 프레임워크는 실행 중인 서버 없이 Spring MVC 컨트롤러에 대한 보다 완전한 테스트를 제공하는 것을 목표로 함. 이를 위해 DispatcherServlet을 호출하고 실행 중인 서버 없이 전체 Spring MVC 요청 처리를 복제하는 spring-test 모듈의 Servlet API "모의" 구현을 전달함.
+- MockMvc라고도 알려진 Spring MVC Test 프레임워크는 실행 중인 서버 없이 Spring MVC 컨트롤러에 대한 보다 완전한 테스트를 제공하는 것을 목표로 함. 이를 위해 `DispatcherServlet`을 호출하고 실행 중인 서버 없이 전체 Spring MVC 요청 처리를 복제하는 `spring-test` 모듈의 Servlet API "모의" 구현을 전달함.
 - MockMvc는 경량의 타겟팅된 테스트를 사용하여 Spring MVC 애플리케이션의 대부분의 기능을 검증할 수 있는 서버 측 테스트 프레임워크. 요청을 수행하고 응답을 검증하는 데 단독으로 사용할 수 있으며, MockMvc를 요청을 처리하기 위한 서버로 플러그인하여 WebTestClient API를 통해 사용할 수도 있습니다.
 
 ## MockMvc - Static Imports
@@ -2811,7 +2811,106 @@ class WacTests {
 
 ## MockMvc - Setup Choices
 
+- MockMvc는 두 가지 방법 중 하나로 설정할 수 있음. 첫 번째는 테스트하려는 컨트롤러를 직접 지정하고 Spring MVC 인프라를 프로그래밍 방식으로 구성하는 것. 두 번째는 Spring MVC와 컨트롤러 인프라가 포함된 Spring 설정을 가리키는 것.
+
+- 특정 컨트롤러를 테스트하기 위해 MockMvc를 설정하려면 다음을 사용할 것. (예제 코드)
+
+```java
+class MyWebTests {
+
+	MockMvc mockMvc;
+
+	@BeforeEach
+	void setup() {
+		this.mockMvc = MockMvcBuilders.standaloneSetup(new AccountController()).build();
+	}
+
+	// ...
+
+}
+```
+
+- 또는 위에 표시된 것과 동일한 빌더에 위임하는 WebTestClient를 통해 테스트할 때도 이 설정을 사용할 수 있음.
+- Spring 설정을 통해 MockMvc를 설정하려면 다음을 사용할 것.
+
+```java
+@SpringJUnitWebConfig(locations = "my-servlet-context.xml")
+class MyWebTests {
+
+	MockMvc mockMvc;
+
+	@BeforeEach
+	void setup(WebApplicationContext wac) {
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+	}
+
+	// ...
+
+}
+```
+
+- Spring Boot 프로젝트에서는 `@SpringBootTest`와 `@AutoConfigureMockMvc`를 사용하는 것이 일반적임. 이는 설정이 간단하고, Spring Boot의 자동 설정 기능을 활용하여 통합 테스트를 쉽게 구성할 수 있기 때문임. (예제 코드)
+
+- 또는 위에 표시된 것과 동일한 빌더에 위임하는 WebTestClient를 통해 테스트할 때도 이 설정을 사용할 수 있음.
+- 어떤 설정 옵션을 사용해야 할까?
+- `webAppContextSetup`은 실제 Spring MVC 설정을 로드하여 더 완전한 통합 테스트를 수행함. TestContext 프레임워크는 로드된 Spring 설정을 캐시하므로 테스트 도구 모음에 더 많은 테스트를 도입하더라도 테스트 실행 속도를 유지하는 데 도움이 됨. 또한 Spring 설정을 통해 컨트롤러에 모의 서비스를 주입하여 웹 계층 테스트에 집중할 수 있음. 다음 예제는 Mockito로 모의 서비스를 선언함.
+
+```xml
+<bean id="accountService" class="org.mockito.Mockito" factory-method="mock">
+	<constructor-arg type="java.lang.Class" value="org.example.AccountService"/>
+	<constructor-arg type="java.lang.String" value="accountService"/>
+</bean>
+```
+
+- 그런 다음에, 다음 예제와 같이 모의 서비스를 테스트에 주입하여 기대치를 설정하고 검증할 수 있음.
+
+```java
+@SpringJUnitWebConfig(locations = "test-servlet-context.xml")
+class AccountTests {
+
+	@Autowired
+	AccountService accountService;
+
+	MockMvc mockMvc;
+
+	@BeforeEach
+	void setup(WebApplicationContext wac) {
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+	}
+
+	// ...
+
+}
+```
+
+- 반면에 `standaloneSetup`은 단위 테스트에 조금 더 가까움. 한 번에 하나의 컨트롤러를 테스트함. 컨트롤러에 모의 종속성을 수동으로 주입할 수 있으며 Spring 설정 로딩과 관련이 없음. 이러한 테스트는 스타일에 더 중점을 두며 어떤 컨트롤러가 테스트되고 있는지, 특정 Spring MVC 설정이 작동하는 데 필요한지 등을 더 쉽게 확인할 수 있음. `standaloneSetup`은 특정 동작을 검증하거나 문제를 디버그하기 위해 임시 테스트를 작성하는 매우 편리한 방법이기도 함.
+- 대부분의 "통합 테스트 vs 단위 테스트" 논쟁과 마찬가지로 정답은 없음. 그러나 `standaloneSetup`을 사용한다는 것은 실제 Spring MVC 설정을 검증하기 위해 추가적인 `webAppContextSetup` 테스트가 필요함을 의미함. 또는 항상 실제 Spring MVC 설정에 대해 테스트하기 위해 모든 테스트를 `webAppContextSetup`으로 작성할 수 있음.
+
 ## MockMvc - Setup Features
+
+- 사용하는 MockMvc 빌더와 상관없이 모든 `MockMvcBuilder` 구현체는 몇 가지 공통적이고 매우 유용한 기능을 제공함. 예를 들어 다음과 같이 모든 요청에 대해 Accept 헤더를 선언하고 200 상태 코드와 모든 응답에 Content-Type 헤더를 기대할 수 있음.
+
+```java
+// MockMvcBuilders.standaloneSetup 정적 임포트
+MockMvc mockMvc = standaloneSetup(new MusicController())
+	.defaultRequest(get("/").accept(MediaType.APPLICATION_JSON))
+	.alwaysExpect(status().isOk())
+	.alwaysExpect(content().contentType("application/json;charset=UTF-8"))
+	.build();
+```
+
+- 또한 `MockMvcConfigurer`에 있는 것과 같은 설정 지침을 타사 프레임워크(및 애플리케이션)에서 미리 패키징할 수 있음. Spring Framework에는 요청 간에 HTTP 세션을 저장하고 재사용하는 데 도움이 되는 내장 구현이 하나 있음.
+
+```java
+// SharedHttpSessionConfigurer.sharedHttpSession 정적 임포트
+MockMvc mockMvc = MockMvcBuilders.standaloneSetup(new TestController())
+		.apply(sharedHttpSession())
+		.build();
+
+// mockMvc를 사용하여 요청 수행...
+```
+
+- 모든 MockMvc 빌더 기능의 목록은 ConfigurableMockMvcBuilder의 javadoc을 참조하거나 IDE를 사용하여 사용 가능한 옵션을 탐색하세요.
 
 ## MockMvc - Performing Requests
 
