@@ -2593,6 +2593,7 @@ public interface BeanNameAware {
 `ApplicationContextAware` 및 `BeanNameAware`(앞서 설명) 외에도 스프링은 빈이 컨테이너에 특정 인프라 의존성이 필요함을 나타낼 수 있는 다양한 `Aware` 콜백 인터페이스를 제공함. 일반적으로 이름은 의존성 유형을 나타냄. 다음 표는 가장 중요한 `Aware` 인터페이스를 요약한 것입니다:
 
 | Name | Injected Dependency | Explained in... |
+| --- | --- | --- |
 | `ApplicationContextAware` | `ApplicationContext `선언. | ApplicationContextAware and BeanNameAware |
 | `ApplicationEventPublisherAware` | 둘러싸는 `ApplicationContext`의 이벤트 발행자. | Additional Capabilities of the ApplicationContext |
 | `BeanClassLoaderAware` | 빈 클래스를 로드하는 데 사용되는 클래스 로더. | Instantiating Beans |
