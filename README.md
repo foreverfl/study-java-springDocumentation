@@ -2406,10 +2406,9 @@ public class AnotherExampleBean implements DisposableBean {
 
 #### Default Initialization and Destroy Methods
 
-- 스프링 특정 InitializingBean 및 DisposableBean 콜백 인터페이스를 사용하지 않는 초기화 및 소멸 메서드 콜백을 작성할 때 일반적으로 init(), initialize(), dispose() 등의 이름을 가진 메서드를 작성합니다. 이상적으로는 이러한 라이프사이클 콜백 메서드의 이름이 프로젝트 전체에서 표준화되어 모든 개발자가 동일한 메서드 이름을 사용하고 일관성을 보장해야 합니다.
-- 모든 빈에서 명명된 초기화 및 소멸 콜백 메서드 이름을 "찾도록" 스프링 컨테이너를 구성할 수 있습니다. 이는 애플리케이션 개발자로서 애플리케이션 클래스를 작성하고 각 빈 정의에 init-method="init" 속성을 구성하지 않고도 init()이라는 초기화 콜백을 사용할 수 있음을 의미합니다. 스프링 IoC 컨테이너는 빈이 생성되고 조립될 때 해당 클래스에 그러한 메서드가 있는 경우 적절한 시점에 해당 메서드를 호출합니다(이전에 설명한 표준 라이프사이클 콜백 계약에 따라).
-  이 기능은 또한 초기화 및 소멸 메서드 콜백에 대한 일관된 명명 규칙을 적용합니다.
-- 초기화 콜백 메서드 이름이 init()이고 소멸 콜백 메서드 이름이 destroy()라고 가정해 보겠습니다. 그러면 클래스는 다음 예제의 클래스와 유사합니다:
+- 스프링 특정 `InitializingBean` 및 `DisposableBean` 콜백 인터페이스를 사용하지 않는 초기화 및 소멸 메서드 콜백을 작성할 때 일반적으로 `init()`, `initialize()`, `dispose()` 등의 이름을 가진 메서드를 작성함. 이상적으로는 이러한 라이프사이클 콜백 메서드의 이름이 프로젝트 전체에서 표준화되어 모든 개발자가 동일한 메서드 이름을 사용하고 일관성을 보장해야 함.
+- 모든 빈에서 명명된 초기화 및 소멸 콜백 메서드 이름을 "찾도록" 스프링 컨테이너를 구성할 수 있음. 이는 애플리케이션 개발자로서 애플리케이션 클래스를 작성하고 각 빈 정의에 `init-method="init"` 속성을 구성하지 않고도 `init()`이라는 초기화 콜백을 사용할 수 있음을 의미함. 스프링 IoC 컨테이너는 빈이 생성되고 조립될 때 해당 클래스에 그러한 메서드가 있는 경우 적절한 시점에 해당 메서드를 호출함(이전에 설명한 표준 라이프사이클 콜백 계약에 따라). 이 기능은 또한 초기화 및 소멸 메서드 콜백에 대한 일관된 명명 규칙을 적용함.
+- 초기화 콜백 메서드 이름이 `init()`이고 소멸 콜백 메서드 이름이 `destroy()`라고 가정. 그러면 클래스는 다음 예제의 클래스와 유사함:
 
 ```java
 public class DefaultBlogService implements BlogService {
@@ -2420,7 +2419,7 @@ public class DefaultBlogService implements BlogService {
 		this.blogDao = blogDao;
 	}
 
-	// this is (unsurprisingly) the initialization callback method
+	// 이거는 (놀랍지 않게도) 초기화 콜백 메소드임
 	public void init() {
 		if (this.blogDao == null) {
 			throw new IllegalStateException("The [blogDao] property must be set.");
@@ -2429,7 +2428,7 @@ public class DefaultBlogService implements BlogService {
 }
 ```
 
-- 그런 다음 다음과 유사한 빈에서 해당 클래스를 사용할 수 있습니다:
+- 그런 다음 다음과 유사한 빈에서 해당 클래스를 사용할 수 있음:
 
 ```xml
 <beans default-init-method="init">
@@ -2441,35 +2440,35 @@ public class DefaultBlogService implements BlogService {
 </beans>
 ```
 
-최상위 <beans/> 요소 속성에 default-init-method 속성이 있으면 스프링 IoC 컨테이너가 빈 클래스에서 init이라는 메서드를 초기화 메서드 콜백으로 인식합니다. 빈이 생성되고 조립될 때 해당 클래스에 그러한 메서드가 있으면 적절한 시점에 호출됩니다.
-최상위 <beans/> 요소에서 default-destroy-method 속성을 사용하여 소멸 메서드 콜백을 유사하게 구성할 수 있습니다(XML에서).
-기존 빈 클래스에 이미 규칙과 다른 이름의 콜백 메서드가 있는 경우 <bean/> 자체의 init-method 및 destroy-method 속성을 사용하여 메서드 이름을 지정함으로써(XML에서) 기본값을 재정의할 수 있습니다.
-스프링 컨테이너는 구성된 초기화 콜백이 빈에 모든 종속성이 제공된 직후 즉시 호출되도록 보장합니다. 따라서 초기화 콜백은 원시 빈 참조에서 호출되므로 AOP 인터셉터 등이 빈에 아직 적용되지 않았음을 의미합니다. 대상 빈이 먼저 완전히 생성된 다음 인터셉터 체인이 있는 AOP 프록시(예)가 적용됩니다. 대상 빈과 프록시가 별도로 정의된 경우에도 코드는 프록시를 우회하여 원시 대상 빈과 상호 작용할 수 있습니다. 따라서 인터셉터를 init 메서드에 적용하는 것은 대상 빈의 라이프사이클을 프록시 또는 인터셉터와 결합하고 코드가 원시 대상 빈과 직접 상호 작용할 때 이상한 의미론을 남기므로 일관성이 없을 것입니다.
+- 최상위 `<beans/>` 요소 속성에 `default-init-method` 속성이 있으면 스프링 IoC 컨테이너가 빈 클래스에서 init이라는 메서드를 초기화 메서드 콜백으로 인식함. 빈이 생성되고 조립될 때 해당 클래스에 그러한 메서드가 있으면 적절한 시점에 호출됨.
+- 최상위 `<beans/>` 요소에서 `default-destroy-method` 속성을 사용하여 소멸 메서드 콜백을 유사하게 구성할 수 있음(XML에서).
+- 기존 빈 클래스에 이미 규칙과 다른 이름의 콜백 메서드가 있는 경우 `<bean/>` 자체의 `init-method` 및 `destroy-method` 속성을 사용하여 메서드 이름을 지정함으로써(XML에서) 기본값을 재정의할 수 있음.
+- 스프링 컨테이너는 구성된 초기화 콜백이 빈에 모든 종속성이 제공된 직후 즉시 호출되도록 보장함. 따라서 초기화 콜백은 원시 빈 참조에서 호출되므로 AOP 인터셉터 등이 빈에 아직 적용되지 않았음을 의미함. 대상 빈이 먼저 완전히 생성된 다음 인터셉터 체인이 있는 AOP 프록시(예)가 적용됨. 대상 빈과 프록시가 별도로 정의된 경우에도 코드는 프록시를 우회하여 원시 대상 빈과 상호 작용할 수 있음. 따라서 인터셉터를 `init` 메서드에 적용하는 것은 대상 빈의 라이프사이클을 프록시 또는 인터셉터와 결합하고 코드가 원시 대상 빈과 직접 상호 작용할 때 이상한 의미론을 남기므로 일관성이 없을 것.
 
 #### Combining Lifecycle Mechanisms
 
-- 스프링 2.5부터 빈 라이프사이클 동작을 제어하기 위한 세 가지 옵션이 있습니다:
-  > - InitializingBean 및 DisposableBean 콜백 인터페이스
-  > - 사용자 정의 init() 및 destroy() 메서드
-  > - @PostConstruct 및 @PreDestroy 애노테이션
-- 이러한 메커니즘을 결합하여 주어진 빈을 제어할 수 있습니다.
+- 스프링 2.5부터 빈 라이프사이클 동작을 제어하기 위한 세 가지 옵션이 있음:
+  > - `InitializingBean` 및 `DisposableBean` 콜백 인터페이스
+  > - 사용자 정의 `init()` 및 `destroy()` 메서드
+  > - `@PostConstruct` 및 `@PreDestroy` 애노테이션
+- 이러한 메커니즘을 결합하여 주어진 빈을 제어할 수 있음.
 
 > ##### NOTE
 >
-> - 빈에 대해 여러 라이프사이클 메커니즘이 구성되고 각 메커니즘이 다른 메서드 이름으로 구성된 경우 이 메모 뒤에 나열된 순서대로 각 구성된 메서드가 실행됩니다. 그러나 동일한 메서드 이름이 구성된 경우(예: 초기화 메서드에 대해 init()) 이러한 라이프사이클 메커니즘 중 둘 이상에 대해 해당 메서드는 앞 섹션에서 설명한 대로 한 번 실행됩니다.
+> - 빈에 대해 여러 라이프사이클 메커니즘이 구성되고 각 메커니즘이 다른 메서드 이름으로 구성된 경우 이 메모 뒤에 나열된 순서대로 각 구성된 메서드가 실행됨. 그러나 동일한 메서드 이름이 구성된 경우(예: 초기화 메서드에 대해 `init()`) 이러한 라이프사이클 메커니즘 중 둘 이상에 대해 해당 메서드는 앞 섹션에서 설명한 대로 한 번 실행됨.
 
-- 동일한 빈에 대해 여러 라이프사이클 메커니즘이 구성되고 초기화 메서드가 다른 경우 다음과 같이 호출됩니다:
-  > 1. @PostConstruct로 주석 처리된 메서드
-  > 2. InitializingBean 콜백 인터페이스에 의해 정의된 afterPropertiesSet()
-  > 3. 사용자 정의 구성된 init() 메서드
-- 소멸 메서드는 동일한 순서로 호출됩니다:
-  > 1. @PreDestroy로 주석 처리된 메서드
-  > 2. DisposableBean 콜백 인터페이스에 의해 정의된 destroy()
-  > 3. 사용자 정의 구성된 destroy() 메서드
+- 동일한 빈에 대해 여러 라이프사이클 메커니즘이 구성되고 초기화 메서드가 다른 경우 다음과 같이 호출됨:
+  > 1. `@PostConstruct`로 주석 처리된 메서드
+  > 2. `InitializingBean` 콜백 인터페이스에 의해 정의된 `afterPropertiesSet()`
+  > 3. 사용자 정의 구성된 `init()` 메서드
+- 소멸 메서드는 동일한 순서로 호출됨:
+  > 1. `@PreDestroy`로 주석 처리된 메서드
+  > 2. `DisposableBean` 콜백 인터페이스에 의해 정의된 `destroy()`
+  > 3. 사용자 정의 구성된 `destroy()` 메서드
 
 #### Startup and Shutdown Callbacks
 
-Lifecycle 인터페이스는 자체 라이프사이클 요구 사항(예: 일부 백그라운드 프로세스 시작 및 중지)이 있는 모든 객체에 대한 필수 메서드를 정의합니다:
+- `Lifecycle` 인터페이스는 자체 라이프사이클 요구 사항(예: 일부 백그라운드 프로세스 시작 및 중지)이 있는 모든 객체에 대한 필수 메서드를 정의함:
 
 ```java
 public interface Lifecycle {
@@ -2482,7 +2481,7 @@ public interface Lifecycle {
 }
 ```
 
-스프링에서 관리하는 모든 객체는 Lifecycle 인터페이스를 구현할 수 있습니다. 그런 다음 ApplicationContext 자체가 시작 및 중지 신호를 수신하면(예: 런타임 시 중지/재시작 시나리오) 해당 컨텍스트 내에 정의된 모든 Lifecycle 구현으로 해당 호출을 연쇄적으로 전달합니다. 이는 다음 목록에 표시된 LifecycleProcessor에 위임하여 수행합니다:
+- 스프링에서 관리하는 모든 객체는 `Lifecycle` 인터페이스를 구현할 수 있음. 그런 다음 `ApplicationContext` 자체가 시작 및 중지 신호를 수신하면(예: 런타임 시 중지/재시작 시나리오) 해당 컨텍스트 내에 정의된 모든 `Lifecycle` 구현으로 해당 호출을 연쇄적으로 전달함. 이는 다음 목록에 표시된 `LifecycleProcessor`에 위임하여 수행함:
 
 ```java
 public interface LifecycleProcessor extends Lifecycle {
@@ -2493,14 +2492,14 @@ public interface LifecycleProcessor extends Lifecycle {
 }
 ```
 
-LifecycleProcessor가 Lifecycle 인터페이스의 확장이라는 점에 유의하세요. 또한 컨텍스트 새로 고침 및 닫힘에 반응하기 위한 두 가지 다른 메서드를 추가합니다.
+- `LifecycleProcessor`가 `Lifecycle` 인터페이스의 확장이라는 점에 유의할 것. 또한 컨텍스트 새로 고침 및 닫힘에 반응하기 위한 두 가지 다른 메서드를 추가함.
 
 > ##### TIP
 >
-> - 일반 org.springframework.context.Lifecycle 인터페이스는 명시적 시작 및 중지 알림을 위한 일반 계약이며 컨텍스트 새로 고침 시 자동 시작을 의미하지 않습니다. 자동 시작에 대한 세부적인 제어 및 특정 빈의 정상적인 중지(시작 및 중지 단계 포함)를 위해 대신 확장된 org.springframework.context.SmartLifecycle 인터페이스를 구현하는 것을 고려하세요.
-> - 또한 중지 알림이 소멸 이전에 오는 것이 보장되지 않습니다. 일반 종료 시 모든 Lifecycle 빈은 먼저 일반 소멸 콜백이 전파되기 전에 중지 알림을 받습니다. 그러나 컨텍스트의 수명 동안 핫 새로 고침 시 또는 중지된 새로 고침 시도 시에는 소멸 메서드만 호출됩니다.
+> - 일반 `org.springframework.context.Lifecycle` 인터페이스는 명시적 시작 및 중지 알림을 위한 일반 계약이며 컨텍스트 새로 고침 시 자동 시작을 의미하지 않음. 자동 시작에 대한 세부적인 제어 및 특정 빈의 정상적인 중지(시작 및 중지 단계 포함)를 위해 대신 확장된 `org.springframework.context.SmartLifecycle` 인터페이스를 구현하는 것을 고려할 것.
+> - 또한 중지 알림이 소멸 이전에 오는 것이 보장되지 않음. 일반 종료 시 모든 `Lifecycle` 빈은 먼저 일반 소멸 콜백이 전파되기 전에 중지 알림을 받음. 그러나 컨텍스트의 수명 동안 핫 새로 고침 시 또는 중지된 새로 고침 시도 시에는 소멸 메서드만 호출됨.
 
-- 시작 및 종료 호출의 순서가 중요할 수 있습니다. 두 객체 사이에 "depends-on" 관계가 존재하는 경우 종속 측은 종속성 이후에 시작되고 종속성 이전에 중지됩니다. 그러나 때로는 직접 종속성을 알 수 없습니다. 특정 유형의 객체는 다른 유형의 객체보다 먼저 시작해야 한다는 것만 알 수 있습니다. 이러한 경우 SmartLifecycle 인터페이스는 Phased 상위 인터페이스에 정의된 getPhase() 메서드라는 또 다른 옵션을 정의합니다. 다음 목록은 Phased 인터페이스의 정의를 보여줍니다:
+- 시작 및 종료 호출의 순서가 중요할 수 있음. 두 객체 사이에 "depends-on" 관계가 존재하는 경우 종속 측은 종속성 이후에 시작되고 종속성 이전에 중지됨. 그러나 때로는 직접 종속성을 알 수 없음. 특정 유형의 객체는 다른 유형의 객체보다 먼저 시작해야 한다는 것만 알 수 있음. 이러한 경우 `SmartLifecycle` 인터페이스는 `Phased` 상위 인터페이스에 정의된 `getPhase()` 메서드라는 또 다른 옵션을 정의함. 다음 목록은 `Phased` 인터페이스의 정의를 보여줌:
 
 ```java
 public interface Phased {
@@ -2509,7 +2508,7 @@ public interface Phased {
 }
 ```
 
-- 다음 목록은 SmartLifecycle 인터페이스의 정의를 보여줍니다:
+- 다음 목록은 `SmartLifecycle` 인터페이스의 정의를 보여줌:
 
 ```java
 public interface SmartLifecycle extends Lifecycle, Phased {
@@ -2520,8 +2519,8 @@ public interface SmartLifecycle extends Lifecycle, Phased {
 }
 ```
 
-- 시작 시 위상이 가장 낮은 객체가 먼저 시작됩니다. 중지 시에는 역순이 적용됩니다. 따라서 SmartLifecycle을 구현하고 getPhase() 메서드가 Integer.MIN_VALUE를 반환하는 객체는 시작 시 가장 먼저, 중지 시 가장 나중에 속할 것입니다. 반대로 Integer.MAX_VALUE의 위상 값은 객체가 가장 마지막에 시작되고 가장 먼저 중지되어야 함을 나타냅니다(아마도 실행 중인 다른 프로세스에 의존하기 때문). 위상 값을 고려할 때 SmartLifecycle을 구현하지 않는 "일반" Lifecycle 객체의 기본 위상이 0이라는 점도 중요합니다. 따라서 음수 위상 값은 객체가 해당 표준 구성 요소보다 먼저 시작되어야 함을 나타냅니다(그리고 그 후에 중지). 모든 양수 위상 값에 대해서는 그 반대가 적용됩니다.
-- SmartLifecycle에 의해 정의된 중지 메서드는 콜백을 허용합니다. 모든 구현은 구현의 종료 프로세스가 완료된 후 해당 콜백의 run() 메서드를 호출해야 합니다. 이를 통해 필요한 경우 비동기 종료가 가능합니다. LifecycleProcessor 인터페이스의 기본 구현인 DefaultLifecycleProcessor는 각 위상 내의 객체 그룹이 해당 콜백을 호출할 때까지 제한 시간 값까지 대기합니다. 기본 위상별 제한 시간은 30초입니다. 컨텍스트 내에서 lifecycleProcessor라는 이름의 빈을 정의하여 기본 라이프사이클 프로세서 인스턴스를 재정의할 수 있습니다. 제한 시간만 수정하려는 경우 다음을 정의하면 충분합니다:
+- 시작 시 위상이 가장 낮은 객체가 먼저 시작됨. 중지 시에는 역순이 적용됨. 따라서 `SmartLifecycle`을 구현하고 `getPhase()` 메서드가 `Integer.MIN_VALUE`를 반환하는 객체는 시작 시 가장 먼저, 중지 시 가장 나중에 속할 것. 반대로 `Integer.MAX_VALUE`의 위상 값은 객체가 가장 마지막에 시작되고 가장 먼저 중지되어야 함을 나타냄(아마도 실행 중인 다른 프로세스에 의존하기 때문). 위상 값을 고려할 때 `SmartLifecycle`을 구현하지 않는 "일반" `Lifecycle` 객체의 기본 위상이 0이라는 점도 중요함. 따라서 음수 위상 값은 객체가 해당 표준 구성 요소보다 먼저 시작되어야 함을 나타냄(그리고 그 후에 중지). 모든 양수 위상 값에 대해서는 그 반대가 적용됨.
+- `SmartLifecycle`에 의해 정의된 중지 메서드는 콜백을 허용함. 모든 구현은 구현의 종료 프로세스가 완료된 후 해당 콜백의 `run()` 메서드를 호출해야 합니다. 이를 통해 필요한 경우 비동기 종료가 가능함. `LifecycleProcessor` 인터페이스의 기본 구현인 `DefaultLifecycleProcessor`는 각 위상 내의 객체 그룹이 해당 콜백을 호출할 때까지 제한 시간 값까지 대기함. 기본 위상별 제한 시간은 30초. 컨텍스트 내에서 `lifecycleProcessor`라는 이름의 빈을 정의하여 기본 라이프사이클 프로세서 인스턴스를 재정의할 수 있음. 제한 시간만 수정하려는 경우 다음을 정의하면 충분함:
 
 ```xml
 <bean id="lifecycleProcessor" class="org.springframework.context.support.DefaultLifecycleProcessor">
@@ -2530,16 +2529,16 @@ public interface SmartLifecycle extends Lifecycle, Phased {
 </bean>
 ```
 
-- 앞서 언급했듯이 LifecycleProcessor 인터페이스는 컨텍스트 새로 고침 및 닫힘에 대한 콜백 메서드도 정의합니다. 후자는 stop()이 명시적으로 호출된 것처럼 종료 프로세스를 주도하지만 컨텍스트가 닫힐 때 발생합니다. 반면 '새로 고침' 콜백은 SmartLifecycle 빈의 또 다른 기능을 활성화합니다. 컨텍스트가 새로 고쳐지면(모든 객체가 인스턴스화되고 초기화된 후) 해당 콜백이 호출됩니다. 이때 기본 라이프사이클 프로세서는 각 SmartLifecycle 객체의 isAutoStartup() 메서드에서 반환된 부울 값을 확인합니다. true인 경우 해당 객체는 컨텍스트의 또는 자체 start() 메서드의 명시적 호출을 기다리지 않고 해당 시점에 시작됩니다(컨텍스트 새로 고침과 달리 표준 컨텍스트 구현에서는 컨텍스트 시작이 자동으로 발생하지 않음). 위상 값과 "depends-on" 관계는 앞서 설명한 대로 시작 순서를 결정합니다.
+- 앞서 언급했듯이 `LifecycleProcessor` 인터페이스는 컨텍스트 새로 고침 및 닫힘에 대한 콜백 메서드도 정의함. 후자는 `stop()`이 명시적으로 호출된 것처럼 종료 프로세스를 주도하지만 컨텍스트가 닫힐 때 발생함. 반면 '새로 고침' 콜백은 `SmartLifecycle` 빈의 또 다른 기능을 활성화함. 컨텍스트가 새로 고쳐지면(모든 객체가 인스턴스화되고 초기화된 후) 해당 콜백이 호출됨. 이때 기본 라이프사이클 프로세서는 각 `SmartLifecycle` 객체의 `isAutoStartup()` 메서드에서 반환된 부울 값을 확인함. `true`인 경우 해당 객체는 컨텍스트의 또는 자체 `start()` 메서드의 명시적 호출을 기다리지 않고 해당 시점에 시작됨(컨텍스트 새로 고침과 달리 표준 컨텍스트 구현에서는 컨텍스트 시작이 자동으로 발생하지 않음). 위상 값과 "depends-on" 관계는 앞서 설명한 대로 시작 순서를 결정함.
 
 #### Shutting Down the Spring IoC Container Gracefully in Non-Web Applications
 
 > ##### NOTE
 >
-> - 이 섹션은 웹 애플리케이션이 아닌 경우에만 적용됨. 스프링의 웹 기반 ApplicationContext 구현에는 관련 웹 애플리케이션이 종료될 때 스프링 IoC 컨테이너를 정상적으로 종료하기 위한 코드가 이미 존재합니다.
+> - 이 섹션은 웹 애플리케이션이 아닌 경우에만 적용됨. 스프링의 웹 기반 `ApplicationContext` 구현에는 관련 웹 애플리케이션이 종료될 때 스프링 IoC 컨테이너를 정상적으로 종료하기 위한 코드가 이미 존재함.
 
-- 웹 애플리케이션이 아닌 환경(예: 리치 클라이언트 데스크톱 환경)에서 스프링의 IoC 컨테이너를 사용하는 경우 JVM에 종료 훅을 등록하세요. 이렇게 하면 정상적인 종료가 보장되고 싱글톤 빈의 관련 소멸 메서드가 호출되어 모든 리소스가 해제됩니다. 이러한 소멸 콜백을 올바르게 구성하고 구현해야 합니다.
-  종료 훅을 등록하려면 다음 예제와 같이 ConfigurableApplicationContext 인터페이스에 선언된 registerShutdownHook() 메서드를 호출하세요:
+- 웹 애플리케이션이 아닌 환경(예: 리치 클라이언트 데스크톱 환경)에서 스프링의 IoC 컨테이너를 사용하는 경우 JVM에 종료 훅을 등록할 것. 이렇게 하면 정상적인 종료가 보장되고 싱글톤 빈의 관련 소멸 메서드가 호출되어 모든 리소스가 해제됨. 이러한 소멸 콜백을 올바르게 구성하고 구현해야 함.
+  종료 훅을 등록하려면 다음 예제와 같이 `ConfigurableApplicationContext` 인터페이스에 선언된 `registerShutdownHook()` 메서드를 호출할 것:
 
 ```java
 public final class Boot {
@@ -2547,27 +2546,27 @@ public final class Boot {
 	public static void main(final String[] args) throws Exception {
 		ConfigurableApplicationContext ctx = new ClassPathXmlApplicationContext("beans.xml");
 
-		// add a shutdown hook for the above context...
+		// 위의 컨텍스트에 대한 종료 훅 추가...
 		ctx.registerShutdownHook();
 
-		// app runs here...
+		// 애플리케이션 실행 부분...
 
-		// main method exits, hook is called prior to the app shutting down...
+		// 메인 메서드 종료 시, 애플리케이션 종료 전에 훅이 호출됨...
 	}
 }
 ```
 
 #### Thread Safety and Visibility
 
-- 스프링 코어 컨테이너는 생성된 싱글톤 인스턴스를 스레드 안전한 방식으로 게시하여 싱글톤 잠금을 통해 액세스를 보호하고 다른 스레드에서의 가시성을 보장합니다.
-- 결과적으로 애플리케이션에서 제공하는 빈 클래스는 초기화 상태의 가시성에 대해 신경 쓸 필요가 없습니다. 일반 구성 필드는 초기화 단계에서만 변경되는 한 최종과 유사한 가시성 보장을 제공하므로 초기 단계 동안 변경 가능한 setter 기반 구성 상태에 대해서도 volatile로 표시할 필요가 없습니다. 이러한 필드가 빈 생성 단계와 후속 초기 게시 후에 변경되는 경우 액세스할 때마다 volatile로 선언하거나 공통 잠금으로 보호해야 합니다.
-- 싱글톤 빈 인스턴스의 이러한 구성 상태에 대한 동시 액세스(예: 컨트롤러 인스턴스 또는 리포지토리 인스턴스의 경우)는 컨테이너 측에서 이러한 안전한 초기 게시 후에 완벽하게 스레드 안전하다는 점에 유의하세요. 여기에는 일반 싱글톤 잠금 내에서 처리되는 공통 싱글톤 FactoryBean 인스턴스도 포함됩니다.
-- 소멸 콜백의 경우 구성 상태는 스레드 안전을 유지하지만 초기화와 소멸 사이에 누적된 모든 런타임 상태는 일반적인 Java 지침에 따라 스레드 안전 구조(또는 간단한 경우 volatile 필드)에 보관해야 합니다.
-- 위에 표시된 것과 같은 더 깊은 라이프사이클 통합에는 volatile로 선언해야 하는 실행 가능한 필드와 같은 런타임 변경 가능한 상태가 포함됩니다. 일반적인 라이프사이클 콜백은 특정 순서를 따르지만(예: 시작 콜백은 완전한 초기화 후에만 발생하고 중지 콜백은 초기 시작 후에만 발생) 일반적인 중지 전 소멸 배열에는 특별한 경우가 있습니다: 이러한 모든 빈의 내부 상태는 취소된 부트스트랩 후 또는 다른 빈으로 인한 중지 제한 시간이 발생한 경우 이전 중지 없이 즉각적인 소멸 콜백을 허용하는 것이 좋습니다.
+- 스프링 코어 컨테이너는 생성된 싱글톤 인스턴스를 스레드 안전한 방식으로 게시하여 싱글톤 잠금을 통해 액세스를 보호하고 다른 스레드에서의 가시성을 보장함.
+- 결과적으로 애플리케이션에서 제공하는 빈 클래스는 초기화 상태의 가시성에 대해 신경 쓸 필요가 없음. 일반 구성 필드는 초기화 단계에서만 변경되는 한 최종과 유사한 가시성 보장을 제공하므로 초기 단계 동안 변경 가능한 `setter` 기반 구성 상태에 대해서도 `volatile`로 표시할 필요가 없음. 이러한 필드가 빈 생성 단계와 후속 초기 게시 후에 변경되는 경우 액세스할 때마다 `volatile`로 선언하거나 공통 잠금으로 보호해야 함.
+- 싱글톤 빈 인스턴스의 이러한 구성 상태에 대한 동시 액세스(예: 컨트롤러 인스턴스 또는 리포지토리 인스턴스의 경우)는 컨테이너 측에서 이러한 안전한 초기 게시 후에 완벽하게 스레드 안전하다는 점에 유의할 것. 여기에는 일반 싱글톤 잠금 내에서 처리되는 공통 싱글톤 `FactoryBean` 인스턴스도 포함됨.
+- 소멸 콜백의 경우 구성 상태는 스레드 안전을 유지하지만 초기화와 소멸 사이에 누적된 모든 런타임 상태는 일반적인 Java 지침에 따라 스레드 안전 구조(또는 간단한 경우 `volatile` 필드)에 보관해야 함.
+- 위에 표시된 것과 같은 더 깊은 라이프사이클 통합에는 `volatile`로 선언해야 하는 실행 가능한 필드와 같은 런타임 변경 가능한 상태가 포함됨. 일반적인 라이프사이클 콜백은 특정 순서를 따르지만(예: 시작 콜백은 완전한 초기화 후에만 발생하고 중지 콜백은 초기 시작 후에만 발생) 일반적인 중지 전 소멸 배열에는 특별한 경우가 있음: 이러한 모든 빈의 내부 상태는 취소된 부트스트랩 후 또는 다른 빈으로 인한 중지 제한 시간이 발생한 경우 이전 중지 없이 즉각적인 소멸 콜백을 허용하는 것이 좋음.
 
 ### ApplicationContextAware and BeanNameAware
 
-- ApplicationContext가 org.springframework.context.ApplicationContextAware 인터페이스를 구현하는 객체 인스턴스를 생성하면 해당 ApplicationContext에 대한 참조가 인스턴스에 제공됩니다. 다음 목록은 ApplicationContextAware 인터페이스의 정의를 보여줍니다:
+- `ApplicationContext`가 `org.springframework.context.ApplicationContextAware` 인터페이스를 구현하는 객체 인스턴스를 생성하면 해당 `ApplicationContext`에 대한 참조가 인스턴스에 제공됨. 다음 목록은 `ApplicationContextAware` 인터페이스의 정의를 보여줌:
 
 ```java
 public interface ApplicationContextAware {
@@ -2576,9 +2575,9 @@ public interface ApplicationContextAware {
 }
 ```
 
-- 따라서 빈은 ApplicationContext 인터페이스를 통해 또는 이 인터페이스의 알려진 하위 클래스(추가 기능을 제공하는 ConfigurableApplicationContext 등)로 참조를 캐스팅하여 프로그래밍 방식으로 자신을 생성한 ApplicationContext를 조작할 수 있습니다. 한 가지 용도는 프로그래밍 방식으로 다른 빈을 검색하는 것입니다. 때로는 이 기능이 유용합니다. 그러나 일반적으로 코드를 스프링에 결합하고 제어 반전 스타일을 따르지 않으므로 피해야 합니다. 협력자는 속성으로 빈에 제공됩니다. ApplicationContext의 다른 메서드는 파일 리소스에 대한 액세스, 애플리케이션 이벤트 게시 및 MessageSource에 대한 액세스를 제공합니다. 이러한 추가 기능은 ApplicationContext의 추가 기능에 설명되어 있습니다.
-- autowiring은 ApplicationContext에 대한 참조를 얻는 또 다른 대안입니다. 전통적인 생성자 및 byType autowiring 모드(협력자 자동 연결에 설명된 대로)는 각각 생성자 인수 또는 setter 메서드 매개변수에 대해 ApplicationContext 유형의 의존성을 제공할 수 있습니다. 필드 및 다중 매개변수 메서드를 autowire할 수 있는 기능을 포함하여 더 많은 유연성을 위해 애노테이션 기반 autowiring 기능을 사용하세요. 이렇게 하면 해당 필드, 생성자 또는 메서드에 @Autowired 애노테이션이 있는 경우 ApplicationContext가 ApplicationContext 유형을 예상하는 필드, 생성자 인수 또는 메서드 매개변수에 자동 연결됩니다. 자세한 내용은 @Autowired 사용을 참조하세요.
-- ApplicationContext가 org.springframework.beans.factory.BeanNameAware 인터페이스를 구현하는 클래스를 생성하면 연결된 객체 정의에 정의된 이름에 대한 참조가 클래스에 제공됩니다. 다음 목록은 BeanNameAware 인터페이스의 정의를 보여줍니다:
+- 따라서 빈은 `ApplicationContext` 인터페이스를 통해 또는 이 인터페이스의 알려진 하위 클래스(추가 기능을 제공하는 `ConfigurableApplicationContext` 등)로 참조를 캐스팅하여 프로그래밍 방식으로 자신을 생성한 `ApplicationContext`를 조작할 수 있음. 한 가지 용도는 프로그래밍 방식으로 다른 빈을 검색하는 것. 때로는 이 기능이 유용함. 그러나 일반적으로 코드를 스프링에 결합하고 제어 반전 스타일을 따르지 않으므로 피해야 함. 협력자는 속성으로 빈에 제공됩니다. `ApplicationContext`의 다른 메서드는 파일 리소스에 대한 액세스, 애플리케이션 이벤트 게시 및 `MessageSource`에 대한 액세스를 제공함. 이러한 추가 기능은 `ApplicationContext`의 추가 기능에 설명되어 있음.
+- autowiring은 `ApplicationContext`에 대한 참조를 얻는 또 다른 대안. 전통적인 생성자 및 `byType` autowiring 모드(협력자 자동 연결에 설명된 대로)는 각각 생성자 인수 또는 `setter` 메서드 매개변수에 대해 `ApplicationContext` 유형의 의존성을 제공할 수 있음. 필드 및 다중 매개변수 메서드를 autowire할 수 있는 기능을 포함하여 더 많은 유연성을 위해 애노테이션 기반 autowiring 기능을 사용할 것. 이렇게 하면 해당 필드, 생성자 또는 메서드에 `@Autowired` 애노테이션이 있는 경우 `ApplicationContext`가 `ApplicationContext` 유형을 예상하는 필드, 생성자 인수 또는 메서드 매개변수에 자동 연결됨. 자세한 내용은 `@Autowired` 사용을 참조할 것.
+- `ApplicationContext`가 `org.springframework.beans.factory.BeanNameAware` 인터페이스를 구현하는 클래스를 생성하면 연결된 객체 정의에 정의된 이름에 대한 참조가 클래스에 제공됨. 다음 목록은 BeanNameAware 인터페이스의 정의를 보여줌:
 
 ```java
 public interface BeanNameAware {
@@ -2587,31 +2586,31 @@ public interface BeanNameAware {
 }
 ```
 
-콜백은 일반 빈 속성 채우기 후 그러나 InitializingBean.afterPropertiesSet() 또는 사용자 정의 init-method와 같은 초기화 콜백 전에 호출됩니다.
+- 콜백은 일반 빈 속성 채우기 후 그러나 `InitializingBean.afterPropertiesSet()` 또는 사용자 정의 `init-method`와 같은 초기화 콜백 전에 호출됨.
 
 ### Other Aware Interfaces
 
-ApplicationContextAware 및 BeanNameAware(앞서 설명) 외에도 스프링은 빈이 컨테이너에 특정 인프라 의존성이 필요함을 나타낼 수 있는 다양한 Aware 콜백 인터페이스를 제공합니다. 일반적으로 이름은 의존성 유형을 나타냅니다. 다음 표는 가장 중요한 Aware 인터페이스를 요약한 것입니다:
+`ApplicationContextAware` 및 `BeanNameAware`(앞서 설명) 외에도 스프링은 빈이 컨테이너에 특정 인프라 의존성이 필요함을 나타낼 수 있는 다양한 `Aware` 콜백 인터페이스를 제공함. 일반적으로 이름은 의존성 유형을 나타냄. 다음 표는 가장 중요한 `Aware` 인터페이스를 요약한 것입니다:
 
 | Name | Injected Dependency | Explained in... |
-| `ApplicationContextAware` | ApplicationContext 선언. | ApplicationContextAware and BeanNameAware |
-| `ApplicationEventPublisherAware` | 둘러싸는 ApplicationContext의 이벤트 발행자. | Additional Capabilities of the ApplicationContext |
+| `ApplicationContextAware` | `ApplicationContext `선언. | ApplicationContextAware and BeanNameAware |
+| `ApplicationEventPublisherAware` | 둘러싸는 `ApplicationContext`의 이벤트 발행자. | Additional Capabilities of the ApplicationContext |
 | `BeanClassLoaderAware` | 빈 클래스를 로드하는 데 사용되는 클래스 로더. | Instantiating Beans |
-| `BeanFactoryAware` | BeanFactory 선언. | The BeanFactory API |
+| `BeanFactoryAware` | `BeanFactory` 선언. | The BeanFactory API |
 | `BeanNameAware` | 선언하는 빈의 이름. | ApplicationContextAware and BeanNameAware |
 | `LoadTimeWeaverAware` | 로드 시 클래스 정의를 처리하기 위한 정의된 위버. | Load-time Weaving with AspectJ in the Spring Framework |
 | `MessageSourceAware` | 메시지 해결을 위한 구성된 전략(매개변수화 및 국제화 지원). | Additional Capabilities of the ApplicationContext |
 | `NotificationPublisherAware` | Spring JMX 알림 발행자. | Notifications |
 | `ResourceLoaderAware` | 리소스에 대한 저수준 액세스를 위한 구성된 로더. | Resources |
-| `ServletConfigAware` | 컨테이너가 실행되는 현재 ServletConfig. 웹 인식 Spring ApplicationContext에서만 유효. | Spring MVC |
-| `ServletContextAware` | 컨테이너가 실행되는 현재 ServletContext. 웹 인식 Spring ApplicationContext에서만 유효. | Spring MVC |
+| `ServletConfigAware` | 컨테이너가 실행되는 현재 `ServletConfig`. 웹 인식 Spring `ApplicationContext`에서만 유효. | Spring MVC |
+| `ServletContextAware` | 컨테이너가 실행되는 현재 `ServletContext`. 웹 인식 Spring `ApplicationContext`에서만 유효. | Spring MVC |
 
 - 이러한 인터페이스를 사용하면 코드가 스프링 API에 연결되고 제어 반전 스타일을 따르지 않게 된다는 점에 다시 한번 유의하세요. 결과적으로 컨테이너에 프로그래밍 방식으로 액세스해야 하는 인프라 빈에 대해 이를 권장합니다.
 
 ## The IoC Container - Bean Definition Inheritance
 
-- 빈 정의에는 생성자 인자, 프로퍼티 값, 초기화 메서드, 정적 팩토리 메서드 이름 등과 같은 컨테이너 특정 정보를 포함하여 많은 구성 정보가 포함될 수 있습니다. 자식 빈 정의는 부모 정의에서 구성 데이터를 상속받습니다. 자식 정의는 일부 값을 재정의하거나 필요에 따라 다른 값을 추가할 수 있습니다. 부모와 자식 빈 정의를 사용하면 많은 타이핑을 절약할 수 있습니다. 효과적으로 이는 템플릿의 한 형태입니다.
-- ApplicationContext 인터페이스를 프로그래밍 방식으로 사용하는 경우 자식 빈 정의는 ChildBeanDefinition 클래스로 표현됩니다. 대부분의 사용자는 이 수준에서 작업하지 않습니다. 대신 ClassPathXmlApplicationContext와 같은 클래스에서 선언적으로 빈 정의를 구성합니다. XML 기반 구성 메타데이터를 사용할 때 parent 속성을 사용하여 자식 빈 정의를 나타낼 수 있으며, 이 속성의 값으로 부모 빈을 지정합니다. 다음 예제는 이를 수행하는 방법을 보여줍니다:
+- 빈 정의에는 생성자 인자, 프로퍼티 값, 초기화 메서드, 정적 팩토리 메서드 이름 등과 같은 컨테이너 특정 정보를 포함하여 많은 구성 정보가 포함될 수 있음. 자식 빈 정의는 부모 정의에서 구성 데이터를 상속받음. 자식 정의는 일부 값을 재정의하거나 필요에 따라 다른 값을 추가할 수 있음. 부모와 자식 빈 정의를 사용하면 많은 타이핑을 절약할 수 있음. 효과적으로 이는 템플릿의 한 형태.
+- `ApplicationContext` 인터페이스를 프로그래밍 방식으로 사용하는 경우 자식 빈 정의는 `ChildBeanDefinition` 클래스로 표현됨. 대부분의 사용자는 이 수준에서 작업하지 않음. 대신 `ClassPathXmlApplicationContext`와 같은 클래스에서 선언적으로 빈 정의를 구성함. XML 기반 구성 메타데이터를 사용할 때 `parent` 속성을 사용하여 자식 빈 정의를 나타낼 수 있으며, 이 속성의 값으로 부모 빈을 지정함. 다음 예제는 이를 수행하는 방법을 보여즘:
 
 ```xml
 <bean id="inheritedTestBean" abstract="true"
@@ -2624,14 +2623,14 @@ ApplicationContextAware 및 BeanNameAware(앞서 설명) 외에도 스프링은 
 		class="org.springframework.beans.DerivedTestBean"
 		parent="inheritedTestBean" init-method="initialize">
 	<property name="name" value="override"/>
-	<!-- the age property value of 1 will be inherited from parent -->
+  <!-- age 프로퍼티 값인 1은 부모로부터 상속받을 것임 -->
 </bean>
 ```
 
-- 자식 빈 정의는 지정되지 않은 경우 부모 정의의 빈 클래스를 사용하지만 이를 재정의할 수도 있습니다. 후자의 경우 자식 빈 클래스는 부모와 호환되어야 합니다(즉, 부모의 프로퍼티 값을 수용해야 함).
-- 자식 빈 정의는 새 값을 추가할 수 있는 옵션과 함께 부모로부터 범위, 생성자 인자 값, 프로퍼티 값 및 메서드 재정의를 상속받습니다. 지정하는 모든 범위, 초기화 메서드, 소멸 메서드 또는 정적 팩토리 메서드 설정은 해당 부모 설정을 재정의합니다.
-- 나머지 설정은 항상 자식 정의에서 가져옵니다: depends on, autowire mode, dependency check, singleton, lazy init.
-- 앞의 예제에서는 abstract 속성을 사용하여 부모 빈 정의를 명시적으로 추상으로 표시합니다. 부모 정의가 클래스를 지정하지 않는 경우 다음 예제와 같이 부모 빈 정의를 명시적으로 추상으로 표시해야 합니다:
+- 자식 빈 정의는 지정되지 않은 경우 부모 정의의 빈 클래스를 사용하지만 이를 재정의할 수도 있음. 후자의 경우 자식 빈 클래스는 부모와 호환되어야 함(즉, 부모의 프로퍼티 값을 수용해야 함).
+- 자식 빈 정의는 새 값을 추가할 수 있는 옵션과 함께 부모로부터 범위, 생성자 인자 값, 프로퍼티 값 및 메서드 재정의를 상속받음. 지정하는 모든 범위, 초기화 메서드, 소멸 메서드 또는 정적 팩토리 메서드 설정은 해당 부모 설정을 재정의함.
+- 나머지 설정은 항상 자식 정의에서 가져옴: depends on, autowire mode, dependency check, singleton, lazy init.
+- 앞의 예제에서는 `abstract` 속성을 사용하여 부모 빈 정의를 명시적으로 추상으로 표시함. 부모 정의가 클래스를 지정하지 않는 경우 다음 예제와 같이 부모 빈 정의를 명시적으로 추상으로 표시해야 함:
 
 ```xml
 <bean id="inheritedTestBeanWithoutClass" abstract="true">
@@ -2642,19 +2641,19 @@ ApplicationContextAware 및 BeanNameAware(앞서 설명) 외에도 스프링은 
 <bean id="inheritsWithClass" class="org.springframework.beans.DerivedTestBean"
 		parent="inheritedTestBeanWithoutClass" init-method="initialize">
 	<property name="name" value="override"/>
-	<!-- age will inherit the value of 1 from the parent bean definition-->
+	<!-- 부모 빈 정의로부터 age는 값 1을 상속받을 것 -->
 </bean>
 ```
 
-- 부모 빈은 불완전하기 때문에 자체적으로 인스턴스화될 수 없으며, 명시적으로 추상으로 표시되어 있습니다. 정의가 추상적일 때 자식 정의의 부모 정의 역할을 하는 순수 템플릿 빈 정의로만 사용할 수 있습니다. 다른 빈의 ref 프로퍼티로 참조하거나 부모 빈 ID로 명시적 getBean() 호출을 수행하여 이러한 추상 부모 빈을 자체적으로 사용하려고 하면 오류가 반환됩니다. 마찬가지로 컨테이너의 내부 preInstantiateSingletons() 메서드는 추상으로 정의된 빈 정의를 무시합니다.
+- 부모 빈은 불완전하기 때문에 자체적으로 인스턴스화될 수 없으며, 명시적으로 추상으로 표시되어 있음. 정의가 추상적일 때 자식 정의의 부모 정의 역할을 하는 순수 템플릿 빈 정의로만 사용할 수 있음. 다른 빈의 `ref` 프로퍼티로 참조하거나 부모 빈 ID로 명시적 `getBean()` 호출을 수행하여 이러한 추상 부모 빈을 자체적으로 사용하려고 하면 오류가 반환됨. 마찬가지로 컨테이너의 내부 `preInstantiateSingletons()` 메서드는 추상으로 정의된 빈 정의를 무시함.
 
 > ##### NOTE
 >
-> - ApplicationContext는 기본적으로 모든 싱글톤을 사전 인스턴스화합니다. 따라서 (적어도 싱글톤 빈의 경우) 템플릿으로만 사용하려는 (부모) 빈 정의가 있고 이 정의가 클래스를 지정하는 경우 abstract 속성을 true로 설정해야 합니다. 그렇지 않으면 애플리케이션 컨텍스트가 실제로 추상 빈을 사전 인스턴스화(시도)합니다.
+> - `ApplicationContext`는 기본적으로 모든 싱글톤을 사전 인스턴스화함. 따라서 (적어도 싱글톤 빈의 경우) 템플릿으로만 사용하려는 (부모) 빈 정의가 있고 이 정의가 클래스를 지정하는 경우 `abstract` 속성을 `true`로 설정해야 함. 그렇지 않으면 애플리케이션 컨텍스트가 실제로 추상 빈을 사전 인스턴스화(시도)함.
 
 ## The IoC Container - Container Extension Points
 
-일반적으로 애플리케이션 개발자는 ApplicationContext 구현 클래스를 하위 클래스화할 필요가 없습니다. 대신 특수 통합 인터페이스의 구현을 플러그인하여 Spring IoC 컨테이너를 확장할 수 있습니다. 다음 섹션에서는 이러한 통합 인터페이스에 대해 설명합니다.
+- 일반적으로 애플리케이션 개발자는 `ApplicationContext` 구현 클래스를 하위 클래스화할 필요가 없음. 대신 특수 통합 인터페이스의 구현을 플러그인하여 Spring IoC 컨테이너를 확장할 수 있음. 다음 섹션에서는 이러한 통합 인터페이스에 대해 설명함.
 
 ### Customizing Beans by Using a BeanPostProcessor
 
