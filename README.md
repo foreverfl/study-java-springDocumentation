@@ -1,16 +1,20 @@
 # Spring Framework Documentation
 
-- Spring Framework 6.1.6 공식 문서를 한글로 번역 및 재구성한 자료입니다. 해당 자료 내용을 사용할 경우에는 출처를 남겨주세요. 그리고 유용하다고 생각하시면, 스타 부탁드려요. 🥲
+- Spring Framework 6.1.7(최신 안정화 버전) 공식 문서를 한글로 번역 및 재구성한 자료입니다. 해당 자료 내용을 사용할 경우에는 출처를 남겨주세요. 그리고 유용하다고 생각하시면, 스타 부탁드려요. 🥲
+- 최대한 공식문서를 그대로 번역하는 방향으로 작업을 진행했습니다.
 - 번역은 Claude Opus/ChatGPT4를 사용했고, 어색한 부분은 직접 손을 봤습니다.
 - 오역이 있을 수 있기 때문에, 이 페이지는 참고만 하시고, 실제 프로그래밍에서는 직접 [영어](https://docs.spring.io/spring-framework/reference/)로 참고해주세요.
-- 구성상 불필요하다고 생각하는 부분은 제외했습니다.
-- 여러 설명을 공식 문서 외에도 추가했습니다. 문서를 읽다가 추가 설명이 있으면 좋겠다고 생각한 부분에 대해서 추가했고, 최근에는 Spring Boot를 많이 쓰기 때문에 관련된 설명을 추가한 부분도 있습니다.
-- 기본적인 예제 코드 구성은 `Java` 파일을 통해 진행했습니다. `XML` 기반으로 파일 설정은 하는 부분 영어로는 번역을 했지만, 제가 만든 예제 코드는 모두 `Java` 기반입니다. 레거시 코드를 운영하는 회사도 있을 거란 생각에 `XML`기반 설정도 알면 좋겠다고 생각은 합니다만, 제가 예제 코드를 만들 마음은 들지 않네요. `XML`기반 설정에 대해서 잘 아시는 분이 도와주시면 감사하겠습니다. 🥺
-- `curl`을 통해 요청을 보낼 때는 윈도우의 `cmd`를 사용했습니다. Postman으로 연습을 해도 괜찮다 싶어요.
-- View단을 기본적으로는 Thymeleaf를 활용했습니다. 솔직히 개인 개발하면 Restful하게 스프링에서 작성하고, React를 이용해서 View단에서 개발을 주로 개발을 하지만, 설명의 편의상 Thymeleaf를 사용했습니다. JSP로 예제가 필요한 분은 직접 만들어보시면 좋을 거라 생각합니다. 😊
-- 목차는 영어로 구성했습니다. 핵심 개념을 한글로 바꾸는 게 더 이상하다고 생각합니다.
-- 일단 Appendix 부분은 대충 읽어봐서 필수는 아닌 것 같아서 제외했는데, 나중에 필요에 따라서 제가 작업을 할 수도 있고 안 할 수도 있습니다.
-- 추후 목표는 static한 사이트로 배포해서 공식 문서처럼 만들어보고 싶은데, 일단 계획만 하고 있습니다.
+- 추후에는 antora를 통해서 제 블로그의 서브도메인에 static하게 공식문서처럼 배포할 예정입니다.
+
+## 예제 코드 구성 방향
+
+- 2024.05.19 수정 완료.
+- 기본적인 예제 코드 구성은 Java 코드를 이용했습니다. 제가 나중에 Kotlin으로 Spring Framework를 만질 일이 있으면 추가될지도 모르겠네요.
+- 기본적인 예제 코드 설정(Configuration)은 Java 파일을 통해 진행했습니다. XML 기반으로 파일 설정은 하는 부분 영어로는 번역을 했지만, 제가 만든 예제 코드는 모두 Java 기반입니다. 레거시 코드를 운영하는 회사도 있을 거란 생각에 XML기반 설정도 알면 좋겠다고 생각은 합니다만, 제가 예제 코드를 만들 마음은 들지 않네요. (XML 기반 설정으로 코드를 운영한다면 빨리 이직 준비를... 😮) XML기반 설정에 대해서 잘 아시는 분이 도와주시면 감사하겠습니다. 🥺
+- `curl`을 통해 요청을 보낼 때는 윈도우의 cmd를 사용했습니다.
+- View단을 기본적으로는 `@RestController`를 이용하는 식으로 최대한 피하려고 했고, 꼭 필요하다면 Thymeleaf를 활용했습니다. 솔직히 개인 개발하면 Restful하게 스프링에서 작성하고, React를 이용해서 View단에서 개발을 주로 개발을 하지만, 설명의 편의상 Thymeleaf를 사용했습니다. JSP로 예제가 필요한 분은 직접 만들어보시면 좋을 거라 생각합니다. 😊
+- 목차는 영어로 구성했습니다. 핵심 개념을 한글로 바꾸는 게 더 이상하다고 생각합니다. 1차 작업을 다 끝내고 한글로 번역을 달 수도 있어요.
+- 일단 Appendix 부분은 대충 읽어봐서 필수는 아닌 것 같아서 제외했습니다.
 - 예제 코드를 돌려보고 싶은 분들은 프로젝트를 `git clone`하고, 아래의 `application.properties` 구성을 참조해서 `application.properties`를 추가해주세요.
 
 ```properties
@@ -22,7 +26,8 @@ spring.datasource.password=***
 
 ## 목차
 
-- Core Technologies
+- [Overview](#spring-framework-overview)
+- [Core Technologies](#core-technologies)
 
   > - [The IoC Container - Introduction to the Spring IoC Container and Beans](#the-ioc-container---introduction-to-the-spring-ioc-container-and-beans)
   > - [The IoC Container - Container Overview](#the-ioc-container---container-overview)
@@ -422,6 +427,105 @@ spring.datasource.password=***
   > - JVM Checkpoint Restore
   > - CDS
 
+## Spring Framework Overview
+
+- Spring은 Java 엔터프라이즈 애플리케이션을 쉽게 만들 수 있도록 해줌. Spring은 엔터프라이즈 환경에서 Java 언어를 사용하는 데 필요한 모든 것을 제공하며, JVM에서 대체 언어로 Groovy와 Kotlin을 지원하고, 애플리케이션의 요구사항에 따라 다양한 종류의 아키텍처를 생성할 수 있는 유연성을 제공함. Spring Framework 6.0부터 Spring은 Java 17 이상을 필요로 함.
+- Spring은 다양한 애플리케이션 시나리오를 지원함. 대기업에서는 애플리케이션이 종종 오랫동안 존재하며 개발자의 제어를 벗어난 JDK와 애플리케이션 서버의 업그레이드 주기에서 실행되어야 함. 다른 애플리케이션은 서버가 내장된 단일 jar로 실행될 수 있으며, 클라우드 환경에서 실행될 수도 있음. 또 다른 애플리케이션은 서버가 필요하지 않은 독립 실행형 애플리케이션(배치 또는 통합 워크로드 등)일 수 있음.
+- Spring은 오픈 소스. 다양한 실제 사용 사례를 기반으로 지속적인 피드백을 제공하는 대규모의 활발한 커뮤니티가 있음. 이를 통해 Spring은 매우 오랜 기간 동안 성공적으로 발전해 왔음.
+
+### What We Mean by "Spring"
+
+- "Spring"이라는 용어는 맥락에 따라 다른 의미를 가짐. 모든 것이 시작된 Spring Framework 프로젝트 자체를 지칭하는 데 사용될 수 있음. 시간이 지남에 따라 Spring Framework 위에 다른 Spring 프로젝트들이 구축됨. 대부분의 경우 사람들이 "Spring"이라고 말할 때는 전체 프로젝트 패밀리를 의미함. 이 참조 문서는 Spring Framework 자체라는 기반에 초점을 맞추고 있음.
+- Spring Framework는 모듈로 나뉘어 있음. 애플리케이션은 필요한 모듈을 선택할 수 있음. 핵심은 구성 모델과 의존성 주입 메커니즘을 포함한 핵심 컨테이너의 모듈. 그 외에도 Spring Framework는 메시징, 트랜잭션 데이터 및 지속성, 웹 등 다양한 애플리케이션 아키텍처를 위한 기반 지원을 제공함. 또한 Servlet 기반의 Spring MVC 웹 프레임워크와 병렬로 Spring WebFlux 리액티브 웹 프레임워크도 포함되어 있음.
+- **모듈에 대한 참고 사항**: Spring의 프레임워크 jar는 JDK 9의 모듈 경로("Jigsaw")에 배포할 수 있음. Jigsaw가 활성화된 애플리케이션에서 사용하기 위해 Spring Framework 5 jar에는 jar 아티팩트 이름과 무관한 안정적인 언어 수준 모듈 이름("spring.core", "spring.context" 등)을 정의하는 "Automatic-Module-Name" 매니페스트 항목이 포함되어 있음(jar는 "-" 대신 "."을 사용하여 "spring-core", "spring-context"와 같은 동일한 명명 패턴을 따름). 물론 Spring의 프레임워크 jar는 JDK 8과 9+ 모두에서 클래스 경로에서 계속 잘 작동함.
+
+### History of Spring and the Spring Framework
+
+- Spring은 초기 J2EE 사양의 복잡성에 대한 대응으로 2003년에 탄생했음. 일부에서는 Java EE와 그 현대적 후계자인 Jakarta EE가 Spring과 경쟁 관계에 있다고 생각하지만, 실제로는 상호 보완적임. Spring 프로그래밍 모델은 Jakarta EE 플랫폼 사양을 수용하지 않음. 오히려 전통적인 EE 체계에서 신중하게 선택된 개별 사양과 통합됨:
+  > - Servlet API ([JSR 340](https://www.jcp.org/en/jsr/detail?id=340))
+  > - WebSocket API ([JSR 356](https://www.jcp.org/en/jsr/detail?id=356))
+  > - Concurrency Utilities ([JSR 236](https://www.jcp.org/en/jsr/detail?id=236))
+  > - JSON Binding API ([JSR 367](https://www.jcp.org/en/jsr/detail?id=367))
+  > - Bean Validation ([JSR 303](https://www.jcp.org/en/jsr/detail?id=303))
+  > - JPA ([JSR 338](https://www.jcp.org/en/jsr/detail?id=338))
+  > - JMS ([JSR 914](https://www.jcp.org/en/jsr/detail?id=914))
+  > - 그리고 필요한 경우 트랜잭션 조정을 위한 JTA/JCA 설정.
+- Spring Framework는 또한 애플리케이션 개발자가 Spring Framework에서 제공하는 Spring 전용 메커니즘 대신 사용하기로 선택할 수 있는 의존성 주입([JSR 330](https://www.jcp.org/en/jsr/detail?id=330)) 및 공통 주석([JSR 250](https://www.jcp.org/en/jsr/detail?id=250)) 사양을 지원함. 원래 이들은 공통 javax 패키지를 기반으로 했음.
+- Spring Framework 6.0부터 Spring은 전통적인 javax 패키지 대신 jakarta 네임스페이스를 기반으로 Jakarta EE 9 수준(예: Servlet 5.0+, JPA 3.0+)으로 업그레이드되었음. EE 9를 최소 요구사항으로 하고 EE 10을 이미 지원하면서 Spring은 Jakarta EE API의 추가 발전을 위한 즉시 사용 가능한 지원을 제공할 준비가 되어 있음. Spring Framework 6.0은 웹 서버로 Tomcat 10.1, Jetty 11, Undertow 2.3과 완전히 호환되며, Hibernate ORM 6.1과도 호환됨.
+- 시간이 지남에 따라 애플리케이션 개발에서 Java/Jakarta EE의 역할이 진화해 왔음. J2EE와 Spring의 초기에는 애플리케이션을 애플리케이션 서버에 배포하기 위해 만들어졌음. 오늘날에는 Spring Boot의 도움으로 애플리케이션이 개발 운영 및 클라우드에 친화적인 방식으로 생성되며, Servlet 컨테이너가 내장되어 있고 변경이 매우 쉬움. Spring Framework 5부터 WebFlux 애플리케이션은 Servlet API를 직접 사용하지 않으며 Servlet 컨테이너가 아닌 서버(Netty 등)에서 실행될 수 있음.
+- Spring은 계속해서 혁신하고 발전하고 있음. Spring Framework 외에도 Spring Boot, Spring Security, Spring Data, Spring Cloud, Spring Batch 등 다른 프로젝트들이 있음. 각 프로젝트에는 고유한 소스 코드 저장소, 이슈 추적기 및 릴리스 주기가 있다는 점을 기억하는 것이 중요함. 전체 Spring 프로젝트 목록은 spring.io/projects를 참조할 것.
+
+#### History of Java
+
+1. Java SE (Standard Edition)
+   > - **정의**: 데스크톱 애플리케이션과 기본적인 서버 애플리케이션을 위한 표준 Java 플랫폼.
+   > - **네임스페이스**: java
+   > - **주요 구성 요소**: JVM, 표준 라이브러리, API 등.
+2. J2EE (Java 2 Platform, Enterprise Edition)
+   > - **정의**: 1999년, 엔터프라이즈 애플리케이션을 위한 확장 플랫폼으로 출시.
+   > - **네임스페이스**: javax(extended)
+   > - **주요 구성 요소**: 서블릿, JSP, EJB, JMS, JPA 등.
+3. Java EE (Java Platform, Enterprise Edition)
+   > - **정의**: J2EE에서 이름이 바뀌고, 새로운 기능과 API가 추가됨.
+   > - **네임스페이스**: javax(extended)
+   > - **주요 구성 요소**: J2EE의 모든 구성 요소와 더불어 새로운 기능들. 예를 들어 CDI (Contexts and Dependency Injection), JSF (JavaServer Faces) 등.
+4. Jakarta EE
+   > - **정의**: 2017년, 오라클이 Java EE 기술을 Eclipse Foundation에 기부하면서 이름이 Jakarta EE로 변경. Eclipse Foundation가 관리 주체.
+   > - **네임스페이스**: javax에서 jakarta로 변경.
+   > - **주요 구성 요소**: Java EE의 모든 구성 요소와 더불어 새로운 업데이트와 개선. 예를 들어 Servlet 5.0, JPA 3.0, Jakarta RESTful Web Services 등.
+
+### Design Philosophy
+
+- 프레임워크를 배울 때는 무엇을 하는지뿐만 아니라 어떤 원칙을 따르는지 아는 것이 중요함. 다음은 Spring Framework의 지침 원칙:
+  > - 모든 수준에서 선택권을 제공함. Spring은 설계 결정을 가능한 한 늦게까지 미룰 수 있게 해줌. 예를 들어, 코드를 변경하지 않고 구성을 통해 지속성 공급자를 전환할 수 있음. 다른 많은 인프라 문제 및 타사 API와의 통합에 대해서도 마찬가지임.
+  > - 다양한 관점을 수용함. Spring은 유연성을 수용하며 일을 어떻게 해야 하는지에 대해 고집하지 않음. 다양한 관점으로 폭넓은 애플리케이션 요구사항을 지원함.
+  > - 강력한 하위 호환성을 유지함. Spring의 발전은 버전 간에 몇 가지 중단적인 변경 사항을 강제하도록 신중하게 관리되어 왔음. Spring은 Spring에 의존하는 애플리케이션과 라이브러리의 유지 관리를 용이하게 하기 위해 신중하게 선택된 JDK 버전 및 타사 라이브러리 범위를 지원함.
+  > - API 설계를 중요하게 생각함. Spring 팀은 직관적이고 많은 버전과 오랜 기간 동안 유지되는 API를 만드는 데 많은 생각과 시간을 투자함.
+  > - 코드 품질에 대한 높은 기준을 설정함. Spring Framework는 의미 있고 최신이며 정확한 Javadoc에 강한 중점을 둠. 패키지 간에 순환 종속성이 없는 깨끗한 코드 구조를 주장할 수 있는 몇 안 되는 프로젝트 중 하나.
+
+### Feedback and Contributions
+
+- 방법에 대한 질문이나 문제 진단 또는 디버깅의 경우 Stack Overflow를 사용하는 것이 좋음. Stack Overflow에서 사용할 제안 태그 목록은 여기를 클릭할 것. Spring Framework에 문제가 있다고 확신하거나 기능을 제안하고 싶다면 GitHub Issues를 사용할 것.
+- 해결책이나 제안된 수정 사항이 있는 경우 Github에서 풀 요청을 제출할 수 있음. 그러나 사소한 문제를 제외한 모든 문제에 대해 이슈 추적기에 티켓을 제출하고, 토론이 이루어지며 향후 참조를 위한 기록을 남기기를 기대한다는 점을 명심할 것.
+- 자세한 내용은 CONTRIBUTING의 가이드라인과 최상위 프로젝트 페이지를 참조할 것.
+
+### Getting Started
+
+- Spring을 이제 시작한다면 Spring Boot 기반 애플리케이션을 만들어 Spring Framework 사용을 시작하는 것이 좋음. Spring Boot는 프로덕션 준비 상태의 Spring 기반 애플리케이션을 생성하는 빠르고(그리고 독단적인) 방법을 제공함. Spring Framework를 기반으로 하며, 설정보다는 관습을 선호하고, 가능한 한 빨리 시작하고 실행할 수 있도록 설계됨.
+- start.spring.io를 사용하여 기본 프로젝트를 생성하거나 RESTful 웹 서비스 구축 시작하기와 같은 "시작하기" 가이드 중 하나를 따를 수 있음. 이러한 가이드는 이해하기 쉬울 뿐만 아니라 작업에 매우 집중되어 있으며, 대부분 Spring Boot를 기반으로 함. 또한 특정 문제를 해결할 때 고려할 수 있는 Spring 포트폴리오의 다른 프로젝트들도 다룸.
+
+## Core Technologies
+
+- 이 참조 문서의 이 부분에서는 Spring Framework에 절대적으로 필수적인 모든 기술을 다룸.
+- 이 중 가장 중요한 것은 Spring Framework의 제어 반전(Inversion of Control, IoC) 컨테이너. Spring Framework의 IoC 컨테이너에 대한 철저한 처리는 Spring의 관점 지향 프로그래밍(Aspect-Oriented Programming, AOP) 기술에 대한 포괄적인 설명이 바로 뒤따름. Spring Framework에는 개념적으로 이해하기 쉽고 Java 엔터프라이즈 프로그래밍에서 AOP 요구사항의 80%를 성공적으로 다루는 자체 AOP 프레임워크가 있음.
+- Java 엔터프라이즈 영역에서 현재 가장 풍부한 기능을 가지고 있고 확실히 가장 성숙한 AOP 구현인 AspectJ와 Spring의 통합에 대한 설명도 제공됨.
+- AOT 처리는 애플리케이션을 사전에 최적화하는 데 사용할 수 있음. 일반적으로 GraalVM을 사용한 네이티브 이미지 배포에 사용됨.
+  > - **AOT (Ahead-of-Time) 컴파일**: AOT 컴파일은 애플리케이션의 일부 또는 전체를 실행 전에 미리 컴파일하는 기술.
+  > - **GraalVM**: GraalVM은 Oracle에서 개발한 고성능 실행 환경으로, 여러 프로그래밍 언어(Java, JavaScript, Python, Ruby 등)를 지원하고, AOT 컴파일을 통한 네이티브 이미지 생성을 지원함.
+
+## The IoC Container
+
+- 이 챔터는 Spring의 제어 반전(Inversion of Control, IoC)에 대해서 다룸.
+
+### Section Summary
+
+- Introduction to the Spring IoC Container and Beans
+- Container Overview
+- Bean Overview
+- Dependencies
+- Bean Scopes
+- Customizing the Nature of a Bean
+- Bean Definition Inheritance
+- Container Extension Points
+- Annotation-based Container Configuration
+- Classpath Scanning and Managed Components
+- Using JSR 330 Standard Annotations
+- Java-based Container Configuration
+- Environment Abstraction
+- Registering a LoadTimeWeaver
+- Additional Capabilities of the ApplicationContext
+- The BeanFactory API
+
 ## The IoC Container - Introduction to the Spring IoC Container and Beans
 
 - 이 장에서는 스프링 프레임워크의 제어 반전(Inversion of Control, IoC) 원칙 구현에 대해 다룸. 의존성 주입(Dependency Injection, DI)은 IoC의 특수한 형태로, 객체가 생성자 인자, 팩토리 메서드에 대한 인자 또는 객체 인스턴스가 생성되거나 팩토리 메서드에서 반환된 후 객체 인스턴스에 설정된 프로퍼티를 통해서만 의존성(함께 작동하는 다른 객체)을 정의함. 그런 다음 IoC 컨테이너는 빈을 생성할 때 해당 의존성을 주입함. 이 프로세스는 근본적으로 빈 자체가 클래스의 직접 생성이나 서비스 로케이터 패턴과 같은 메커니즘을 사용하여 의존성의 인스턴스화 또는 위치를 제어하는 것과는 반대(따라서 제어 반전이라는 이름)임.
@@ -451,23 +555,18 @@ spring.datasource.password=***
 
 ### Configuration Metadata
 
-- 앞의 다이어그램에서 볼 수 있듯이 스프링 IoC 컨테이너는 일종의 구성 메타데이터를 사용함. 이 구성 메타데이터는 애플리케이션 개발자인 여러분이 스프링 컨테이너에게 애플리케이션의 객체를 인스턴스화하고 구성하고 조립하는 방법을 알려주는 것을 나타냄.
-- 구성 메타데이터는 전통적으로 간단하고 직관적인 XML 형식으로 제공되며, 이 장의 대부분은 이를 사용하여 스프링 IoC 컨테이너의 주요 개념과 기능을 전달함. 최근에는 Java 형식으로 `@Configuration`을 사용하여 나타내는 경우가 많음.
+- 앞의 다이어그램에서 볼 수 있듯이, Spring IoC 컨테이너는 설정 메타데이터의 한 형태를 사용함. 이 설정 메타데이터는 애플리케이션 개발자인 여러분이 Spring 컨테이너에게 애플리케이션의 컴포넌트를 인스턴스화, 구성 및 조립하는 방법을 알려주는 것을 나타냄.
+- Spring IoC 컨테이너 자체는 이 설정 메타데이터가 실제로 작성되는 형식과 완전히 분리되어 있음. 요즘에는 많은 개발자들이 Spring 애플리케이션에 Java 기반 구성을 선택함:
 
-> ##### Note
->
-> - XML 기반 메타데이터는 허용되는 유일한 형식의 구성 메타데이터가 아님. 스프링 IoC 컨테이너 자체는 이 구성 메타데이터가 실제로 작성되는 형식과 완전히 분리되어 있음. 요즘에는 많은 개발자들이 스프링 애플리케이션에 자바 기반 구성을 선택함.
+> - **애노테이션 기반 구성**: 애플리케이션의 컴포넌트 클래스에 애노테이션 기반 구성 메타데이터를 사용하여 빈을 정의함.
+> - **Java 기반 구성**: Java 기반 구성 클래스를 사용하여 애플리케이션 클래스 외부에 빈을 정의함. 이러한 기능을 사용하려면 `@Configuration`, `@Bean`, `@Import` 및 `@DependsOn` 애노테이션을 참조할 것.
 
-- 스프링 컨테이너에서 다른 형식의 메타데이터를 사용하는 방법에 대한 정보는 다음을 참조할 것.
+- Spring 구성은 컨테이너가 관리해야 하는 하나 이상의 빈 정의로 구성됨. Java 구성은 일반적으로 `@Configuration` 클래스 내에서 `@Bean` 애노테이션이 달린 메서드를 사용하며, 각각은 하나의 빈 정의에 해당함.
+- 이러한 빈 정의는 애플리케이션을 구성하는 실제 객체에 해당함. 일반적으로 서비스 계층 객체, 리포지토리나 데이터 액세스 객체(DAO)와 같은 영속성 계층 객체, 웹 컨트롤러와 같은 프레젠테이션 객체, JPA EntityManagerFactory, JMS 큐 등과 같은 인프라 객체를 정의함. 일반적으로 컨테이너에서 세분화된 도메인 객체를 구성하지 않는데, 이는 일반적으로 리포지토리와 비즈니스 로직이 도메인 객체를 생성하고 로드하는 책임을 지기 때문임.
 
-  > - **애노테이션 기반 구성**: 애노테이션 기반 구성 메타데이터를 사용하여 빈을 정의함.
-  > - **자바 기반 구성**: XML 파일 대신 자바를 사용하여 애플리케이션 클래스 외부에서 빈을 정의함. 이러한 기능을 사용하려면 `@Configuration`, `@Bean`, `@Import` 및 `@DependsOn` 애노테이션을 참조할 것.
+### XML as an External Configuration DSL
 
-- 스프링 구성은 컨테이너가 관리해야 하는 하나 이상의 빈 정의로 구성됨. XML 기반 구성 메타데이터는 최상위 `<beans/>` 요소 내에 `<bean/>` 요소로 이러한 빈을 구성함. 자바 구성은 일반적으로 `@Configuration` 클래스 내에서 `@Bean` 애노테이션이 붙은 메서드를 사용함.
-
-- 이러한 빈 정의는 애플리케이션을 구성하는 실제 객체에 해당함. 일반적으로 서비스 계층 객체, 리포지토리나 데이터 액세스 객체(DAO)와 같은 영속성 계층 객체, 웹 컨트롤러와 같은 프레젠테이션 객체, JPA EntityManagerFactory, JMS 큐 등과 같은 인프라 객체를 정의함. 일반적으로 컨테이너에서 세분화된 도메인 객체를 구성하지는 않음. 도메인 객체를 생성하고 로드하는 것은 보통 리포지토리와 비즈니스 로직의 책임이기 때문임.
-
-- 다음 예제는 XML 기반 구성 메타데이터의 기본 구조를 보여줌.
+- XML 기반 구성 메타데이터는 최상위 `<beans/>` 요소 내에서 `<bean/>` 요소로 이러한 빈을 구성함. 다음 예제는 XML 기반 구성 메타데이터의 기본 구조를 보여줌:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -510,11 +609,8 @@ public class IoCContainerConfig {
 }
 ```
 
-- id 속성의 값은 협력하는 객체를 참조하는 데 사용할 수 있음. 이 예제에는 협력하는 객체를 참조하는 XML이 표시되지 않음. 자세한 내용은 의존성을 참조할 것.
-
-### Instantiating a Container
-
-- 컨테이너에 제공되는 위치 경로는 컨테이너가 로컬 파일 시스템, Java CLASSPATH 등과 같은 다양한 외부 리소스에서 구성 메타데이터를 로드할 수 있도록 하는 리소스 문자열.
+- id 속성의 값은 협력하는 객체를 참조하는 데 사용할 수 있음. 협력하는 객체를 참조하기 위한 XML은 이 예제에 표시되지 않았음. 자세한 내용은 의존성을 참조할 것.
+- 컨테이너를 인스턴스화하려면 XML 리소스 파일에 대한 위치 경로를 `ClassPathXmlApplicationContext` 생성자에 제공하여 컨테이너가 로컬 파일 시스템, Java CLASSPATH 등과 같은 다양한 외부 리소스에서 구성 메타데이터를 로드할 수 있도록 해야 함.
 
 ```java
 ApplicationContext context = new ClassPathXmlApplicationContext("services.xml", "daos.xml");
@@ -522,9 +618,9 @@ ApplicationContext context = new ClassPathXmlApplicationContext("services.xml", 
 
 > ##### Note
 >
-> - Spring의 IoC 컨테이너에 대해 알아본 후에는 URI 구문으로 정의된 위치에서 `InputStream`을 읽기 위한 편리한 메커니즘을 제공하는 Spring의 Resource 추상화(Resources에 설명된 대로)에 대해 더 알고 싶을 수 있음. 특히 Resource 경로는 Application Contexts and Resource Paths에 설명된 대로 애플리케이션 컨텍스트를 구성하는 데 사용됨.
+> - Spring의 IoC 컨테이너에 대해 알게 된 후에는 URI 구문으로 정의된 위치에서 `InputStream`을 읽는 편리한 메커니즘을 제공하는 Spring의 리소스 추상화(Resources에 설명된 대로)에 대해 더 알고 싶을 수 있음. 특히, 리소스 경로는 애플리케이션 컨텍스트와 리소스 경로에 설명된 대로 애플리케이션 컨텍스트를 구성하는 데 사용됨.
 
-- 다음 예제는 서비스 계층 객체(`services.xml`) 구성 파일을 보여줌.
+- 다음 예제는 서비스 계층 객체(services.xml) 구성 파일을 보여줌:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -534,7 +630,6 @@ ApplicationContext context = new ClassPathXmlApplicationContext("services.xml", 
 		https://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<!-- services -->
-
 	<bean id="petStore" class="org.springframework.samples.jpetstore.services.PetStoreServiceImpl">
 		<property name="accountDao" ref="accountDao"/>
 		<property name="itemDao" ref="itemDao"/>
@@ -546,7 +641,7 @@ ApplicationContext context = new ClassPathXmlApplicationContext("services.xml", 
 </beans>
 ```
 
-- 다음 예제는 위에서의 `services.xml`을 Java 파일 형태로 바꾼 것을 보여줌. `<property>` 에서 `name`은 설정하려는 속성명을 나타내고, `ref`는 참조할 빈의 `id`를 나타냄.
+- 다음 예제는 위에서의 `services.xml`을 Java 파일 형태로 바꾼 것을 보여줌. `<property>` 에서 `name`은 설정하려는 속성명을 나타내고, `ref`는 참조할 빈의 `id`를 나타냄:
 
 ```java
 @Configuration
@@ -572,7 +667,7 @@ public class AppConfig {
 }
 ```
 
-- 다음 예제는 데이터 액세스 객체 `daos.xml` 파일을 보여줌.
+- 다음 예제는 데이터 액세스 객체 `daos.xml` 파일을 보여줌:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -737,59 +832,196 @@ context.refresh();
 
 > ##### Note
 >
-> - 빈 메타데이터와 수동으로 제공된 싱글톤 인스턴스는 컨테이너가 자동 연결 및 기타 내성적 단계에서 올바르게 추론할 수 있도록 가능한 한 빨리 등록해야 합니다. 기존 메타데이터와 기존 싱글톤 인스턴스를 재정의하는 것은 어느 정도 지원되지만, 런타임에 새 빈을 등록하는 것(팩토리에 대한 실시간 액세스와 동시에)은 공식적으로 지원되지 않으며 동시 액세스 예외, 빈 컨테이너의 불일치 상태 또는 둘 다로 이어질 수 있습니다.
+> - 빈 메타데이터와 수동으로 제공된 싱글톤 인스턴스는 컨테이너가 자동 연결 및 기타 내성적 단계에서 올바르게 추론할 수 있도록 가능한 한 빨리 등록해야 함. 기존 메타데이터와 기존 싱글톤 인스턴스를 재정의하는 것은 어느 정도 지원되지만, 런타임에 새 빈을 등록하는 것(팩토리에 대한 실시간 액세스와 동시에)은 공식적으로 지원되지 않으며 동시 액세스 예외, 빈 컨테이너의 불일치 상태 또는 둘 다로 이어질 수 있음.
 
 ### Naming Beans
 
-모든 빈에는 하나 이상의 식별자가 있습니다. 이러한 식별자는 빈을 호스팅하는 컨테이너 내에서 고유해야 합니다. 빈은 일반적으로 하나의 식별자만 가집니다. 그러나 둘 이상 필요한 경우 추가 식별자를 별칭으로 간주할 수 있습니다.
-XML 기반 구성 메타데이터에서는 id 속성, name 속성 또는 둘 다를 사용하여 빈 식별자를 지정합니다. id 속성을 사용하면 정확히 하나의 ID를 지정할 수 있습니다. 일반적으로 이러한 이름은 영숫자('myBean', 'someService' 등)이지만 특수 문자도 포함할 수 있습니다. 빈에 대한 다른 별칭을 도입하려면 name 속성에서 쉼표(,), 세미콜론(;) 또는 공백으로 구분하여 지정할 수도 있습니다. id 속성은 xsd:string 유형으로 정의되어 있지만 XML 파서가 아닌 컨테이너에 의해 빈 ID의 고유성이 적용됩니다.
-빈에 이름이나 ID를 제공할 필요는 없습니다. 이름이나 ID를 명시적으로 제공하지 않으면 컨테이너가 해당 빈에 대해 고유한 이름을 생성합니다. 그러나 ref 요소를 사용하거나 Service Locator 스타일 조회를 통해 이름으로 해당 빈을 참조하려면 이름을 제공해야 합니다. 이름을 제공하지 않는 동기는 내부 빈 및 자동 연결 협력자 사용과 관련이 있습니다.
-
-### Aliasing a Bean outside the Bean Definition
-
-모든 빈에는 하나 이상의 식별자가 있습니다. 이러한 식별자는 빈을 호스팅하는 컨테이너 내에서 고유해야 합니다. 빈은 일반적으로 하나의 식별자만 가집니다. 그러나 둘 이상 필요한 경우 추가 식별자를 별칭으로 간주할 수 있습니다.
-XML 기반 구성 메타데이터에서는 id 속성, name 속성 또는 둘 다를 사용하여 빈 식별자를 지정합니다. id 속성을 사용하면 정확히 하나의 ID를 지정할 수 있습니다. 일반적으로 이러한 이름은 영숫자('myBean', 'someService' 등)이지만 특수 문자도 포함할 수 있습니다. 빈에 대한 다른 별칭을 도입하려면 name 속성에서 쉼표(,), 세미콜론(;) 또는 공백으로 구분하여 지정할 수도 있습니다. id 속성은 xsd:string 유형으로 정의되어 있지만 XML 파서가 아닌 컨테이너에 의해 빈 ID의 고유성이 적용됩니다.
-빈에 이름이나 ID를 제공할 필요는 없습니다. 이름이나 ID를 명시적으로 제공하지 않으면 컨테이너가 해당 빈에 대해 고유한 이름을 생성합니다. 그러나 ref 요소를 사용하거나 Service Locator 스타일 조회를 통해 이름으로 해당 빈을 참조하려면 이름을 제공해야 합니다. 이름을 제공하지 않는 동기는 내부 빈 및 자동 연결 협력자 사용과 관련이 있습니다.
+- 모든 빈에는 하나 이상의 식별자가 있음. 이러한 식별자는 빈을 호스팅하는 컨테이너 내에서 고유해야 함. 빈은 일반적으로 하나의 식별자만 가짐. 그러나 둘 이상 필요한 경우 추가 식별자를 별칭으로 간주할 수 있음.
+- XML 기반 구성 메타데이터에서는 `id` 속성, `name` 속성 또는 둘 다를 사용하여 빈 식별자를 지정함. `id` 속성을 사용하면 정확히 하나의 ID를 지정할 수 있음. 일반적으로 이러한 이름은 영숫자(`myBean`, `someService` 등)이지만 특수 문자도 포함할 수 있음. 빈에 대한 다른 별칭을 도입하려면 `name` 속성에서 쉼표(,), 세미콜론(;) 또는 공백으로 구분하여 지정할 수도 있음. `id` 속성은 `xsd:string` 유형으로 정의되어 있지만 XML 파서가 아닌 컨테이너에 의해 빈 ID의 고유성이 적용됨.
+- 빈에 이름이나 ID를 제공할 필요는 없음. 이름이나 ID를 명시적으로 제공하지 않으면 컨테이너가 해당 빈에 대해 고유한 이름을 생성함. 그러나 ref 요소를 사용하거나 Service Locator 스타일 조회를 통해 이름으로 해당 빈을 참조하려면 이름을 제공해야 함. 이름을 제공하지 않는 동기는 내부 빈 및 자동 연결 협력자 사용과 관련이 있음.
 
 > ##### Bean Naming Conventions
 >
-> - 관례적으로 빈을 명명할 때 인스턴스 필드 이름에 대한 표준 Java 규칙을 사용합니다. 즉, 빈 이름은 소문자로 시작하고 그 다음부터는 카멜 케이스를 사용합니다. 이러한 이름의 예로는 accountManager, accountService, userDao, loginController 등이 있습니다.
-> - 일관되게 빈의 이름을 지정하면 구성을 더 쉽게 읽고 이해할 수 있습니다. 또한 Spring AOP를 사용하는 경우 이름으로 관련된 빈 집합에 어드바이스를 적용할 때 많은 도움이 됩니다.
+> - 관례적으로 빈을 명명할 때 인스턴스 필드 이름에 대한 표준 Java 규칙을 사용합니다. 즉, 빈 이름은 소문자로 시작하고 그 다음부터는 카멜 케이스를 사용합니다. 이러한 이름의 예로는 `accountManager`, `accountService`, `userDao`, `loginController` 등이 있음.
+> - 일관되게 빈의 이름을 지정하면 구성을 더 쉽게 읽고 이해할 수 있음. 또한 Spring AOP를 사용하는 경우 이름으로 관련된 빈 집합에 어드바이스를 적용할 때 많은 도움이 됨.
 
 > ##### Note
 >
-> - 클래스 경로에서 컴포넌트 스캐닝을 사용하면 Spring은 앞에서 설명한 규칙에 따라 이름 없는 컴포넌트에 대한 빈 이름을 생성합니다. 기본적으로 간단한 클래스 이름을 사용하고 첫 글자를 소문자로 변경합니다. 그러나 (드문 경우지만) 특별한 경우에 문자가 둘 이상이고 첫 번째와 두 번째 문자가 모두 대문자인 경우 원래 대소문자가 유지됩니다. 이는 Spring이 여기에서 사용하는 java.beans.Introspector.decapitalize에서 정의한 것과 동일한 규칙입니다.
+> - 클래스 경로에서 컴포넌트 스캐닝을 사용하면 Spring은 앞에서 설명한 규칙에 따라 이름 없는 컴포넌트에 대한 빈 이름을 생성함. 기본적으로 간단한 클래스 이름을 사용하고 첫 글자를 소문자로 변경함. 그러나 (드문 경우지만) 특별한 경우에 문자가 둘 이상이고 첫 번째와 두 번째 문자가 모두 대문자인 경우 원래 대소문자가 유지됨. 이는 Spring이 여기에서 사용하는 `java.beans.Introspector.decapitalize`에서 정의한 것과 동일한 규칙임.
 
-### Instantiating Beans
+### Aliasing a Bean outside the Bean Definition
 
-- 빈 정의 자체에서 id 속성으로 지정된 최대 하나의 이름과 name 속성의 다른 이름을 조합하여 빈에 둘 이상의 이름을 제공할 수 있습니다. 이러한 이름은 동일한 빈에 대한 동등한 별칭일 수 있으며 애플리케이션의 각 구성 요소가 해당 구성 요소 자체에 특정한 빈 이름을 사용하여 공통 종속성을 참조할 수 있도록 하는 등 일부 상황에 유용합니다.
-- 그러나 빈이 실제로 정의된 위치에 모든 별칭을 지정하는 것이 항상 적절한 것은 아닙니다. 때로는 다른 곳에 정의된 빈에 대한 별칭을 도입하는 것이 바람직합니다. 이는 구성이 각 하위 시스템 간에 분할되고 각 하위 시스템에 자체 객체 정의 집합이 있는 대규모 시스템에서 일반적인 경우입니다. XML 기반 구성 메타데이터에서는 <alias/> 요소를 사용하여 이를 수행할 수 있습니다. 다음 예제에서는 이를 수행하는 방법을 보여줍니다:
+- 빈 정의 자체에서 `id` 속성으로 지정된 최대 하나의 이름과 `name` 속성의 다른 이름을 조합하여 빈에 둘 이상의 이름을 제공할 수 있음. 이러한 이름은 동일한 빈에 대한 동등한 별칭일 수 있으며 일부 상황에서 유용함. 예를 들어 애플리케이션의 각 컴포넌트가 해당 컴포넌트 자체에 특정한 빈 이름을 사용하여 공통 의존성을 참조하도록 할 수 있음.
+- 그러나 빈이 실제로 정의된 위치에 모든 별칭을 지정하는 것이 항상 적절한 것은 아님. 때로는 다른 곳에 정의된 빈에 대한 별칭을 도입하는 것이 바람직할 때가 있음. 이는 일반적으로 구성이 각 하위 시스템 간에 분할되고 각 하위 시스템에 자체 객체 정의 세트가 있는 대규모 시스템에서 발생함. XML 기반 구성 메타데이터에서는 `<alias/>` 요소를 사용하여 이를 수행할 수 있습니다. 다음 예제는 이를 수행하는 방법을 보여줌:
 
 ```xml
 <alias name="fromName" alias="toName"/>
 ```
 
-- 이 경우 이 별칭 정의를 사용한 후 fromName이라는 이름의 빈(동일한 컨테이너 내)을 toName으로 참조할 수도 있습니다.
-- 예를 들어, 하위 시스템 A의 구성 메타데이터는 DataSource를 subsystemA-dataSource라는 이름으로 참조할 수 있습니다. 하위 시스템 B의 구성 메타데이터는 DataSource를 subsystemB-dataSource라는 이름으로 참조할 수 있습니다. 이 두 하위 시스템을 사용하는 메인 애플리케이션을 구성할 때 메인 애플리케이션은 DataSource를 myApp-dataSource라는 이름으로 참조합니다. 세 가지 이름이 모두 동일한 객체를 참조하도록 하려면 다음과 같은 별칭 정의를 구성 메타데이터에 추가할 수 있습니다:
+- 이 경우 fromName이라는 이름의 빈(동일한 컨테이너에 있는)은 이 별칭 정의를 사용한 후 `toName`으로 참조될 수도 있음.
+- 예를 들어 하위 시스템 A의 구성 메타데이터는 `subsystemA-dataSource`라는 이름으로 `DataSource`를 참조할 수 있음. 하위 시스템 B의 구성 메타데이터는 `subsystemB-dataSource`라는 이름으로 DataSource를 참조할 수 있음. 이 두 하위 시스템을 모두 사용하는 주 애플리케이션을 구성할 때 주 애플리케이션은 `myApp-dataSource`라는 이름으로 `DataSource`를 참조함. 세 개의 이름이 모두 동일한 객체를 참조하도록 하려면 다음과 같은 별칭 정의를 구성 메타데이터에 추가할 수 있음:
 
 ```xml
 <alias name="myApp-dataSource" alias="subsystemA-dataSource"/>
 <alias name="myApp-dataSource" alias="subsystemB-dataSource"/>
 ```
 
-- 이제 각 구성 요소와 메인 애플리케이션은 고유하고 충돌하지 않는 이름을 통해 dataSource를 참조할 수 있습니다(효과적으로 네임스페이스를 생성). 그러나 실제로는 동일한 빈을 참조합니다.
+- 이제 각 컴포넌트와 주 애플리케이션은 고유하고 다른 정의와 충돌하지 않는 이름을 통해 `dataSource`를 참조할 수 있음(효과적으로 네임스페이스를 생성). 그러나 이들은 동일한 빈을 참조함.
 
 > ##### Java-configuration
 >
-> - Java Configuration을 사용하는 경우 @Bean 주석을 사용하여 별칭을 제공할 수 있습니다. 자세한 내용은 @Bean 주석 사용을 참조하십시오.
+> - Java Configuration을 사용하는 경우 `@Bean` 애노테이션을 사용하여 별칭을 제공할 수 있음. 자세한 내용은 `@Bean` 애노테이션 사용을 참조할 것.
 
-### Instantiation with a Constructor
+### Instantiating Beans
 
-### Instantiation with a Static Factory Method
+- 빈 정의는 본질적으로 하나 이상의 객체를 생성하기 위한 레시피. 컨테이너는 요청 시 명명된 빈에 대한 레시피를 보고 해당 빈 정의에 의해 캡슐화된 구성 메타데이터를 사용하여 실제 객체를 생성(또는 획득)함.
+- XML 기반 구성 메타데이터를 사용하는 경우 `<bean/>` 요소의 `class` 속성에 인스턴스화할 객체의 유형(또는 클래스)을 지정함. 이 `class` 속성(내부적으로는 `BeanDefinition` 인스턴스의 `Class` 속성)은 일반적으로 필수임. (예외의 경우 인스턴스 팩토리 메서드를 사용한 인스턴스화와 빈 정의 상속을 참조할 것.) `Class` 속성은 다음 두 가지 방법 중 하나로 사용할 수 있음:
+  > - 일반적으로 컨테이너가 생성자를 리플렉션을 사용해 호출하여 직접 빈을 생성하는 경우, 생성할 빈 클래스를 지정하는 데 사용됨. 이는 Java 코드에서 new 연산자를 사용하는 것과 어느 정도 유사함.
+  >   > - `@Bean` 메서드를 사용하여 빈을 정의하고, `@Autowired`를 사용하여 다른 빈에서 주입받아 사용함.
+  >   > - `ApplicationContext`를 사용하여 수동으로 빈을 가져올 수도 있음.
+  > - 컨테이너가 클래스의 정적 팩토리 메서드를 호출하여 빈을 생성하는 덜 일반적인 경우에 객체를 생성하기 위해 호출되는 정적 팩토리 메서드를 포함하는 실제 클래스를 지정하는 데 사용됨. 정적 팩토리 메서드 호출에서 반환되는 객체 유형은 동일한 클래스이거나 완전히 다른 클래스일 수 있음.
+  >   > - 정적 팩토리 메서드를 사용하여 빈을 생성함. 이는 유연성을 제공하고, 객체 생성을 캡슐화할 수 있음.
+  >   > - 빈 정의에서 정적 팩토리 메서드를 호출하여 빈을 생성함.
 
-### Instantiation by Using an Instance Factory Method
+> ##### Nested class names
+>
+> - 중첩 클래스에 대한 빈 정의를 구성하려는 경우 중첩 클래스의 바이너리 이름 또는 소스 이름을 사용할 수 있음.
+> - 예를 들어 `com.example` 패키지에 `SomeThing`이라는 클래스가 있고 이 `SomeThing` 클래스에 `OtherThing`이라는 정적 중첩 클래스가 있는 경우 달러 기호($) 또는 점(.)으로 구분할 수 있음. 따라서 빈 정의에서 `class` 속성의 값은 `com.example.SomeThing$OtherThing`또는`com.example.SomeThing.OtherThing`이 될 것.
 
-### Determining a Bean’s Runtime Type
+#### Instantiation with a Constructor
+
+- 생성자 방식으로 빈을 생성할 때 모든 일반 클래스는 Spring에서 사용 가능하며 호환됨. 즉, 개발 중인 클래스는 특정 인터페이스를 구현하거나 특정 방식으로 코딩할 필요가 없음. 단순히 빈 클래스를 지정하는 것으로 충분해야 함. 그러나 해당 특정 빈에 사용하는 IoC 유형에 따라 기본(빈) 생성자가 필요할 수 있음.
+- Spring IoC 컨테이너는 사실상 관리하려는 모든 클래스를 관리할 수 있음. 관리할 수 있는 클래스는 JavaBean으로 제한되지 않음. 대부분의 Spring 사용자는 기본(인수가 없는) 생성자만 있고 컨테이너의 속성을 모델로 한 적절한 `setter`와 `getter`가 있는 실제 JavaBean을 선호함. 컨테이너에 더 이국적인 bean 스타일이 아닌 클래스를 포함할 수도 있음. 예를 들어 JavaBean 사양을 절대적으로 준수하지 않는 레거시 연결 풀을 사용해야 하는 경우 Spring은 이를 관리할 수도 있음.
+- XML 기반 구성 메타데이터를 사용하면 다음과 같이 빈 클래스를 지정할 수 있음:
+
+```xml
+<bean id="exampleBean" class="examples.ExampleBean"/>
+
+<bean name="anotherExample" class="examples.ExampleBeanTwo"/>
+```
+
+- 생성자에 인수를 제공하는 메커니즘(필요한 경우)과 객체가 생성된 후 객체 인스턴스 속성을 설정하는 방법에 대한 자세한 내용은 의존성 주입을 참조할 것.
+
+> ##### Note
+>
+> - 생성자 인수의 경우 컨테이너는 여러 오버로드된 생성자 중에서 해당 생성자를 선택할 수 있음. 즉, 모호성을 피하기 위해 생성자 시그니처를 가능한 한 간단하게 유지하는 것이 좋음.
+
+#### Instantiation with a Static Factory Method
+
+- 정적 팩토리 메서드로 생성하는 빈을 정의할 때 `class` 속성을 사용하여 정적 팩토리 메서드를 포함하는 클래스를 지정하고 `factory-method`라는 속성을 사용하여 팩토리 메서드 자체의 이름을 지정함. 이 메서드를 호출하고(나중에 설명할 선택적 인수와 함께) 활성 객체를 반환할 수 있어야 하며, 이후에는 생성자를 통해 생성된 것처럼 처리됨. 이러한 빈 정의의 한 가지 용도는 레거시 코드에서 정적 팩토리를 호출하는 것.
+- 다음 빈 정의는 빈이 팩토리 메서드를 호출하여 생성될 것임을 지정함. 이 정의는 반환된 객체의 유형(클래스)을 지정하지 않고 팩토리 메서드를 포함하는 클래스를 지정함. 이 예제에서 `createInstance()` 메서드는 정적 메서드여야 함. 다음 예제는 팩토리 메서드를 지정하는 방법을 보여줌:
+
+```xml
+<bean id="clientService"
+	class="examples.ClientService"
+	factory-method="createInstance"/>
+```
+
+- 다음 예제는 위의 빈 정의와 함께 작동하는 클래스를 보여줌:
+
+```java
+public class ClientService {
+	private static ClientService clientService = new ClientService();
+	private ClientService() {}
+
+	public static ClientService createInstance() {
+		return clientService;
+	}
+}
+```
+
+- 팩토리 메서드에 (선택적) 인수를 제공하고 팩토리에서 객체가 반환된 후 객체 인스턴스 속성을 설정하는 메커니즘에 대한 자세한 내용은 의존성과 상세 구성을 참조할 것.
+
+> ##### Note
+>
+> - 팩토리 메서드 인수의 경우 컨테이너는 동일한 이름의 여러 오버로드된 메서드 중에서 해당 메서드를 선택할 수 있음. 즉, 모호성을 피하기 위해 팩토리 메서드 시그니처를 가능한 한 간단하게 유지하는 것이 좋음.
+
+> ##### Tip
+>
+> - 팩토리 메서드 오버로딩과 관련된 일반적인 문제는 많은 mock 메서드 오버로드가 있는 Mockito. 가능한 한 가장 구체적인 mock 변형을 선택할 것:
+>
+> ```xml
+> <bean id="clientService" class="org.mockito.Mockito" factory-method="mock">
+> 	<constructor-arg type="java.lang.Class" value="examples.ClientService"/>
+> 	<constructor-arg type="java.lang.String" value="clientService"/>
+> </bean>
+> ```
+
+#### Instantiation by Using an Instance Factory Method
+
+- 정적 팩토리 메서드를 통한 인스턴스화와 유사하게, 인스턴스 팩토리 메서드를 사용한 인스턴스화는 새 빈을 생성하기 위해 컨테이너의 기존 빈에서 비정적 메서드를 호출함. 이 메커니즘을 사용하려면 `class` 속성을 비워 두고 `factory-bean` 속성에 현재(또는 부모나 조상) 컨테이너에서 호출할 인스턴스 메서드를 포함하는 빈의 이름을 지정함. `factory-method` 속성을 사용하여 팩토리 메서드 자체의 이름을 설정함. 다음 예제는 이러한 빈을 구성하는 방법을 보여줌:
+
+```xml
+<!-- 팩토리 빈, createClientServiceInstance()라는 메서드를 포함 -->
+<bean id="serviceLocator" class="examples.DefaultServiceLocator">
+   <!-- 이 로케이터 빈에 필요한 의존성 주입 -->
+</bean>
+
+<!-- 팩토리 빈을 통해 생성될 빈 -->
+<bean id="clientService"
+     factory-bean="serviceLocator"
+     factory-method="createClientServiceInstance"/>
+```
+
+- 다음 예제는 해당 클래스를 보여줌:
+
+```java
+public class DefaultServiceLocator {
+
+	private static ClientService clientService = new ClientServiceImpl();
+
+	public ClientService createClientServiceInstance() {
+		return clientService;
+	}
+}
+```
+
+- 하나의 팩토리 클래스는 다음 예제와 같이 둘 이상의 팩토리 메서드를 포함할 수도 있음:
+
+```xml
+<bean id="serviceLocator" class="examples.DefaultServiceLocator">
+    <!-- 이 로케이터 빈에 필요한 의존성 주입 -->
+</bean>
+
+<bean id="clientService"
+      factory-bean="serviceLocator"
+      factory-method="createClientServiceInstance"/>
+
+<bean id="accountService"
+      factory-bean="serviceLocator"
+      factory-method="createAccountServiceInstance"/>
+```
+
+- 다음 예제는 해당 클래스를 보여줍니다:
+
+```java
+public class DefaultServiceLocator {
+
+	private static ClientService clientService = new ClientServiceImpl();
+
+	private static AccountService accountService = new AccountServiceImpl();
+
+	public ClientService createClientServiceInstance() {
+		return clientService;
+	}
+
+	public AccountService createAccountServiceInstance() {
+		return accountService;
+	}
+}
+```
+
+- 이 접근 방식은 팩토리 빈 자체가 의존성 주입(DI)을 통해 관리되고 구성될 수 있음을 보여줌. 의존성과 상세 구성을 참조할 것.
+
+> ##### Note
+>
+> - Spring 문서에서 "factory bean"은 Spring 컨테이너에 구성되고 인스턴스 또는 정적 팩토리 메서드를 통해 객체를 생성하는 빈을 의미함. 반대로 FactoryBean(대문자 표기 확인)은 Spring 전용 FactoryBean 구현 클래스를 의미함.
+
+#### Determining a Bean’s Runtime Type
+
+- 특정 빈의 런타임 유형을 결정하는 것은 간단하지 않음. 빈 메타데이터 정의에 지정된 클래스는 단순히 초기 클래스 참조일 뿐이며, 잠재적으로 선언된 팩토리 메서드와 결합되거나 FactoryBean 클래스가 될 수 있음. 이는 빈의 다른 런타임 유형으로 이어질 수 있으며, 인스턴스 수준 팩토리 메서드(대신 지정된 factory-bean 이름을 통해 해결됨)의 경우 전혀 설정되지 않을 수도 있음. 추가적으로 AOP 프록시는 대상 빈의 실제 유형(구현된 인터페이스만)에 대한 제한된 노출로 인터페이스 기반 프록시로 빈 인스턴스를 래핑할 수 있음.
+
+- 특정 빈의 실제 런타임 유형을 알아내는 권장 방법은 지정된 빈 이름에 대해 `BeanFactory.getType` 호출을 사용하는 것. 이는 위의 모든 경우를 고려하여 동일한 빈 이름에 대해 `BeanFactory.getBean` 호출이 반환할 객체의 유형을 반환함.
 
 ## The IoC Container - Dependencies
 
@@ -806,8 +1038,7 @@ XML 기반 구성 메타데이터에서는 id 속성, name 속성 또는 둘 다
 
 ## The IoC Container - Dependencies - Dependency Injection
 
-- 의존성 주입(DI)은 객체가 생성자 인수(Constructor Argument), 팩토리 메서드에 대한 인수(Argument) 또는 객체 인스턴스가 생성되거나 팩토리 메서드에서 반환된 후 객체 인스턴스에 설정된 속성을 통해서만 의존성(협력하는 다른 객체)을 정의하는 프로세스. 그런 다음 컨테이너는 빈을 생성할 때 이러한 의존성을 주입함. 이 프로세스는 기본적으로 빈 자체가 클래스의 직접 생성이나 Service Locator 패턴을 사용하여 의존성의 인스턴스화 또는 위치를 제어하는 것과는 반대됨(따라서 Inversion of Control이라는 이름이 붙었음).
-- **`Service Locator` 패턴**: 의존성을 관리하는 디자인 패턴 중 하나. 이 패턴에서는 응용 프로그램이 실행 중인 중앙 레지스트리를 사용하여 서비스 또는 객체를 검색할 수 있음. 이렇게 하면 클라이언트 객체는 필요한 서비스의 구체적인 구현에 대해 알 필요 없이 서비스를 사용할 수 있음. `Service Locator` 패턴의 단점은 의존성이 명시적이지 않고, 실행 시점까지 서비스가 사용 가능한지 알 수 없다는 것. 이는 오류 발생 가능성을 높이고, 코드의 테스트를 더 어렵게 만듦.
+- **Service Locator 패턴**: 의존성을 관리하는 디자인 패턴 중 하나. 이 패턴에서는 응용 프로그램이 실행 중인 중앙 레지스트리를 사용하여 서비스 또는 객체를 검색할 수 있음. 이렇게 하면 클라이언트 객체는 필요한 서비스의 구체적인 구현에 대해 알 필요 없이 서비스를 사용할 수 있음. Service Locator 패턴의 단점은 의존성이 명시적이지 않고, 실행 시점까지 서비스가 사용 가능한지 알 수 없다는 것. 이는 오류 발생 가능성을 높이고, 코드의 테스트를 더 어렵게 만듦. 다음 예제 코드는 Service Locator 패턴을 보여줌:
 
 ```java
 import java.util.HashMap;
@@ -850,12 +1081,13 @@ public class Client {
 }
 ```
 
+- 의존성 주입(DI)은 객체가 생성자 인수(Constructor Argument), 팩토리 메서드에 대한 인수(Argument) 또는 객체 인스턴스가 생성되거나 팩토리 메서드에서 반환된 후 객체 인스턴스에 설정된 속성을 통해서만 의존성(협력하는 다른 객체)을 정의하는 프로세스. 그런 다음 컨테이너는 빈을 생성할 때 이러한 의존성을 주입함. 이 프로세스는 기본적으로 빈 자체가 클래스의 직접 생성이나 Service Locator 패턴을 사용하여 의존성의 인스턴스화 또는 위치를 제어하는 것과는 반대됨(따라서 Inversion of Control이라는 이름이 붙었음).
 - DI 원칙을 사용하면 코드가 더 깔끔해지고, 객체에 의존성을 제공할 때 결합도를 더 효과적으로 분리할 수 있음. 객체는 의존성을 찾거나 의존성의 위치 또는 클래스를 알지 못함. 그 결과, 클래스는 특히 의존성이 인터페이스나 추상 기본 클래스에 있을 때 테스트하기가 더 쉬워짐. 이를 통해 단위 테스트에서 스텁이나 모의 구현을 사용할 수 있음.
 - DI에는 두 가지 주요 변형이 있음. 생성자 기반 의존성 주입과 세터 기반 의존성 주입이 있음.
 
 ### Constructor-based Dependency Injection
 
-- 생성자 기반 DI는 컨테이너가 각각 의존성을 나타내는 여러 인수와 함께 생성자를 호출하여 수행됨. 정적 팩토리 메서드를 특정 인수와 함께 호출하여 빈을 생성하는 것은 거의 동일하며, 이 논의에서는 생성자에 대한 인수와 정적 팩토리 메서드에 대한 인수를 유사하게 처리함. 다음 예제는 생성자 주입으로만 의존성을 주입할 수 있는 클래스를 보여줌.
+- 생성자 기반 DI는 컨테이너가 각각 의존성을 나타내는 여러 인수와 함께 생성자를 호출하여 수행됨. 정적 팩토리 메서드를 특정 인수와 함께 호출하여 빈을 생성하는 것은 거의 동일하며, 이 논의에서는 생성자에 대한 인수와 정적 팩토리 메서드에 대한 인수를 유사하게 처리함. 다음 예제는 생성자 주입으로만 의존성을 주입할 수 있는 클래스를 보여줌:
 
 ```java
 // SimpleMovieLister는 MovieFinder에 대한 의존성을 가지고 있음
@@ -865,9 +1097,13 @@ private final MovieFinder movieFinder;
 public SimpleMovieLister(MovieFinder movieFinder) {
 	this.movieFinder = movieFinder;
 }
+
+// 실제로 주입된 MovieFinder를 사용하는 비즈니스 로직은 생략됨
 ```
 
-### Constructor Argument Resolution
+- 이 클래스에는 특별한 점이 없다는 것에 주목할 것. 컨테이너 특정 인터페이스, 기본 클래스 또는 어노테이션에 대한 의존성이 없는 POJO.
+
+#### Constructor Argument Resolution
 
 - 생성자 인수 해결은 인수의 유형을 사용하여 일치시킴. 빈 정의의 생성자 인수에 잠재적인 모호성이 없는 경우, 빈 정의에서 생성자 인수를 정의한 순서는 빈이 인스턴스화될 때 해당 인수가 적절한 생성자에 제공되는 순서.
 
@@ -897,27 +1133,26 @@ public class ThingOne {
 </beans>
 ```
 
-다른 빈을 참조할 때는 유형을 알 수 있으므로 일치가 가능합니다(앞의 예제에서와 같이). <value>true</value>와 같은 단순한 유형을 사용할 때, Spring은 값의 유형을 결정할 수 없으므로 도움 없이는 유형으로 일치시킬 수 없습니다. 다음 클래스를 고려해 보십시오:
+- 다른 빈을 참조할 때는 유형을 알 수 있으므로 일치가 가능함(앞의 예제에서와 같이). `<value>true</value>`와 같은 단순한 유형을 사용할 때, Spring은 값의 유형을 결정할 수 없으므로 도움 없이는 유형으로 일치시킬 수 없음. 다음 클래스를 고려할 것:
 
 ```java
 package examples;
 
 public class ExampleBean {
+   // 궁극적인 답을 계산하기 위한 년 수
+   private final int years;
 
-	// Number of years to calculate the Ultimate Answer
-	private final int years;
+   // 삶, 우주, 그리고 모든 것에 대한 답
+   private final String ultimateAnswer;
 
-	// The Answer to Life, the Universe, and Everything
-	private final String ultimateAnswer;
-
-	public ExampleBean(int years, String ultimateAnswer) {
-		this.years = years;
-		this.ultimateAnswer = ultimateAnswer;
-	}
+   public ExampleBean(int years, String ultimateAnswer) {
+       this.years = years;
+       this.ultimateAnswer = ultimateAnswer;
+   }
 }
 ```
 
-앞의 시나리오에서는 type 속성을 사용하여 생성자 인수의 유형을 명시적으로 지정하면 컨테이너가 단순한 유형과 유형 일치를 사용할 수 있습니다. 다음 예제와 같이 사용합니다:
+- 앞의 시나리오에서는 type 속성을 사용하여 생성자 인수의 유형을 명시적으로 지정하면 컨테이너가 단순한 유형과 유형 일치를 사용할 수 있음. 다음 예제와 같이 사용함:
 
 ```xml
 <bean id="exampleBean" class="examples.ExampleBean">
@@ -926,7 +1161,7 @@ public class ExampleBean {
 </bean>
 ```
 
-index 속성을 사용하여 생성자 인수의 인덱스를 명시적으로 지정할 수 있습니다. 다음 예제와 같이 사용합니다:
+- index 속성을 사용하여 생성자 인수의 인덱스를 명시적으로 지정할 수 있음. 다음 예제와 같이 사용함:
 
 ```xml
 <bean id="exampleBean" class="examples.ExampleBean">
@@ -935,9 +1170,13 @@ index 속성을 사용하여 생성자 인수의 인덱스를 명시적으로 �
 </bean>
 ```
 
-인덱스를 지정하면 여러 단순 값의 모호성을 해결할 뿐만 아니라 생성자에 동일한 유형의 인수가 두 개 있을 때 발생하는 모호성도 해결합니다.
+- 인덱스를 지정하면 여러 단순 값의 모호성을 해결할 뿐만 아니라 생성자에 동일한 유형의 인수가 두 개 있을 때 발생하는 모호성도 해결함.
 
-값의 모호성을 없애기 위해 생성자 매개변수 이름을 사용할 수도 있습니다. 다음 예제와 같이 사용합니다:
+> ##### Note
+>
+> - 인덱스는 0부터 시작함.
+
+- 값의 모호성을 없애기 위해 생성자 매개변수 이름을 사용할 수도 있음. 다음 예제와 같이 사용함:
 
 ```xml
 <bean id="exampleBean" class="examples.ExampleBean">
@@ -946,14 +1185,14 @@ index 속성을 사용하여 생성자 인수의 인덱스를 명시적으로 �
 </bean>
 ```
 
-이 방법이 제대로 작동하려면 코드를 컴파일할 때 디버그 플래그를 사용해야 Spring이 생성자에서 매개변수 이름을 찾을 수 있다는 점에 유의하십시오. 디버그 플래그를 사용하여 코드를 컴파일할 수 없거나 컴파일하고 싶지 않다면, @ConstructorProperties JDK 어노테이션을 사용하여 생성자 인수의 이름을 명시적으로 지정할 수 있습니다. 그러면 샘플 클래스는 다음과 같이 작성되어야 합니다:
+- 이 방법이 제대로 작동하려면 코드를 컴파일할 때 디버그 플래그를 사용해야 Spring이 생성자에서 매개변수 이름을 찾을 수 있다는 점에 유의할 것. 디버그 플래그를 사용하여 코드를 컴파일할 수 없거나 컴파일하고 싶지 않다면, `@ConstructorProperties` JDK 어노테이션을 사용하여 생성자 인수의 이름을 명시적으로 지정할 수 있음. 그러면 샘플 클래스는 다음과 같이 작성되어야 함:
 
 ```java
 package examples;
 
 public class ExampleBean {
 
-	// Fields omitted
+	// 필드는 생략됨
 
 	@ConstructorProperties({"years", "ultimateAnswer"})
 	public ExampleBean(int years, String ultimateAnswer) {
@@ -983,34 +1222,35 @@ public class SimpleMovieLister {
 
 - `ApplicationContext`는 관리하는 빈에 대해 생성자 기반과 세터 기반의 DI를 모두 지원함. 또한 생성자 접근 방식으로 일부 의존성이 이미 주입된 후에도 세터 기반 DI를 지원함. `BeanDefinition`의 형태로 의존성을 구성하고, 이를 `PropertyEditor` 인스턴스와 함께 사용하여 속성을 한 형식에서 다른 형식으로 변환함. 그러나 대부분의 Spring 사용자는 이러한 클래스를 직접(즉, 프로그래밍 방식으로) 사용하지 않고 XML 빈 정의, 어노테이션이 달린 컴포넌트(즉, `@Component`, `@Controller` 등으로 어노테이션이 달린 클래스) 또는 Java 기반 `@Configuration` 클래스의 `@Bean` 메서드를 사용함. 이러한 소스는 내부적으로 `BeanDefinition`의 인스턴스로 변환되어 전체 Spring IoC 컨테이너 인스턴스를 로드하는 데 사용됨.
 
-### Constructor-based or setter-based DI?
-
-- 생성자 기반과 세터 기반의 DI를 혼합할 수 있으므로, 필수 의존성에는 생성자를 사용하고 선택적 의존성에는 세터 메서드나 구성 메서드를 사용하는 것이 좋음. 세터 메서드에 `@Autowired` 어노테이션을 사용하면 해당 프로퍼티를 필수 의존성으로 만들 수 있지만, 생성자 주입과 인수의 프로그래밍 방식 유효성 검사가 더 좋음.
-- Spring 팀은 일반적으로 생성자 주입을 지지함. 생성자 주입을 사용하면 애플리케이션 컴포넌트를 불변 객체로 구현할 수 있고 필수 의존성이 `null`이 아닌 것을 보장할 수 있기 때문. 또한 생성자로 주입된 컴포넌트는 항상 클라이언트(호출) 코드에 완전히 초기화된 상태로 반환됨. 부연하자면, 많은 수의 생성자 인수는 나쁜 코드 스멜이며, 해당 클래스가 너무 많은 책임을 가지고 있어 관심사의 적절한 분리를 더 잘 해결하기 위해 리팩토링해야 함을 의미함.
-- 세터 주입은 주로 클래스 내에서 합리적인 기본값을 할당할 수 있는 선택적 의존성에만 사용해야 함. 그렇지 않으면 코드에서 의존성을 사용하는 모든 곳에서 `not-null` 검사를 수행해야 함. 세터 주입의 한 가지 장점은 세터 메서드가 해당 클래스의 객체를 나중에 재구성하거나 재주입할 수 있게 만든다는 것. 따라서 `JMX MBean`을 통한 관리는 세터 주입을 사용하는 설득력 있는 사용 사례임.
-- 특정 클래스에 가장 적합한 DI 스타일을 사용해야함. 때로는 소스를 가지고 있지 않은 타사 클래스를 다룰 때 선택의 여지가 없음. 예를 들어, 타사 클래스가 세터 메서드를 노출하지 않는 경우 생성자 주입이 사용 가능한 유일한 DI 형식일 수 있음.
+> ##### Constructor-based or setter-based DI?
+>
+> - 생성자 기반과 세터 기반의 DI를 혼합할 수 있으므로, 필수 의존성에는 생성자를 사용하고 선택적 의존성에는 세터 메서드나 구성 메서드를 사용하는 것이 좋음. 세터 메서드에 `@Autowired` 어노테이션을 사용하면 해당 프로퍼티를 필수 의존성으로 만들 수 있지만, 생성자 주입과 인수의 프로그래밍 방식 유효성 검사가 더 좋음.
+> - Spring 팀은 일반적으로 생성자 주입을 지지함. 생성자 주입을 사용하면 애플리케이션 컴포넌트를 불변 객체로 구현할 수 있고 필수 의존성이 `null`이 아닌 것을 보장할 수 있기 때문. 또한 생성자로 주입된 컴포넌트는 항상 클라이언트(호출) 코드에 완전히 초기화된 상태로 반환됨. 부연하자면, 많은 수의 생성자 인수는 나쁜 코드 스멜이며, 해당 클래스가 너무 많은 책임을 가지고 있어 관심사의 적절한 분리를 더 잘 해결하기 위해 리팩토링해야 함을 의미함.
+> - 세터 주입은 주로 클래스 내에서 합리적인 기본값을 할당할 수 있는 선택적 의존성에만 사용해야 함. 그렇지 않으면 코드에서 의존성을 사용하는 모든 곳에서 `not-null` 검사를 수행해야 함. 세터 주입의 한 가지 장점은 세터 메서드가 해당 클래스의 객체를 나중에 재구성하거나 재주입할 수 있게 만든다는 것. 따라서 `JMX MBean`을 통한 관리는 세터 주입을 사용하는 설득력 있는 사용 사례임.
+> - 특정 클래스에 가장 적합한 DI 스타일을 사용해야함. 때로는 소스를 가지고 있지 않은 타사 클래스를 다룰 때 선택의 여지가 없음. 예를 들어, 타사 클래스가 세터 메서드를 노출하지 않는 경우 생성자 주입이 사용 가능한 유일한 DI 형식일 수 있음.
 
 ### Dependency Resolution Process
 
-컨테이너는 다음과 같은 방식으로 빈 의존성 해결을 수행합니다:
-모든 빈을 설명하는 구성 메타데이터로 ApplicationContext가 생성되고 초기화됩니다. 구성 메타데이터는 XML, Java 코드 또는 어노테이션으로 지정할 수 있습니다.
-각 빈에 대해 의존성은 속성, 생성자 인수 또는 정적 팩토리 메서드에 대한 인수(일반 생성자 대신 사용하는 경우)의 형태로 표현됩니다. 이러한 의존성은 빈이 실제로 생성될 때 빈에 제공됩니다.
-각 속성 또는 생성자 인수는 설정할 값의 실제 정의이거나 컨테이너의 다른 빈에 대한 참조입니다.
-값인 각 속성 또는 생성자 인수는 지정된 형식에서 해당 속성 또는 생성자 인수의 실제 유형으로 변환됩니다. 기본적으로 Spring은 문자열 형식으로 제공된 값을 int, long, String, boolean 등과 같은 모든 기본 제공 유형으로 변환할 수 있습니다.
-Spring 컨테이너는 컨테이너가 생성될 때 각 빈의 구성을 유효성 검사합니다. 그러나 빈 속성 자체는 빈이 실제로 생성될 때까지 설정되지 않습니다. 싱글톤 범위이며 사전 인스턴스화되도록 설정된 빈(기본값)은 컨테이너가 생성될 때 생성됩니다. 범위는 Bean Scopes에 정의되어 있습니다. 그렇지 않으면 빈은 요청될 때만 생성됩니다. 빈의 생성은 잠재적으로 빈의 의존성과 의존성의 의존성(등)이 생성되고 할당됨에 따라 빈 그래프가 생성될 수 있습니다. 이러한 의존성 간의 해결 불일치는 늦게 나타날 수 있습니다. 즉, 영향을 받는 빈이 처음 생성될 때 나타날 수 있습니다.
+- 컨테이너는 다음과 같은 방식으로 빈 의존성 해결을 수행함:
+  > - 모든 빈을 설명하는 구성 메타데이터로 `ApplicationContext`가 생성되고 초기화됨. 구성 메타데이터는 XML, Java 코드 또는 어노테이션으로 지정할 수 있음.
+  > - 각 빈에 대해 의존성은 속성, 생성자 인수 또는 정적 팩토리 메서드에 대한 인수(일반 생성자 대신 사용하는 경우)의 형태로 표현됨. 이러한 의존성은 빈이 실제로 생성될 때 빈에 제공됨.
+  > - 각 속성 또는 생성자 인수는 설정할 값의 실제 정의이거나 컨테이너의 다른 빈에 대한 참조임.
+  > - 값인 각 속성 또는 생성자 인수는 지정된 형식에서 해당 속성 또는 생성자 인수의 실제 유형으로 변환됨. 기본적으로 Spring은 문자열 형식으로 제공된 값을 `int`, `long`, `String`, `boolean` 등과 같은 모든 기본 제공 유형으로 변환할 수 있음.
+- Spring 컨테이너는 컨테이너가 생성될 때 각 빈의 구성을 유효성 검사함. 그러나 빈 속성 자체는 빈이 실제로 생성될 때까지 설정되지 않음. 싱글톤 범위이며 사전 인스턴스화되도록 설정된 빈(기본값)은 컨테이너가 생성될 때 생성됨. 범위는 Bean Scopes에 정의되어 있습니다. 그렇지 않으면 빈은 요청될 때만 생성됨. 빈의 생성은 잠재적으로 빈의 의존성과 의존성의 의존성(등)이 생성되고 할당됨에 따라 빈 그래프가 생성될 수 있음. 이러한 의존성 간의 해결 불일치는 늦게 나타날 수 있음. 즉, 영향을 받는 빈이 처음 생성될 때 나타날 수 있음.
 
-일반적으로 Spring이 올바른 일을 하도록 신뢰할 수 있습니다. Spring은 컨테이너 로드 시점에 존재하지 않는 빈에 대한 참조 및 순환 의존성과 같은 구성 문제를 감지합니다. Spring은 빈이 실제로 생성될 때 가능한 한 늦게 속성을 설정하고 의존성을 해결합니다. 이는 올바르게 로드된 Spring 컨테이너가 나중에 객체를 요청할 때 해당 객체 또는 해당 객체의 의존성 중 하나를 생성하는 데 문제가 있는 경우 예외를 생성할 수 있음을 의미합니다. 예를 들어, 빈이 누락되거나 잘못된 속성으로 인해 예외를 throw할 수 있습니다. 이러한 일부 구성 문제의 가시성이 지연될 수 있는 이유는 ApplicationContext 구현에서 기본적으로 싱글톤 빈을 사전 인스턴스화하기 때문입니다. 실제로 필요하기 전에 이러한 빈을 생성하는 데 드는 일부 선행 시간과 메모리 비용으로 인해 ApplicationContext가 생성될 때 구성 문제를 발견할 수 있습니다. 그러나 이 기본 동작을 무시하여 싱글톤 빈이 열심히 사전 인스턴스화되는 대신 게으르게 초기화되도록 할 수 있습니다.
+> ##### Circular dependencies
+>
+> - 주로 생성자 주입을 사용하는 경우 해결할 수 없는 순환 의존성 시나리오가 발생할 수 있음.
+> - 예를 들어, 클래스 A는 생성자 주입을 통해 클래스 B의 인스턴스를 필요로 하고, 클래스 B는 생성자 주입을 통해 클래스 A의 인스턴스를 필요로 함. 클래스 A와 B의 빈이 서로 주입되도록 구성하면 Spring IoC 컨테이너는 런타임에 이 순환 참조를 감지하고 `BeanCurrentlyInCreationException`을 `throw`함.
+> - 한 가지 가능한 해결책은 일부 클래스의 소스 코드를 편집하여 생성자가 아닌 세터로 구성하는 것입. 또는 생성자 주입을 피하고 세터 주입만 사용하는 방법도 있음. 즉, 권장되지는 않지만 세터 주입으로 순환 의존성을 구성할 수 있음.
+> - 일반적인 경우(순환 의존성이 없는 경우)와 달리, 빈 A와 빈 B 사이의 순환 의존성은 한 빈이 완전히 초기화되기 전에 다른 빈에 주입되도록 강제함(고전적인 닭이 먼저냐 달걀이 먼저냐 시나리오).
 
-### Circular dependencies
-
-주로 생성자 주입을 사용하는 경우 해결할 수 없는 순환 의존성 시나리오가 발생할 수 있습니다.
-예를 들어, 클래스 A는 생성자 주입을 통해 클래스 B의 인스턴스를 필요로 하고, 클래스 B는 생성자 주입을 통해 클래스 A의 인스턴스를 필요로 합니다. 클래스 A와 B의 빈이 서로 주입되도록 구성하면 Spring IoC 컨테이너는 런타임에 이 순환 참조를 감지하고 BeanCurrentlyInCreationException을 throw합니다.
-한 가지 가능한 해결책은 일부 클래스의 소스 코드를 편집하여 생성자가 아닌 세터로 구성하는 것입니다. 또는 생성자 주입을 피하고 세터 주입만 사용하는 방법도 있습니다. 즉, 권장되지는 않지만 세터 주입으로 순환 의존성을 구성할 수 있습니다.
-일반적인 경우(순환 의존성이 없는 경우)와 달리, 빈 A와 빈 B 사이의 순환 의존성은 한 빈이 완전히 초기화되기 전에 다른 빈에 주입되도록 강제합니다(고전적인 닭이 먼저냐 달걀이 먼저냐 시나리오).
+- 일반적으로 Spring이 올바른 일을 하리라 믿을 수 있음. Spring은 존재하지 않는 빈에 대한 참조나 순환 종속성과 같은 구성 문제를 컨테이너 로드 시점에 감지함. Spring은 빈이 실제로 생성될 때 가능한 한 늦게 속성을 설정하고 종속성을 해결함. 이는 올바르게 로드된 Spring 컨테이너가 객체를 요청할 때 해당 객체 또는 그 종속성 중 하나를 생성하는 데 문제가 있는 경우 나중에 예외를 생성할 수 있음을 의미함. 예를 들어, 빈이 누락되었거나 잘못된 속성으로 인해 예외를 던질 수 있음. 일부 구성 문제의 이러한 잠재적인 지연 가시성이 `ApplicationContext` 구현에서 기본적으로 싱글톤 빈을 사전 인스턴스화하는 이유임. 이러한 빈이 실제로 필요하기 전에 생성하는 데 드는 약간의 사전 시간과 메모리 비용으로, `ApplicationContext`가 생성될 때 구성 문제를 발견하게 됨. 여전히 이 기본 동작을 재정의하여 싱글톤 빈이 사전에 인스턴스화되는 대신 지연 초기화되도록 할 수 있음.
+- 순환 종속성이 존재하지 않는 경우, 하나 이상의 협력 빈이 종속 빈에 주입될 때 각 협력 빈은 종속 빈에 주입되기 전에 완전히 구성됨. 이는 빈 A가 빈 B에 대한 종속성을 가지고 있다면 Spring IoC 컨테이너는 빈 A의 setter 메서드를 호출하기 전에 빈 B를 완전히 구성한다는 것을 의미함. 즉, 빈은 인스턴스화되고(사전 인스턴스화된 싱글톤이 아닌 경우), 그 종속성이 설정되며, 관련 라이프사이클 메서드(구성된 init 메서드 또는 InitializingBean 콜백 메서드 등)가 호출됨.
 
 ### Examples of Dependency Injection
 
-다음 예제에서는 세터 기반 DI를 위해 XML 기반 구성 메타데이터를 사용합니다. Spring XML 구성 파일의 일부분은 다음과 같이 일부 빈 정의를 지정합니다:
+- 다음 예제에서는 세터 기반 DI를 위해 XML 기반 구성 메타데이터를 사용합니다. Spring XML 구성 파일의 일부분은 다음과 같이 일부 빈 정의를 지정합니다:
 
 ```xml
 <bean id="exampleBean" class="examples.ExampleBean">
@@ -1028,7 +1268,7 @@ Spring 컨테이너는 컨테이너가 생성될 때 각 빈의 구성을 유효
 <bean id="yetAnotherBean" class="examples.YetAnotherBean"/>
 ```
 
-다음 예제는 해당하는 ExampleBean 클래스를 보여줍니다:
+- 다음 예제는 해당하는 ExampleBean 클래스를 보여줍니다:
 
 ```java
 public class ExampleBean {
@@ -1053,7 +1293,7 @@ public class ExampleBean {
 }
 ```
 
-앞의 예제에서는 XML 파일에 지정된 속성과 일치하도록 세터가 선언됩니다. 다음 예제에서는 생성자 기반 DI를 사용합니다:
+- 앞의 예제에서는 XML 파일에 지정된 속성과 일치하도록 세터가 선언됩니다. 다음 예제에서는 생성자 기반 DI를 사용합니다:
 
 ```xml
 <bean id="exampleBean" class="examples.ExampleBean">
@@ -1072,7 +1312,7 @@ public class ExampleBean {
 <bean id="yetAnotherBean" class="examples.YetAnotherBean"/>
 ```
 
-다음 예제는 해당하는 ExampleBean 클래스를 보여줍니다:
+- 다음 예제는 해당하는 ExampleBean 클래스를 보여줍니다:
 
 ```java
 public class ExampleBean {
@@ -1092,8 +1332,8 @@ public class ExampleBean {
 }
 ```
 
-빈 정의에 지정된 생성자 인수는 ExampleBean의 생성자에 대한 인수로 사용됩니다.
-이제 이 예제의 변형을 고려해 보겠습니다. 생성자를 사용하는 대신 Spring에게 정적 팩토리 메서드를 호출하여 객체의 인스턴스를 반환하도록 지시합니다:
+- 빈 정의에 지정된 생성자 인수는 ExampleBean의 생성자에 대한 인수로 사용됩니다.
+- 이제 이 예제의 변형을 고려해 보겠습니다. 생성자를 사용하는 대신 Spring에게 정적 팩토리 메서드를 호출하여 객체의 인스턴스를 반환하도록 지시합니다:
 
 ```xml
 <bean id="exampleBean" class="examples.ExampleBean" factory-method="createInstance">
@@ -1106,56 +1346,428 @@ public class ExampleBean {
 <bean id="yetAnotherBean" class="examples.YetAnotherBean"/>
 ```
 
-다음 예제는 해당하는 ExampleBean 클래스를 보여줍니다:
+- 다음 예제는 해당하는 ExampleBean 클래스를 보여줍니다:
 
 ```java
 public class ExampleBean {
 
-	// a private constructor
+	// private 생성자
 	private ExampleBean(...) {
 		...
 	}
 
-	// a static factory method; the arguments to this method can be
-	// considered the dependencies of the bean that is returned,
-	// regardless of how those arguments are actually used.
-	public static ExampleBean createInstance (
+// 정적 팩토리 메서드; 이 메서드의 인수는 반환되는 빈의 의존성으로 간주될 수 있습니다.
+// 이러한 인수가 실제로 어떻게 사용되는지는 상관없습니다.
+public static ExampleBean createInstance (
 		AnotherBean anotherBean, YetAnotherBean yetAnotherBean, int i) {
 
 		ExampleBean eb = new ExampleBean (...);
-		// some other operations...
+		// 몇 가지 다른 작업...
 		return eb;
 	}
 }
 ```
 
-정적 팩토리 메서드에 대한 인수는 실제 생성자가 사용된 것과 정확히 동일한 방식으로 <constructor-arg/> 요소로 제공됩니다. 팩토리 메서드에서 반환하는 클래스의 유형은 정적 팩토리 메서드를 포함하는 클래스와 동일한 유형일 필요는 없습니다(이 예제에서는 그렇지만). 인스턴스(비정적) 팩토리 메서드는 class 속성 대신 factory-bean 속성을 사용한다는 점을 제외하면 기본적으로 동일한 방식으로 사용할 수 있으므로 여기서는 자세한 내용을 다루지 않겠습니다.
+- 정적 팩토리 메서드에 대한 인수는 실제 생성자가 사용된 것과 정확히 동일한 방식으로 <constructor-arg/> 요소로 제공됩니다. 팩토리 메서드에서 반환하는 클래스의 유형은 정적 팩토리 메서드를 포함하는 클래스와 동일한 유형일 필요는 없습니다(이 예제에서는 그렇지만). 인스턴스(비정적) 팩토리 메서드는 class 속성 대신 factory-bean 속성을 사용한다는 점을 제외하면 기본적으로 동일한 방식으로 사용할 수 있으므로 여기서는 자세한 내용을 다루지 않겠습니다.
 
 ## The IoC Container - Dependencies - Dependencies and Configuration in Detail
 
+- 앞 섹션에서 언급했듯이, 빈 프로퍼티와 생성자 인자를 다른 관리되는 빈(협력자)에 대한 참조로 정의하거나 인라인으로 정의된 값으로 지정할 수 있음. 스프링의 XML 기반 설정 메타데이터는 이를 위해 `<property/>`와 `<constructor-arg/>` 엘리먼트 내에 하위 엘리먼트 타입을 지원함.
+
 ### Straight Values (Primitives, Strings, and so on)
 
-### The idref element
+- `<property/>` 엘리먼트의 value 속성은 프로퍼티나 생성자 인자를 사람이 읽을 수 있는 문자열 표현으로 지정함. 스프링의 변환 서비스는 이러한 값을 문자열에서 프로퍼티나 인자의 실제 타입으로 변환하는 데 사용됨. 다음 예제는 다양한 값이 설정되는 것을 보여줌:
+
+```xml
+<bean id="myDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+	<!-- results in a setDriverClassName(String) call -->
+	<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+	<property name="url" value="jdbc:mysql://localhost:3306/mydb"/>
+	<property name="username" value="root"/>
+	<property name="password" value="misterkaoli"/>
+</bean>
+```
+
+- 다음 예제는 더욱 간결한 XML 설정을 위해 p-네임스페이스를 사용함:
+
+```xml
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="myDataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close"
+		p:driverClassName="com.mysql.jdbc.Driver"
+		p:url="jdbc:mysql://localhost:3306/mydb"
+		p:username="root"
+		p:password="misterkaoli"/>
+</beans>
+```
+
+- 앞의 XML은 더 간결함. 그러나 IntelliJ IDEA나 이클립스용 스프링 툴과 같이 빈 정의를 생성할 때 자동 프로퍼티 완성을 지원하는 IDE를 사용하지 않는 한, 런타임이 아닌 설계 시점에서 오타가 발견됨. 이러한 IDE 지원을 적극 권장함.
+- `java.util.Properties` 인스턴스도 다음과 같이 설정할 수 있음:
+
+```xml
+<bean id="mappings"
+	class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+
+	<!-- typed as a java.util.Properties -->
+	<property name="properties">
+		<value>
+			jdbc.driver.className=com.mysql.jdbc.Driver
+			jdbc.url=jdbc:mysql://localhost:3306/mydb
+		</value>
+	</property>
+</bean>
+```
+
+- 스프링 컨테이너는 JavaBeans PropertyEditor 메커니즘을 사용하여 `<value/>` 엘리먼트 내부의 텍스트를 `java.util.Properties` 인스턴스로 변환합니다. 이것은 좋은 지름길이며, 스프링 팀이 value 속성 스타일보다 중첩된 `<value/>` 엘리먼트 사용을 선호하는 몇 안 되는 곳 중 하나임.
+
+#### The idref element
+
+- `idref` 엘리먼트는 단순히 컨테이너의 다른 빈의 id(문자열 값 - 참조가 아님)를 `<constructor-arg/>` 또는 `<property/>` 엘리먼트에 전달하는 오류 방지 방법. 다음 예제는 사용 방법을 보여줌:
+
+```xml
+<bean id="theTargetBean" class="..."/>
+
+<bean id="theClientBean" class="...">
+	<property name="targetName">
+		<idref bean="theTargetBean"/>
+	</property>
+</bean>
+```
+
+- 앞의 빈 정의 코드 조각은 런타임 시 다음 코드 조각과 정확히 동일함:
+
+```xml
+<bean id="theTargetBean" class="..." />
+
+<bean id="client" class="...">
+	<property name="targetName" value="theTargetBean"/>
+</bean>
+```
+
+- 첫 번째 형식이 두 번째 형식보다 선호되는데, `idref` 태그를 사용하면 컨테이너가 배포 시점에 참조되는 명명된 빈이 실제로 존재하는지 검증할 수 있기 때문임. 두 번째 변형에서는 클라이언트 빈의 `targetName` 프로퍼티에 전달되는 값에 대해 어떠한 검증도 수행되지 않음. 오타는 클라이언트 빈이 실제로 인스턴스화될 때만 발견되며(대부분 치명적인 결과를 초래함) 클라이언트 빈이 프로토타입 빈인 경우 이 오타와 결과적인 예외는 컨테이너가 배포된 지 한참 후에야 발견될 수 있음.
+
+> ##### Note
+>
+> - `idref` 엘리먼트의 `local` 속성은 더 이상 일반 빈 참조보다 가치를 제공하지 않으므로 4.0 beans XSD에서 더 이상 지원되지 않음. 4.0 스키마로 업그레이드할 때 기존의 `idref` `local` 참조를 `idref` bean으로 변경할 것.
+
+- `<idref/>` 엘리먼트가 가치를 발휘하는 일반적인 곳은(적어도 스프링 2.0 이전 버전에서는) `ProxyFactoryBean` 빈 정의에서 AOP 인터셉터 설정. 인터셉터 이름을 지정할 때 `<idref/>` 엘리먼트를 사용하면 인터셉터 ID 철자 오류를 방지할 수 있음.
 
 ### References to Other Beans (Collaborators)
 
+- ref 엘리먼트는 `<constructor-arg/>` 또는 `<property/>` 정의 엘리먼트 내부의 마지막 엘리먼트. 여기서 빈의 지정된 프로퍼티 값을 컨테이너에서 관리하는 다른 빈(협력자)에 대한 참조로 설정함. 참조된 빈은 프로퍼티가 설정될 빈의 의존성이며 프로퍼티가 설정되기 전에 필요에 따라 요청 시 초기화됨. (협력자가 싱글톤 빈인 경우 컨테이너에 의해 이미 초기화되었을 수 있음.) 모든 참조는 궁극적으로 다른 객체에 대한 참조. 범위 지정 및 검증은 `bean` 또는 `parent` 속성을 통해 다른 객체의 ID 또는 이름을 지정하는지 여부에 따라 달라짐.
+- `<ref/>` 태그의 `bean` 속성을 통해 대상 빈을 지정하는 것은 가장 일반적인 형식이며 동일한 XML 파일에 있는지 여부에 관계없이 동일한 컨테이너 또는 부모 컨테이너의 모든 빈에 대한 참조를 생성할 수 있도록 함. `bean` 속성의 값은 대상 빈의 `id` 속성과 동일하거나 대상 빈의 `name` 속성의 값 중 하나와 동일할 수 있음. 다음 예제는 `ref` 엘리먼트 사용 방법을 보여줌:
+
+```xml
+<ref bean="someBean"/>
+```
+
+- `parent` 속성을 통해 대상 빈을 지정하면 현재 컨테이너의 부모 컨테이너에 있는 빈에 대한 참조가 생성됨. `parent` 속성의 값은 대상 빈의 `id` 속성 또는 대상 빈의 `name` 속성의 값 중 하나와 동일할 수 있음. 대상 빈은 현재 컨테이너의 부모 컨테이너에 있어야 함. 주로 컨테이너 계층 구조가 있고 부모 컨테이너의 기존 빈을 부모 빈과 동일한 이름을 가진 프록시로 래핑하려는 경우 이 빈 참조 변형을 사용해야 함. 다음 두 개의 목록은 `parent` 속성 사용 방법을 보여줌:
+
+```xml
+<!-- 부모 컨텍스트에서 -->
+<bean id="accountService" class="com.something.SimpleAccountService">
+   <!-- 필요한 의존성을 여기에 삽입 -->
+</bean>
+```
+
+```xml
+<!-- 자식(하위) 컨텍스트에서 -->
+<bean id="accountService" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="target">
+        <ref parent="accountService"/> <!-- 부모 빈을 참조하는 방법에 주목 -->
+    </property>
+    <!-- 필요한 다른 설정과 의존성을 여기에 삽입 -->
+</bean>
+```
+
+> ##### Note
+>
+> - `ref` 엘리먼트의 `local` 속성은 더 이상 일반 빈 참조보다 가치를 제공하지 않으므로 4.0 beans XSD에서 더 이상 지원되지 않음. 4.0 스키마로 업그레이드할 때 기존의 `ref` `local` 참조를 `ref` `bean`으로 변경할 것.
+
 ### Inner Beans
+
+- 다음 예제와 같이 `<property/>` 또는 `<constructor-arg/>` 엘리먼트 내부의 `<bean/>` 엘리먼트는 내부 빈을 정의함:
+
+```xml
+<bean id="outer" class="...">
+	<!-- 대상 빈에 대한 참조를 사용하는 대신 대상 빈을 인라인으로 정의 -->
+	<property name="target">
+		<bean class="com.example.Person"> <!-- 이것이 내부 빈 -->
+			<property name="name" value="Fiona Apple"/>
+			<property name="age" value="25"/>
+		</bean>
+	</property>
+</bean>
+```
+
+- 내부 빈 정의에는 정의된 ID 또는 이름이 필요하지 않음. 지정된 경우에도 컨테이너는 이러한 값을 식별자로 사용하지 않음. 또한 컨테이너는 내부 빈이 항상 익명이며 외부 빈으로 생성되기 때문에 생성 시 범위 플래그를 무시함. 내부 빈을 독립적으로 액세스하거나 외부 빈이 아닌 협력 빈에 주입할 수 없음.
+
+- 특수한 경우로, 싱글톤 빈 내에 포함된 요청 범위의 내부 빈과 같이 사용자 지정 범위에서 삭제 콜백을 받을 수 있음. 내부 빈 인스턴스의 생성은 이를 포함하는 빈에 연결되어 있지만 삭제 콜백을 통해 요청 범위의 수명 주기에 참여할 수 있음. 이는 일반적인 시나리오는 아님. 내부 빈은 일반적으로 단순히 포함하는 빈의 범위를 공유함.
 
 ### Collections
 
-### Collection Merging
+- `<list/>`, `<set/>`, `<map/>`, `<props/>` 엘리먼트는 각각 Java Collection 타입인 `List`, `Set`, `Map`, `Properties`의 프로퍼티와 인자를 설정함. 다음 예제는 사용 방법을 보여줌.
 
-### Limitations of Collection Merging
+```xml
+<bean id="moreComplexObject" class="example.ComplexObject">
+	<!-- setAdminEmails(java.util.Properties) 호출로 이어짐 -->
+	<property name="adminEmails">
+		<props>
+			<prop key="administrator">administrator@example.org</prop>
+			<prop key="support">support@example.org</prop>
+			<prop key="development">development@example.org</prop>
+		</props>
+	</property>
+	<!-- setSomeList(java.util.List) 호출로 이어짐 -->
+	<property name="someList">
+		<list>
+			<value>a list element followed by a reference</value>
+			<ref bean="myDataSource" />
+		</list>
+	</property>
+	<!-- setSomeMap(java.util.Map) 호출로 이어짐 -->
+	<property name="someMap">
+		<map>
+			<entry key="an entry" value="just some string"/>
+			<entry key="a ref" value-ref="myDataSource"/>
+		</map>
+	</property>
+	<!-- setSomeSet(java.util.Set) 호출로 이어짐 -->
+	<property name="someSet">
+		<set>
+			<value>just some string</value>
+			<ref bean="myDataSource" />
+		</set>
+	</property>
+</bean>
+```
 
-### Strongly-typed collection
+- 맵 키나 값 또는 집합 값의 값은 다음 엘리먼트 중 하나일 수도 있음:
+
+```plain
+bean | ref | idref | list | set | map | props | value | null
+```
+
+#### Collection Merging
+
+- 스프링 컨테이너는 컬렉션 병합도 지원함. 애플리케이션 개발자는 부모 `<list/>`, `<map/>`, `<set/>` 또는 `<props/>` 엘리먼트를 정의하고 자식 `<list/>`, `<map/>`, `<set/>` 또는 `<props/>` 엘리먼트가 부모 컬렉션의 값을 상속하고 재정의하도록 할 수 있음. 즉, 자식 컬렉션의 값은 부모 컬렉션의 엘리먼트와 자식 컬렉션의 엘리먼트를 병합한 결과이며, 자식의 컬렉션 엘리먼트가 부모 컬렉션에 지정된 값을 재정의함.
+- 이 병합에 관한 섹션은 부모-자식 빈 메커니즘을 설명함. 부모 및 자식 빈 정의에 익숙하지 않은 독자는 계속하기 전에 관련 섹션을 읽어보는 것이 좋음.
+  다음 예제는 컬렉션 병합을 보여줌:
+
+```xml
+<beans>
+	<bean id="parent" abstract="true" class="example.ComplexObject">
+		<property name="adminEmails">
+			<props>
+				<prop key="administrator">administrator@example.com</prop>
+				<prop key="support">support@example.com</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="child" parent="parent">
+		<property name="adminEmails">
+      <!-- 병합은 자식 컬렉션 정의에서 명시됨 -->
+			<props merge="true">
+				<prop key="sales">sales@example.com</prop>
+				<prop key="support">support@example.co.uk</prop>
+			</props>
+		</property>
+	</bean>
+<beans>
+```
+
+- 자식 빈 정의의 `adminEmails` 프로퍼티에 대한 `<props/>` 엘리먼트에서 `merge=true` 속성 사용에 주목할 것. 컨테이너에 의해 자식 빈이 확인되고 인스턴스화될 때 결과 인스턴스에는 부모의 `adminEmails` 컬렉션과 자식의 `adminEmails` 컬렉션을 병합한 결과를 포함하는 `adminEmails Properties` 컬렉션이 있음. 다음 목록은 결과를 보여줌:
+
+```plain
+administrator=administrator@example.com
+sales=sales@example.com
+support=support@example.co.uk
+```
+
+- 자식 Properties 컬렉션의 값 집합은 부모 `<props/>`의 모든 프로퍼티 엘리먼트를 상속하고 자식의 `support` 값은 부모 컬렉션의 값을 재정의함.
+- 이 병합 동작은 `<list/>`, `<map/>`, `<set/>` 컬렉션 타입에도 유사하게 적용됨. `<list/>` 엘리먼트의 특정 경우 List 컬렉션 타입과 연관된 의미(즉, 정렬된 값 컬렉션의 개념)가 유지됨. 부모의 값이 자식 목록의 모든 값보다 앞에 옴. `Map`, `Set`, `Properties` 컬렉션 타입의 경우 순서가 없음. 따라서 컨테이너가 내부적으로 사용하는 관련 `Map`, `Set`, `Properties` 구현 타입의 기반이 되는 컬렉션 타입에는 순서 의미론이 적용되지 않음.
+
+#### Limitations of Collection Merging
+
+- 서로 다른 컬렉션 타입(예: `Map`과 `List`)은 병합할 수 없음. 시도할 경우 적절한 예외가 발생함. 병합 속성은 하위의 상속된 자식 정의에 지정해야 함. 부모 컬렉션 정의에 병합 속성을 지정하는 것은 중복되며 원하는 병합 결과를 얻을 수 없음.
+
+#### Strongly-typed collection
+
+- Java의 제네릭 타입 지원 덕분에 강력한 타입의 컬렉션을 사용할 수 있음. 즉, 컬렉션 타입을 (예를 들어) 문자열 요소만 포함할 수 있도록 선언할 수 있음. 스프링을 사용하여 강력한 타입의 컬렉션을 빈에 의존성 주입하는 경우, 강력한 타입의 컬렉션 인스턴스 요소가 컬렉션에 추가되기 전에 적절한 타입으로 변환되도록 스프링의 타입 변환 지원을 활용할 수 있음. 다음 Java 클래스와 빈 정의는 이를 수행하는 방법을 보여줌:
+
+```java
+public class SomeClass {
+
+	private Map<String, Float> accounts;
+
+	public void setAccounts(Map<String, Float> accounts) {
+		this.accounts = accounts;
+	}
+}
+```
+
+```xml
+<beans>
+	<bean id="something" class="x.y.SomeClass">
+		<property name="accounts">
+			<map>
+				<entry key="one" value="9.99"/>
+				<entry key="two" value="2.75"/>
+				<entry key="six" value="3.99"/>
+			</map>
+		</property>
+	</bean>
+</beans>
+```
+
+- `something` 빈의 `accounts` 프로퍼티가 주입을 위해 준비될 때 강력한 타입의 `Map<String, Float>`의 요소 타입에 대한 제네릭 정보를 리플렉션을 통해 사용할 수 있음. 따라서 스프링의 타입 변환 인프라는 다양한 값 요소를 `Float` 타입으로 인식하고 문자열 값(9.99, 2.75, 3.99)을 실제 `Float` 타입으로 변환함.
 
 ### Null and Empty String Values
 
+- 스프링은 프로퍼티 등에 대한 빈 인수를 빈 문자열로 처리함. 다음 XML 기반 설정 메타데이터 코드 조각은 `email` 프로퍼티를 빈 문자열 값("")으로 설정함.
+
+```xml
+<bean class="ExampleBean">
+	<property name="email" value=""/>
+</bean>
+```
+
+- 앞의 예제는 다음 Java 코드와 동일함:
+
+```java
+exampleBean.setEmail("");
+```
+
+- `<null/>` 요소는 `null` 값을 처리함. 다음 목록은 예제를 보여줌:
+
+```xml
+<bean class="ExampleBean">
+	<property name="email">
+		<null/>
+	</property>
+</bean>
+```
+
+- 앞의 구성은 다음 Java 코드와 동일함:
+
+```java
+exampleBean.setEmail(null);
+```
+
 ### XML Shortcut with the p-namespace
+
+- p-네임스페이스를 사용하면 프로퍼티 값, 협력 빈 또는 둘 다를 설명하기 위해 중첩된 `<property/>` 요소 대신 bean 요소의 속성을 사용할 수 있음.
+- 스프링은 XML 스키마 정의를 기반으로 하는 네임스페이스로 확장 가능한 구성 형식을 지원함. 이 장에서 설명하는 빈 구성 형식은 XML 스키마 문서에 정의되어 있음. 그러나 p-네임스페이스는 XSD 파일에 정의되어 있지 않고 스프링 코어에만 존재함.
+- 다음 예제는 동일한 결과로 해석되는 두 개의 XML 코드 조각(첫 번째는 표준 XML 형식을 사용하고 두 번째는 p-네임스페이스를 사용함)을 보여줌:
+
+```xml
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean name="classic" class="com.example.ExampleBean">
+		<property name="email" value="someone@somewhere.com"/>
+	</bean>
+
+	<bean name="p-namespace" class="com.example.ExampleBean"
+		p:email="someone@somewhere.com"/>
+</beans>
+```
+
+- 이 예제는 빈 정의에서 `email`이라는 p-네임스페이스의 속성을 보여줌. 이것은 스프링에게 프로퍼티 선언을 포함하도록 지시함. 앞서 언급했듯이 p-네임스페이스에는 스키마 정의가 없으므로 속성의 이름을 프로퍼티 이름으로 설정할 수 있음.
+- 다음 예제에는 다른 빈에 대한 참조가 있는 두 개의 빈 정의가 더 포함되어 있음:
+
+```xml
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean name="john-classic" class="com.example.Person">
+		<property name="name" value="John Doe"/>
+		<property name="spouse" ref="jane"/>
+	</bean>
+
+	<bean name="john-modern"
+		class="com.example.Person"
+		p:name="John Doe"
+		p:spouse-ref="jane"/>
+
+	<bean name="jane" class="com.example.Person">
+		<property name="name" value="Jane Doe"/>
+	</bean>
+</beans>
+```
+
+- 이 예제에는 p-네임스페이스를 사용한 프로퍼티 값뿐만 아니라 프로퍼티 참조를 선언하기 위한 특수 형식도 사용됨. 첫 번째 빈 정의에서는 `<property name="spouse" ref="jane"/>`을 사용하여 `john` 빈에서 `jane` 빈으로의 참조를 생성하는 반면, 두 번째 빈 정의에서는 `p:spouse-ref="jane"`을 속성으로 사용하여 정확히 동일한 작업을 수행함. 이 경우 `spouse`는 프로퍼티 이름이고 `-ref` 부분은 이것이 단순한 값이 아니라 다른 빈에 대한 참조임을 나타냄.
+
+> ##### Note
+>
+> - p-네임스페이스는 표준 XML 형식만큼 유연하지 않음. 예를 들어 프로퍼티 참조를 선언하는 형식은 Ref로 끝나는 프로퍼티와 충돌하는 반면 표준 XML 형식은 그렇지 않음. 접근 방식을 신중하게 선택하고 이를 팀원들과 소통하여 동시에 세 가지 접근 방식을 모두 사용하는 XML 문서를 생성하지 않도록 하는 것이 좋음.
 
 ### XML Shortcut with the c-namespace
 
+- p-네임스페이스를 사용한 XML 단축키와 유사하게 스프링 3.1에 도입된 c-네임스페이스를 사용하면 중첩된 `constructor-arg` 요소 대신 인라인 속성을 사용하여 생성자 인수를 구성할 수 있음.
+- 다음 예제는 c: 네임스페이스를 사용하여 생성자 기반 의존성 주입과 동일한 작업을 수행함:
+
+```xml
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="beanTwo" class="x.y.ThingTwo"/>
+	<bean id="beanThree" class="x.y.ThingThree"/>
+
+	<!-- 선택적 인자 이름을 가진 전통적인 선언 -->
+	<bean id="beanOne" class="x.y.ThingOne">
+		<constructor-arg name="thingTwo" ref="beanTwo"/>
+		<constructor-arg name="thingThree" ref="beanThree"/>
+		<constructor-arg name="email" value="something@somewhere.com"/>
+	</bean>
+
+	<!-- 인자 이름을 가진 c-네임스페이스 선언 -->
+	<bean id="beanOne" class="x.y.ThingOne" c:thingTwo-ref="beanTwo"
+		c:thingThree-ref="beanThree" c:email="something@somewhere.com"/>
+
+</beans>
+```
+
+- c: 네임스페이스는 이름으로 생성자 인수를 설정하기 위해 p:와 동일한 규칙(빈 참조의 경우 -ref 접미사)을 사용함. 마찬가지로 XSD 스키마에 정의되어 있지 않더라도(스프링 코어 내부에 존재함) XML 파일에 선언해야 함.
+- 생성자 인수 이름을 사용할 수 없는 드문 경우(일반적으로 바이트코드가 디버깅 정보 없이 컴파일된 경우)에는 다음과 같이 인수 인덱스로 대체할 수 있음:
+
+```xml
+<!-- c-네임스페이스 인덱스 선언 -->
+<bean id="beanOne" class="x.y.ThingOne" c:_0-ref="beanTwo" c:_1-ref="beanThree"
+	c:_2="something@somewhere.com"/>
+```
+
+> ##### Note
+>
+> - XML 문법상 인덱스 표기법에는 선행 \_가 필요한데, 일부 IDE에서는 허용하지만 XML 속성 이름은 숫자로 시작할 수 없기 때문임. `<constructor-arg>` 요소에도 해당 인덱스 표기법을 사용할 수 있지만 선언 순서만으로 일반적으로 충분하므로 자주 사용되지는 않음.
+
+- 실제로 생성자 해석 메커니즘은 인수 매칭에 매우 효율적이므로 정말 필요하지 않다면 구성 전체에서 이름 표기법을 사용하는 것이 좋음.
+
 ### Compound Property Names
+
+- 빈 프로퍼티를 설정할 때 최종 프로퍼티 이름을 제외한 경로의 모든 구성 요소가 `null`이 아닌 한 복합 또는 중첩 프로퍼티 이름을 사용할 수 있음. 다음 빈 정의를 고려할 것:
+
+```xml
+<bean id="something" class="things.ThingOne">
+	<property name="fred.bob.sammy" value="123" />
+</bean>
+```
+
+- `something` 빈에는 `fred` 프로퍼티가 있고, `fred`에는 `bob` 프로퍼티가 있으며, `bob`에는 `sammy` 프로퍼티가 있고, 최종 `sammy` 프로퍼티는 `123` 값으로 설정되고 있음. 이것이 작동하려면 빈이 구성된 후 `something`의 `fred` 프로퍼티와 `fred`의 `bob` 프로퍼티가 `null`이 아니어야 함. 그렇지 않으면 `NullPointerException`이 발생함.
 
 ## The IoC Container - Dependencies - Using depends-on
 

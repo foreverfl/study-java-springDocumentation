@@ -3,10 +3,12 @@ package com.example.springDocumentation.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.context.annotation.Primary;
 
 import com.example.springDocumentation.model.MyBean1;
 import com.example.springDocumentation.model.MyBean2;
 import com.example.springDocumentation.model.MyBean3;
+import com.example.springDocumentation.model.MyBean4;
 
 @Configuration
 public class IoCContainerConfig {
@@ -29,5 +31,11 @@ public class IoCContainerConfig {
         myBean3.setDependency1(myBean1());
         myBean3.setDependency2(myBean2());
         return myBean3;
+    }
+
+    @Bean(name = "myBean4UsingName")
+    @Primary
+    public MyBean4 myBean() {
+        return new MyBean4();
     }
 }
