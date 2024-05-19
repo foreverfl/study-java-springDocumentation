@@ -1,6 +1,6 @@
 # Spring Framework Documentation
 
-- Spring Framework 6.1.7(최신 안정화 버전) 공식 문서를 한글로 번역 및 재구성한 자료입니다. 해당 자료 내용을 사용할 경우에는 출처를 남겨주세요. 그리고 유용하다고 생각하시면, 스타 부탁드려요. 🥲
+- Spring Framework 6.1.7(최신 안정화 버전) 공식 문서를 한글로 번역 및 재구성한 자료입니다. 해당 자료를 사용할 경우에는 출처를 남겨주세요. 그리고 유용하다고 생각하시면, 스타 부탁드려요. 🥲
 - 최대한 공식문서를 그대로 번역하는 방향으로 작업을 진행했습니다.
 - 번역은 Claude Opus/ChatGPT4를 사용했고, 어색한 부분은 직접 손을 봤습니다.
 - 오역이 있을 수 있기 때문에, 이 페이지는 참고만 하시고, 실제 프로그래밍에서는 직접 [영어](https://docs.spring.io/spring-framework/reference/)로 참고해주세요.
@@ -455,25 +455,6 @@ spring.datasource.password=***
 - 시간이 지남에 따라 애플리케이션 개발에서 Java/Jakarta EE의 역할이 진화해 왔음. J2EE와 Spring의 초기에는 애플리케이션을 애플리케이션 서버에 배포하기 위해 만들어졌음. 오늘날에는 Spring Boot의 도움으로 애플리케이션이 개발 운영 및 클라우드에 친화적인 방식으로 생성되며, Servlet 컨테이너가 내장되어 있고 변경이 매우 쉬움. Spring Framework 5부터 WebFlux 애플리케이션은 Servlet API를 직접 사용하지 않으며 Servlet 컨테이너가 아닌 서버(Netty 등)에서 실행될 수 있음.
 - Spring은 계속해서 혁신하고 발전하고 있음. Spring Framework 외에도 Spring Boot, Spring Security, Spring Data, Spring Cloud, Spring Batch 등 다른 프로젝트들이 있음. 각 프로젝트에는 고유한 소스 코드 저장소, 이슈 추적기 및 릴리스 주기가 있다는 점을 기억하는 것이 중요함. 전체 Spring 프로젝트 목록은 spring.io/projects를 참조할 것.
 
-#### History of Java
-
-1. Java SE (Standard Edition)
-   > - **정의**: 데스크톱 애플리케이션과 기본적인 서버 애플리케이션을 위한 표준 Java 플랫폼.
-   > - **네임스페이스**: java
-   > - **주요 구성 요소**: JVM, 표준 라이브러리, API 등.
-2. J2EE (Java 2 Platform, Enterprise Edition)
-   > - **정의**: 1999년, 엔터프라이즈 애플리케이션을 위한 확장 플랫폼으로 출시.
-   > - **네임스페이스**: javax(extended)
-   > - **주요 구성 요소**: 서블릿, JSP, EJB, JMS, JPA 등.
-3. Java EE (Java Platform, Enterprise Edition)
-   > - **정의**: J2EE에서 이름이 바뀌고, 새로운 기능과 API가 추가됨.
-   > - **네임스페이스**: javax(extended)
-   > - **주요 구성 요소**: J2EE의 모든 구성 요소와 더불어 새로운 기능들. 예를 들어 CDI (Contexts and Dependency Injection), JSF (JavaServer Faces) 등.
-4. Jakarta EE
-   > - **정의**: 2017년, 오라클이 Java EE 기술을 Eclipse Foundation에 기부하면서 이름이 Jakarta EE로 변경. Eclipse Foundation가 관리 주체.
-   > - **네임스페이스**: javax에서 jakarta로 변경.
-   > - **주요 구성 요소**: Java EE의 모든 구성 요소와 더불어 새로운 업데이트와 개선. 예를 들어 Servlet 5.0, JPA 3.0, Jakarta RESTful Web Services 등.
-
 ### Design Philosophy
 
 - 프레임워크를 배울 때는 무엇을 하는지뿐만 아니라 어떤 원칙을 따르는지 아는 것이 중요함. 다음은 Spring Framework의 지침 원칙:
@@ -590,25 +571,6 @@ spring.datasource.password=***
 </beans>
 ```
 
-- 다음 예제는 Java 기반 구성 메타데이터의 기본 구조를 보여줌. XML 기반 설정에서의 `id`의 역할은 여기서는 메소드 이름이 하고, `class`역할은 메서드의 반환 타입이 수행함.
-
-```java
-@Configuration
-public class IoCContainerConfig {
-    @Bean
-    public MyBean1 myBean1() {
-        return new MyBean1();
-        // 필요한 경우 collaborators 및 configuration 설정
-    }
-
-    @Bean
-    public MyBean2 myBean2() {
-        return new MyBean2();
-        // 필요한 경우 collaborators 및 configuration 설정
-    }
-}
-```
-
 - id 속성의 값은 협력하는 객체를 참조하는 데 사용할 수 있음. 협력하는 객체를 참조하기 위한 XML은 이 예제에 표시되지 않았음. 자세한 내용은 의존성을 참조할 것.
 - 컨테이너를 인스턴스화하려면 XML 리소스 파일에 대한 위치 경로를 `ClassPathXmlApplicationContext` 생성자에 제공하여 컨테이너가 로컬 파일 시스템, Java CLASSPATH 등과 같은 다양한 외부 리소스에서 구성 메타데이터를 로드할 수 있도록 해야 함.
 
@@ -705,29 +667,6 @@ public class AppConfig {
 	<bean id="bean1" class="..."/>
 	<bean id="bean2" class="..."/>
 </beans>
-```
-
-- 다음 예제는 위에서의 xml 설정을 Java 기반 설정으로 바꾼 것을 보여줌.
-
-```java
-@Configuration
-@ImportResource({
-    "classpath:services.xml",
-    "classpath:resources/messageSource.xml",
-    "classpath:/resources/themeSource.xml"
-})
-public class AppConfig {
-
-    @Bean
-    public Bean1 bean1() {
-        return new Bean1();
-    }
-
-    @Bean
-    public Bean2 bean2() {
-        return new Bean2();
-    }
-}
 ```
 
 - 앞의 예에서 외부 빈 정의는 `services.xml`, `messageSource.xml` 및 `themeSource.xml`의 세 파일에서 로드됨. 모든 위치 경로는 가져오기를 수행하는 정의 파일을 기준으로 하므로 `services.xml`은 가져오기를 수행하는 파일과 동일한 디렉터리 또는 클래스 경로 위치에 있어야 하며, `messageSource.xml`과 `themeSource.xml`은 가져오기 파일 위치 아래의 리소스 위치에 있어야 함. 보시다시피 선행 슬래시는 무시됨. 그러나 이러한 경로는 상대 경로이므로 슬래시를 사용하지 않는 것이 더 좋은 형식임. 가져오는 파일의 내용은 최상위 `<beans/>` 요소를 포함하여 Spring 스키마에 따라 유효한 XML 빈 정의여야 함.
@@ -1038,49 +977,6 @@ public class DefaultServiceLocator {
 
 ## The IoC Container - Dependencies - Dependency Injection
 
-- **Service Locator 패턴**: 의존성을 관리하는 디자인 패턴 중 하나. 이 패턴에서는 응용 프로그램이 실행 중인 중앙 레지스트리를 사용하여 서비스 또는 객체를 검색할 수 있음. 이렇게 하면 클라이언트 객체는 필요한 서비스의 구체적인 구현에 대해 알 필요 없이 서비스를 사용할 수 있음. Service Locator 패턴의 단점은 의존성이 명시적이지 않고, 실행 시점까지 서비스가 사용 가능한지 알 수 없다는 것. 이는 오류 발생 가능성을 높이고, 코드의 테스트를 더 어렵게 만듦. 다음 예제 코드는 Service Locator 패턴을 보여줌:
-
-```java
-import java.util.HashMap;
-import java.util.Map;
-
-interface Service {
-    void execute();
-}
-
-class ServiceA implements Service {
-    public void execute() {
-        System.out.println("Executing Service A");
-    }
-}
-
-class ServiceB implements Service {
-    public void execute() {
-        System.out.println("Executing Service B");
-    }
-}
-
-class ServiceLocator {
-    private static Map<String, Service> services = new HashMap<>();
-
-    static {
-        services.put("serviceA", new ServiceA());
-        services.put("serviceB", new ServiceB());
-    }
-
-    public static Service getService(String serviceName) {
-        return services.get(serviceName);
-    }
-}
-
-public class Client {
-    public static void main(String[] args) {
-        Service service = ServiceLocator.getService("serviceA");
-        service.execute();
-    }
-}
-```
-
 - 의존성 주입(DI)은 객체가 생성자 인수(Constructor Argument), 팩토리 메서드에 대한 인수(Argument) 또는 객체 인스턴스가 생성되거나 팩토리 메서드에서 반환된 후 객체 인스턴스에 설정된 속성을 통해서만 의존성(협력하는 다른 객체)을 정의하는 프로세스. 그런 다음 컨테이너는 빈을 생성할 때 이러한 의존성을 주입함. 이 프로세스는 기본적으로 빈 자체가 클래스의 직접 생성이나 Service Locator 패턴을 사용하여 의존성의 인스턴스화 또는 위치를 제어하는 것과는 반대됨(따라서 Inversion of Control이라는 이름이 붙었음).
 - DI 원칙을 사용하면 코드가 더 깔끔해지고, 객체에 의존성을 제공할 때 결합도를 더 효과적으로 분리할 수 있음. 객체는 의존성을 찾거나 의존성의 위치 또는 클래스를 알지 못함. 그 결과, 클래스는 특히 의존성이 인터페이스나 추상 기본 클래스에 있을 때 테스트하기가 더 쉬워짐. 이를 통해 단위 테스트에서 스텁이나 모의 구현을 사용할 수 있음.
 - DI에는 두 가지 주요 변형이 있음. 생성자 기반 의존성 주입과 세터 기반 의존성 주입이 있음.
@@ -1118,7 +1014,7 @@ public class ThingOne {
 }
 ```
 
-- `ThingTwo`와 `ThingThree` 클래스가 상속으로 관련되지 않았다고 가정하면 잠재적인 모호성이 존재하지 않음. 따라서 다음 구성은 잘 작동하며, <constructor-arg/> 요소에 생성자 인수 인덱스나 유형을 명시적으로 지정할 필요가 없음.
+- `ThingTwo`와 `ThingThree` 클래스가 상속으로 관련되지 않았다고 가정하면 잠재적인 모호성이 존재하지 않음. 따라서 다음 구성은 잘 작동하며, `<constructor-arg/>` 요소에 생성자 인수 인덱스나 유형을 명시적으로 지정할 필요가 없음.
 
 ```xml
 <beans>
@@ -1246,29 +1142,28 @@ public class SimpleMovieLister {
 > - 일반적인 경우(순환 의존성이 없는 경우)와 달리, 빈 A와 빈 B 사이의 순환 의존성은 한 빈이 완전히 초기화되기 전에 다른 빈에 주입되도록 강제함(고전적인 닭이 먼저냐 달걀이 먼저냐 시나리오).
 
 - 일반적으로 Spring이 올바른 일을 하리라 믿을 수 있음. Spring은 존재하지 않는 빈에 대한 참조나 순환 종속성과 같은 구성 문제를 컨테이너 로드 시점에 감지함. Spring은 빈이 실제로 생성될 때 가능한 한 늦게 속성을 설정하고 종속성을 해결함. 이는 올바르게 로드된 Spring 컨테이너가 객체를 요청할 때 해당 객체 또는 그 종속성 중 하나를 생성하는 데 문제가 있는 경우 나중에 예외를 생성할 수 있음을 의미함. 예를 들어, 빈이 누락되었거나 잘못된 속성으로 인해 예외를 던질 수 있음. 일부 구성 문제의 이러한 잠재적인 지연 가시성이 `ApplicationContext` 구현에서 기본적으로 싱글톤 빈을 사전 인스턴스화하는 이유임. 이러한 빈이 실제로 필요하기 전에 생성하는 데 드는 약간의 사전 시간과 메모리 비용으로, `ApplicationContext`가 생성될 때 구성 문제를 발견하게 됨. 여전히 이 기본 동작을 재정의하여 싱글톤 빈이 사전에 인스턴스화되는 대신 지연 초기화되도록 할 수 있음.
-- 순환 종속성이 존재하지 않는 경우, 하나 이상의 협력 빈이 종속 빈에 주입될 때 각 협력 빈은 종속 빈에 주입되기 전에 완전히 구성됨. 이는 빈 A가 빈 B에 대한 종속성을 가지고 있다면 Spring IoC 컨테이너는 빈 A의 setter 메서드를 호출하기 전에 빈 B를 완전히 구성한다는 것을 의미함. 즉, 빈은 인스턴스화되고(사전 인스턴스화된 싱글톤이 아닌 경우), 그 종속성이 설정되며, 관련 라이프사이클 메서드(구성된 init 메서드 또는 InitializingBean 콜백 메서드 등)가 호출됨.
+- 순환 종속성이 존재하지 않는 경우, 하나 이상의 협력 빈이 종속 빈에 주입될 때 각 협력 빈은 종속 빈에 주입되기 전에 완전히 구성됨. 이는 빈 A가 빈 B에 대한 종속성을 가지고 있다면 Spring IoC 컨테이너는 빈 A의 `setter` 메서드를 호출하기 전에 빈 B를 완전히 구성한다는 것을 의미함. 즉, 빈은 인스턴스화되고(사전 인스턴스화된 싱글톤이 아닌 경우), 그 종속성이 설정되며, 관련 라이프사이클 메서드(구성된 `init` 메서드 또는 `InitializingBean` 콜백 메서드 등)가 호출됨.
 
 ### Examples of Dependency Injection
 
-- 다음 예제에서는 세터 기반 DI를 위해 XML 기반 구성 메타데이터를 사용합니다. Spring XML 구성 파일의 일부분은 다음과 같이 일부 빈 정의를 지정합니다:
+- 다음 예제에서는 세터 기반 DI를 위해 XML 기반 구성 메타데이터를 사용함. Spring XML 구성 파일의 일부분은 다음과 같이 일부 빈 정의를 지정함:
 
 ```xml
 <bean id="exampleBean" class="examples.ExampleBean">
-	<!-- setter injection using the nested ref element -->
-	<property name="beanOne">
-		<ref bean="anotherExampleBean"/>
-	</property>
-
-	<!-- setter injection using the neater ref attribute -->
-	<property name="beanTwo" ref="yetAnotherBean"/>
-	<property name="integerProperty" value="1"/>
+  <!-- 중첩된 ref 요소를 사용한 setter 주입 -->
+  <property name="beanOne">
+     <ref bean="anotherExampleBean"/>
+  </property>
+  <!-- 더 깔끔한 ref 속성을 사용한 setter 주입 -->
+  <property name="beanTwo" ref="yetAnotherBean"/>
+  <property name="integerProperty" value="1"/>
 </bean>
 
 <bean id="anotherExampleBean" class="examples.AnotherBean"/>
 <bean id="yetAnotherBean" class="examples.YetAnotherBean"/>
 ```
 
-- 다음 예제는 해당하는 ExampleBean 클래스를 보여줍니다:
+- 다음 예제는 해당하는 ExampleBean 클래스를 보여줌:
 
 ```java
 public class ExampleBean {
@@ -1293,26 +1188,24 @@ public class ExampleBean {
 }
 ```
 
-- 앞의 예제에서는 XML 파일에 지정된 속성과 일치하도록 세터가 선언됩니다. 다음 예제에서는 생성자 기반 DI를 사용합니다:
+- 앞의 예제에서는 XML 파일에 지정된 속성과 일치하도록 세터가 선언됨. 다음 예제에서는 생성자 기반 DI를 사용함:
 
 ```xml
 <bean id="exampleBean" class="examples.ExampleBean">
-	<!-- constructor injection using the nested ref element -->
-	<constructor-arg>
-		<ref bean="anotherExampleBean"/>
-	</constructor-arg>
-
-	<!-- constructor injection using the neater ref attribute -->
-	<constructor-arg ref="yetAnotherBean"/>
-
-	<constructor-arg type="int" value="1"/>
+   <!-- 중첩된 ref 요소를 사용한 생성자 주입 -->
+   <constructor-arg>
+      <ref bean="anotherExampleBean"/>
+   </constructor-arg>
+   <!-- 더 깔끔한 ref 속성을 사용한 생성자 주입 -->
+   <constructor-arg ref="yetAnotherBean"/>
+   <constructor-arg type="int" value="1"/>
 </bean>
 
 <bean id="anotherExampleBean" class="examples.AnotherBean"/>
 <bean id="yetAnotherBean" class="examples.YetAnotherBean"/>
 ```
 
-- 다음 예제는 해당하는 ExampleBean 클래스를 보여줍니다:
+- 다음 예제는 해당하는 `ExampleBean` 클래스를 보여줌:
 
 ```java
 public class ExampleBean {
@@ -1332,8 +1225,8 @@ public class ExampleBean {
 }
 ```
 
-- 빈 정의에 지정된 생성자 인수는 ExampleBean의 생성자에 대한 인수로 사용됩니다.
-- 이제 이 예제의 변형을 고려해 보겠습니다. 생성자를 사용하는 대신 Spring에게 정적 팩토리 메서드를 호출하여 객체의 인스턴스를 반환하도록 지시합니다:
+- 빈 정의에 지정된 생성자 인수는 `ExampleBean`의 생성자에 대한 인수로 사용됨.
+- 이제 이 예제의 변형을 고려해 보겠음. 생성자를 사용하는 대신 Spring에게 정적 팩토리 메서드를 호출하여 객체의 인스턴스를 반환하도록 지시함:
 
 ```xml
 <bean id="exampleBean" class="examples.ExampleBean" factory-method="createInstance">
@@ -1346,7 +1239,7 @@ public class ExampleBean {
 <bean id="yetAnotherBean" class="examples.YetAnotherBean"/>
 ```
 
-- 다음 예제는 해당하는 ExampleBean 클래스를 보여줍니다:
+- 다음 예제는 해당하는 ExampleBean 클래스를 보여줌:
 
 ```java
 public class ExampleBean {
@@ -1356,8 +1249,8 @@ public class ExampleBean {
 		...
 	}
 
-// 정적 팩토리 메서드; 이 메서드의 인수는 반환되는 빈의 의존성으로 간주될 수 있습니다.
-// 이러한 인수가 실제로 어떻게 사용되는지는 상관없습니다.
+// 정적 팩토리 메서드; 이 메서드의 인수는 반환되는 빈의 의존성으로 간주될 수 있음
+// 이러한 인수가 실제로 어떻게 사용되는지는 상관없음
 public static ExampleBean createInstance (
 		AnotherBean anotherBean, YetAnotherBean yetAnotherBean, int i) {
 
@@ -1368,7 +1261,7 @@ public static ExampleBean createInstance (
 }
 ```
 
-- 정적 팩토리 메서드에 대한 인수는 실제 생성자가 사용된 것과 정확히 동일한 방식으로 <constructor-arg/> 요소로 제공됩니다. 팩토리 메서드에서 반환하는 클래스의 유형은 정적 팩토리 메서드를 포함하는 클래스와 동일한 유형일 필요는 없습니다(이 예제에서는 그렇지만). 인스턴스(비정적) 팩토리 메서드는 class 속성 대신 factory-bean 속성을 사용한다는 점을 제외하면 기본적으로 동일한 방식으로 사용할 수 있으므로 여기서는 자세한 내용을 다루지 않겠습니다.
+- 정적 팩토리 메서드에 대한 인수는 실제 생성자가 사용된 것과 정확히 동일한 방식으로 `<constructor-arg/>` 요소로 제공됨. 팩토리 메서드에서 반환하는 클래스의 유형은 정적 팩토리 메서드를 포함하는 클래스와 동일한 유형일 필요는 없음(이 예제에서는 그렇지만). 인스턴스(비정적) 팩토리 메서드는 `class` 속성 대신 `factory-bean` 속성을 사용한다는 점을 제외하면 기본적으로 동일한 방식으로 사용할 수 있으므로 여기서는 자세한 내용을 다루지 않겠음.
 
 ## The IoC Container - Dependencies - Dependencies and Configuration in Detail
 
@@ -1771,33 +1664,14 @@ exampleBean.setEmail(null);
 
 ## The IoC Container - Dependencies - Using depends-on
 
-- 한 빈이 다른 빈의 의존성인 경우, 일반적으로 한 빈이 다른 빈의 속성으로 설정된다는 의미. 일반적으로 XML 기반 구성 메타데이터에서 `<ref/>` 요소를 사용하여 이를 수행함. 그러나 때로는 빈 간의 의존성이 덜 직접적일 수 있음. 예를 들어, 데이터베이스 드라이버 등록과 같이 클래스의 정적 초기화 프로그램을 트리거해야 하는 경우. depends-on 속성을 사용하면 이 요소를 사용하는 빈이 초기화되기 전에 하나 이상의 빈을 명시적으로 강제로 초기화할 수 있음. 다음 예제에서는 depends-on 속성을 사용하여 단일 빈에 대한 의존성을 표현함.
-- 일반적으로 스프링 컨테이너는 빈을 필요한 시점에 지연 초기화(Lazy Initialization)하지만, 특정 순서로 빈을 초기화해야 하는 경우 depends-on을 사용하여 초기화 순서를 제어할 수 있음.
-- Java 설정에서는 빈이 다른 빈에 의존할 경우, 의존성을 주입하는 시점에 자동으로 빈이 생성되고 초기화됨. 그러나 여전히 특정 초기화 순서를 강제하고 싶을 때 `@DependsOn` 어노테이션을 사용할 수 있음. 예를 들어, 어떤 빈이 생성되기 전에 특정 클래스를 로드해야 하거나 특정 빈의 초기화 로직이 먼저 실행되어야 하는 경우 `@DependsOn`을 사용함.
+- 한 빈이 다른 빈의 의존성인 경우, 일반적으로 한 빈이 다른 빈의 프로퍼티로 설정된다는 것을 의미함. 일반적으로 XML 기반 설정 메타데이터에서 `<ref/>` 요소를 사용하여 이를 수행함. 그러나 때로는 빈 간의 의존성이 덜 직접적일 수 있음. 예를 들어 데이터베이스 드라이버 등록과 같이 클래스의 정적 초기화 프로그램을 트리거해야 하는 경우임. `depends-on` 속성을 사용하면 이 요소를 사용하는 빈이 초기화되기 전에 하나 이상의 빈을 강제로 초기화할 수 있음. 다음 예제에서는 `depends-on` 속성을 사용하여 단일 빈에 대한 의존성을 표현함:
 
 ```xml
 <bean id="beanOne" class="ExampleBean" depends-on="manager"/>
 <bean id="manager" class="ManagerBean" />
 ```
 
-```java
-// 여기서 depends-on 속성은 생략되었지만, 스프링이 자동으로 빈 초기화 순서를 처리해줌
-@Configuration
-public class AppConfig {
-
-    @Bean
-    public ManagerBean manager() {
-        return new ManagerBean();
-    }
-
-    @Bean
-    public ExampleBean beanOne() {
-        return new ExampleBean();
-    }
-}
-```
-
-- 여러 빈에 대한 의존성을 표현하려면 depends-on 속성의 값으로 빈 이름 목록을 제공하면 됨(쉼표, 공백 및 세미콜론은 유효한 구분 기호임)
+- 여러 빈에 대한 의존성을 표현하려면 `depends-on` 속성의 값으로 빈 이름 목록을 제공하면 됨(쉼표, 공백 및 세미콜론은 유효한 구분 기호임):
 
 ```xml
 <bean id="beanOne" class="ExampleBean" depends-on="manager,accountDao">
@@ -1808,76 +1682,634 @@ public class AppConfig {
 <bean id="accountDao" class="x.y.jdbc.JdbcAccountDao" />
 ```
 
+> ##### Note
+>
+> - `depends-on` 속성은 초기화 시점의 의존성과 싱글톤 빈의 경우에만 해당하는 소멸 시점의 의존성을 모두 지정할 수 있음. 주어진 빈과 `depends-on` 관계를 정의하는 의존 빈은 주어진 빈 자체가 소멸되기 전에 먼저 소멸됨. 따라서 `depends-on`은 종료 순서도 제어할 수 있음.
+
+## The IoC Container - Dependencies - Lazy-initialized Beans
+
+- 기본적으로 `ApplicationContext` 구현은 초기화 프로세스의 일부로 모든 싱글톤 빈을 열심히 생성하고 구성함. 일반적으로 이 사전 인스턴스화는 바람직한데, 몇 시간 또는 며칠 후가 아니라 즉시 구성 또는 주변 환경의 오류가 발견되기 때문임. 이 동작이 바람직하지 않은 경우 빈 정의를 지연 초기화되는 것으로 표시하여 싱글톤 빈의 사전 인스턴스화를 방지할 수 있음. 지연 초기화된 빈은 시작 시가 아니라 처음 요청될 때 빈 인스턴스를 생성하도록 IoC 컨테이너에 지시함.
+- XML에서 이 동작은 다음 예제와 같이 `<bean/>` 요소의 lazy-init 속성에 의해 제어됨:
+
+```xml
+<bean id="lazy" class="com.something.ExpensiveToCreateBean" lazy-init="true"/>
+<bean name="not.lazy" class="com.something.AnotherBean"/>
+```
+
+- 앞의 구성을 `ApplicationContext`에서 사용하면 `ApplicationContext`가 시작될 때 `lazy` 빈은 열심히 사전 인스턴스화되지 않는 반면 `not.lazy` 빈은 열심히 사전 인스턴스화됨.
+- 그러나 지연 초기화된 빈이 지연 초기화되지 않은 싱글톤 빈의 의존성인 경우 싱글톤의 의존성을 충족해야 하므로 `ApplicationContext`는 시작 시 지연 초기화된 빈을 생성함. 지연 초기화된 빈은 지연 초기화되지 않은 다른 곳의 싱글톤 빈에 주입됨.
+- 다음 예제와 같이 `<beans/>` 요소의 `default-lazy-init` 속성을 사용하여 컨테이너 수준에서 지연 초기화를 제어할 수도 있음:
+
+```xml
+<beans default-lazy-init="true">
+	<!-- 어떤 빈도 사전 인스턴스화되지 않음... -->
+</beans>
+```
+
+## The IoC Container - Dependencies - Autowiring Collaborators
+
+- 스프링 컨테이너는 협력하는 빈 사이의 관계를 자동으로 연결할 수 있음. `ApplicationContext`의 내용을 검사하여 스프링이 빈의 협력자(다른 빈)를 자동으로 해결하도록 할 수 있음. 자동 연결에는 다음과 같은 장점이 있음:
+  > - 자동 연결은 프로퍼티나 생성자 인수를 지정해야 할 필요성을 크게 줄일 수 있음. (이 장의 다른 곳에서 설명하는 빈 템플릿과 같은 다른 메커니즘도 이와 관련하여 유용함.)
+  > - 자동 연결은 객체가 진화함에 따라 구성을 업데이트할 수 있음. 예를 들어, 클래스에 의존성을 추가해야 하는 경우 구성을 수정할 필요 없이 해당 의존성을 자동으로 충족할 수 있음. 따라서 자동 연결은 특히 개발 중에 유용할 수 있으며, 코드 베이스가 안정화되면 명시적 연결로 전환하는 옵션을 부정하지 않음.
+- XML 기반 구성 메타데이터를 사용할 때(의존성 주입 참조) `<bean/>` 요소의 autowire 속성으로 빈 정의의 자동 연결 모드를 지정할 수 있음. 자동 연결 기능에는 네 가지 모드가 있음. 빈마다 자동 연결을 지정하고 자동 연결할 대상을 선택할 수 있음. 다음 표는 네 가지 자동 연결 모드를 설명함:
+
+| Mode          | Explanation                                                                                                                                                                                                                                                                                         |
+| ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `no`          | (기본값) 자동 연결 없음. 빈 참조는 ref 요소로 정의해야 함. 대규모 배포에서는 기본 설정을 변경하는 것이 좋지 않음. 협력자를 명시적으로 지정하면 더 큰 제어력과 명확성을 얻을 수 있기 때문임. 어느 정도 시스템의 구조를 문서화함.                                                                     |
+| `byName`      | 프로퍼티 이름으로 자동 연결. 스프링은 자동 연결이 필요한 프로퍼티와 같은 이름의 빈을 찾음. 예를 들어 빈 정의가 이름으로 자동 연결하도록 설정되어 있고 `master` 프로퍼티(즉, `setMaster(..)` 메서드가 있음)가 포함된 경우 스프링은 `master`라는 이름의 빈 정의를 찾아 프로퍼티를 설정하는 데 사용함. |
+| `byType`      | 컨테이너에 프로퍼티 타입의 빈이 정확히 하나만 존재하는 경우 프로퍼티를 자동 연결할 수 있음. 둘 이상 존재하면 치명적인 예외가 발생하며, 이는 해당 빈에 대해 `byType` 자동 연결을 사용할 수 없음을 나타냄. 일치하는 빈이 없으면 아무 일도 일어나지 않음(프로퍼티가 설정되지 않음).                    |
+| `constructor` | `byType`과 유사하지만 생성자 인수에 적용됨. 컨테이너에 생성자 인수 타입의 빈이 정확히 하나가 아니면 치명적인 오류가 발생함.                                                                                                                                                                         |
+
+- `byType` 또는 `constructor` 자동 연결 모드를 사용하면 배열과 타입화된 컬렉션을 연결할 수 있음. 이런 경우 예상 타입과 일치하는 컨테이너 내의 모든 자동 연결 후보가 의존성을 충족하기 위해 제공됨. 예상 키 타입이 `String`인 경우 강력한 타입의 `Map` 인스턴스를 자동 연결할 수 있음. 자동 연결된 `Map` 인스턴스의 값은 예상 타입과 일치하는 모든 빈 인스턴스로 구성되며 `Map` 인스턴스의 키에는 해당 빈 이름이 포함됨.
+
+### Limitations and Disadvantages of Autowiring
+
+- 자동 연결은 프로젝트 전체에서 일관되게 사용될 때 가장 잘 작동함. 일반적으로 자동 연결을 사용하지 않는 경우 개발자가 하나 또는 두 개의 빈 정의만 연결하는 데 사용하면 혼란스러울 수 있음.
+- 자동 연결의 한계와 단점을 고려할 것:
+  > - 프로퍼티와 `constructor-arg` 설정의 명시적 의존성은 항상 자동 연결보다 우선함. 원시 형태(Primitives), `String`, `Class`(및 이러한 단순 프로퍼티의 배열)와 같은 단순 프로퍼티는 자동 연결할 수 없음. 이 제한은 의도적임.
+  > - 자동 연결은 명시적 연결보다 정확성이 떨어짐. 앞의 표에서 언급했듯이 스프링은 예기치 않은 결과를 초래할 수 있는 모호성이 있는 경우 추측하지 않도록 주의함. 스프링에서 관리하는 객체 간의 관계가 더 이상 명시적으로 문서화되지 않음.
+  > - 연결 정보는 스프링 컨테이너에서 문서를 생성할 수 있는 도구에 사용할 수 없음.
+  > - 컨테이너 내의 여러 빈 정의가 자동 연결할 `setter` 메서드나 생성자 인수에 의해 지정된 타입과 일치할 수 있음. 배열, 컬렉션 또는 `Map` 인스턴스의 경우 이는 반드시 문제가 되지는 않음. 그러나 단일 값을 예상하는 의존성의 경우 이 모호성은 임의로 해결되지 않음. 고유한 빈 정의를 사용할 수 없으면 예외가 발생함.
+- 후자의 시나리오에서는 몇 가지 옵션이 있음:
+  > - 명시적 연결을 선호하여 자동 연결을 포기함.
+  > - 다음 섹션에 설명된 대로 `autowire-candidate` 속성을 `false`로 설정하여 빈 정의에 대한 자동 연결을 피함.
+  > - `<bean/>` 요소의 `primary` 속성을 `true`로 설정하여 단일 빈 정의를 주요 후보로 지정함.
+  > - 애노테이션 기반 컨테이너 구성에 설명된 대로 애노테이션 기반 구성으로 사용 가능한 더 세밀한 제어를 구현함.
+
+### Excluding a Bean from Autowiring
+
+- 빈별로 자동 연결에서 빈을 제외할 수 있음. 스프링의 XML 형식에서 `<bean/>` 요소의 `autowire-candidate` 속성을 `false`로 설정할 것. 컨테이너는 해당 특정 빈 정의를 자동 연결 인프라에서 사용할 수 없게 만듦(`@Autowired`와 같은 애노테이션 스타일 구성 포함).
+
+> ##### Note
+>
+> - `autowire-candidate` 속성은 타입 기반 자동 연결에만 영향을 미치도록 설계되었음. 지정된 빈이 자동 연결 후보로 표시되지 않더라도 이름으로 명시적 참조에는 영향을 주지 않으며 이는 해결됨. 결과적으로 이름이 일치하면 이름으로 자동 연결이 그럼에도 불구하고 빈을 주입함.
+
+- 빈 이름에 대한 패턴 매칭을 기반으로 자동 연결 후보를 제한할 수도 있습니다. 최상위 `<beans/>` 요소는 `default-autowire-candidates` 속성 내에 하나 이상의 패턴을 허용함. 예를 들어 이름이 `Repository`로 끝나는 모든 빈으로 자동 연결 후보 상태를 제한하려면 `*Repository` 값을 제공할 것. 여러 패턴을 제공하려면 쉼표로 구분된 목록에서 정의할 것. 빈 정의의 `autowire-candidate` 속성에 대한 명시적 값 `true` 또는 `false`는 항상 우선함. 그러한 빈의 경우 패턴 매칭 규칙이 적용되지 않음.
+- 이러한 기술은 자동 연결에 의해 다른 빈에 주입되길 원하지 않는 빈에 유용함. 그렇다고 해서 제외된 빈 자체를 자동 연결을 사용하여 구성할 수 없다는 의미는 아님. 오히려 빈 자체는 다른 빈을 자동 연결하기 위한 후보가 아님.
+
+## The IoC Container - Dependencies - Method Injection
+
+- 대부분의 애플리케이션 시나리오에서 컨테이너의 대부분의 빈은 싱글톤임. 싱글톤 빈이 다른 싱글톤 빈과 협력해야 하거나 비싱글톤 빈이 다른 비싱글톤 빈과 협력해야 할 때 일반적으로 한 빈을 다른 빈의 프로퍼티로 정의하여 의존성을 처리함. 문제는 빈 생명주기가 다를 때 발생함. 싱글톤 빈 A가 비싱글톤(프로토타입) 빈 B를 사용해야 한다고 가정해 보겠음. 아마도 A의 각 메서드 호출마다 그럴 것. 컨테이너는 싱글톤 빈 A를 한 번만 생성하므로 프로퍼티를 설정할 기회도 한 번밖에 없음. 컨테이너는 빈 A에 필요할 때마다 새로운 빈 B 인스턴스를 제공할 수 없음.
+- 해결책은 제어의 역전을 포기하는 것. `ApplicationContextAware` 인터페이스를 구현하고 `getBean("B")` 호출을 사용하여 빈 A가 필요할 때마다 컨테이너에 (일반적으로 새로운) 빈 B 인스턴스를 요청하도록 빈 A를 컨테이너에 인식시킬 수 있음. 다음 예제는 이 접근 방식을 보여줌:
+
 ```java
-@Configuration
-public class AppConfig {
+package fiona.apple;
 
-    @Bean
-    public ManagerBean manager() {
-        return new ManagerBean();
-    }
+// 스프링 API 임포트
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
-    @Bean
-    public JdbcAccountDao accountDao() {
-        return new JdbcAccountDao();
-    }
+/**
+* 일부 처리를 수행하기 위해 상태를 가진 Command 스타일의 클래스를 사용하는 클래스.
+*/
+public class CommandManager implements ApplicationContextAware {
 
-    @Bean
-    @DependsOn({"manager", "accountDao"})
-    public ExampleBean beanOne(ManagerBean manager) {
-        ExampleBean exampleBean = new ExampleBean();
-        exampleBean.setManager(manager);
-        return exampleBean;
-    }
+	private ApplicationContext applicationContext;
+
+	public Object process(Map commandState) {
+		// 적절한 Command의 새 인스턴스 가져오기
+		Command command = createCommand();
+		// (바라건대 새로운) Command 인스턴스에 상태 설정
+		command.setState(commandState);
+		return command.execute();
+	}
+
+	protected Command createCommand() {
+		// 스프링 API 의존성에 주목할 것!
+		return this.applicationContext.getBean("command", Command.class);
+	}
+
+	public void setApplicationContext(
+			ApplicationContext applicationContext) throws BeansException {
+		this.applicationContext = applicationContext;
+	}
 }
+```
+
+- 앞의 방법은 비즈니스 코드가 스프링 프레임워크를 인식하고 결합되기 때문에 바람직하지 않음. 스프링 IoC 컨테이너의 다소 고급 기능인 메서드 주입을 사용하면 이 사용 사례를 깔끔하게 처리할 수 있음.
+
+> - 메서드 주입의 동기에 대해 자세히 알아보려면 [이 블로그 글](https://spring.io/blog/2004/08/06/method-injection)을 읽어볼 것.
+
+### Lookup Method Injection
+
+- 룩업 메서드 주입은 컨테이너 관리 빈의 메서드를 재정의하고 컨테이너의 다른 명명된 빈에 대한 룩업 결과를 반환하는 컨테이너의 능력. 룩업은 일반적으로 앞 섹션에 설명된 시나리오와 같이 프로토타입 빈을 포함함. 스프링 프레임워크는 CGLIB 라이브러리의 바이트코드 생성을 사용하여 메서드를 재정의하는 하위 클래스를 동적으로 생성함으로써 이 메서드 주입을 구현함.
+
+> ##### Note
+>
+> - 이 동적 하위 클래스화가 작동하려면 스프링 빈 컨테이너가 하위 클래스로 만드는 클래스는 `final`일 수 없으며 재정의할 메서드도 `final`일 수 없음.
+> - 추상 메서드가 있는 클래스의 단위 테스트를 수행하려면 직접 클래스를 하위 클래스로 만들고 추상 메서드의 스텁 구현을 제공해야 함.
+> - 구체적인 클래스를 선택하려면 구성 요소 검사에도 구체적인 메서드가 필요함.
+> - 또 다른 주요 제한 사항은 룩업 메서드가 팩토리 메서드, 특히 구성 클래스의 `@Bean` 메서드에서는 작동하지 않는다는 것. 이 경우 컨테이너가 인스턴스 생성을 담당하지 않으므로 즉석에서 런타임에 생성된 하위 클래스를 만들 수 없기 때문임.
+
+- 이전 코드 스니펫의 `CommandManager` 클래스의 경우, 스프링 컨테이너는 `createCommand()` 메서드의 구현을 동적으로 재정의함. 수정된 예제에서 볼 수 있듯이 `CommandManager` 클래스는 스프링에 대한 어떠한 의존성도 가지고 있지 않음:
+
+```java
+package fiona.apple;
+
+// 더 이상 스프링 임포트가 없음!
+public abstract class CommandManager {
+
+	public Object process(Object commandState) {
+		// 적절한 Command 인터페이스의 새 인스턴스 가져오기
+		Command command = createCommand();
+		// (바라건대 새로운) Command 인스턴스에 상태 설정
+		command.setState(commandState);
+		return command.execute();
+	}
+
+	 // 괜찮음... 하지만 이 메서드의 구현을 찾을 수 없음.
+	protected abstract Command createCommand();
+}
+```
+
+- 주입할 메서드를 포함하는 클라이언트 클래스(이 경우 `CommandManager`)에서 주입할 메서드는 다음 형식의 시그니처가 필요함:
+
+```xml
+<public|protected> [abstract] <return-type> theMethodName(no-arguments);
+```
+
+- 메서드가 추상적이면 동적으로 생성된 하위 클래스가 메서드를 구현함. 그렇지 않으면 동적으로 생성된 하위 클래스는 원래 클래스에 정의된 구체적인 메서드를 재정의함. 다음 예제를 고려할 것:
+
+```xml
+<!-- 프로토타입(비싱글톤)으로 배포된 상태를 가진 빈 -->
+<bean id="myCommand" class="fiona.apple.AsyncCommand" scope="prototype">
+	<!-- 필요에 따라 의존성을 여기에 주입 -->
+</bean>
+
+<!-- commandProcessor는 statefulCommandHelper를 사용 -->
+<bean id="commandManager" class="fiona.apple.CommandManager">
+	<lookup-method name="createCommand" bean="myCommand"/>
+</bean>
+```
+
+- `commandManager`로 식별되는 빈은 `myCommand` 빈의 새 인스턴스가 필요할 때마다 자체 `createCommand()` 메서드를 호출함. 실제로 필요한 경우 `myCommand` 빈을 프로토타입으로 배포해야 함. 싱글톤인 경우 `myCommand` 빈의 동일한 인스턴스가 매번 반환됨.
+- 또는 애노테이션 기반 컴포넌트 모델 내에서 다음 예제와 같이 `@Lookup` 애노테이션을 통해 룩업 메서드를 선언할 수 있음:
+
+```java
+public abstract class CommandManager {
+
+	public Object process(Object commandState) {
+		Command command = createCommand();
+		command.setState(commandState);
+		return command.execute();
+	}
+
+	@Lookup("myCommand")
+	protected abstract Command createCommand();
+}
+```
+
+- 또는 더 관용적으로 룩업 메서드의 선언된 반환 타입에 대해 대상 빈이 해결되도록 할 수 있음:
+
+```java
+public abstract class CommandManager {
+
+	public Object process(Object commandState) {
+		Command command = createCommand();
+		command.setState(commandState);
+		return command.execute();
+	}
+
+	@Lookup
+	protected abstract Command createCommand();
+}
+```
+
+- 일반적으로 이러한 주석이 달린 룩업 메서드는 구체적인 스텁 구현과 함께 선언해야 함. 이는 추상 클래스가 기본적으로 무시되는 스프링의 컴포넌트 스캔 규칙과 호환되도록 하기 위함. 이 제한사항은 명시적으로 등록되거나 명시적으로 가져온 빈 클래스에는 적용되지 않음.
+
+> ##### Tip
+>
+> - 다르게 범위가 지정된 대상 빈에 액세스하는 또 다른 방법은 `ObjectFactory/ Provider` 주입 지점. 의존성으로서의 범위 지정 빈을 참조할 것.
+> - `org.springframework.beans.factory.config` 패키지의 `ServiceLocatorFactoryBean`도 유용할 수 있음.
+
+### Arbitrary Method Replacement
+
+- 룩업 메서드 주입보다 덜 유용한 메서드 주입 형태는 관리형 빈의 임의 메서드를 다른 메서드 구현으로 대체하는 기능. 이 기능이 실제로 필요할 때까지 이 섹션의 나머지 부분은 안전하게 건너뛸 수 있음.
+- XML 기반 구성 메타데이터를 사용하면 `replaced-method` 요소를 사용하여 배포된 빈의 기존 메서드 구현을 다른 구현으로 대체할 수 있음. 다음 클래스를 고려해 볼 것. 이 클래스에는 재정의하려는 `computeValue`라는 메서드가 있음:
+
+```java
+public class MyValueCalculator {
+
+	public String computeValue(String input) {
+		// some real code...
+	}
+
+	// some other methods...
+}
+```
+
+- `org.springframework.beans.factory.support.MethodReplacer` 인터페이스를 구현하는 클래스는 다음 예제와 같이 새 메서드 정의를 제공함:
+
+```java
+/**
+ * meant to be used to override the existing computeValue(String)
+ * implementation in MyValueCalculator
+ */
+public class ReplacementComputeValue implements MethodReplacer {
+
+	public Object reimplement(Object o, Method m, Object[] args) throws Throwable {
+		// get the input value, work with it, and return a computed result
+		String input = (String) args[0];
+		...
+		return ...;
+	}
+}
+```
+
+- 원래 클래스를 배포하고 메서드 재정의를 지정하는 빈 정의는 다음 예제와 유사함:
+
+```xml
+<bean id="myValueCalculator" class="x.y.z.MyValueCalculator">
+	<!-- arbitrary method replacement -->
+	<replaced-method name="computeValue" replacer="replacementComputeValue">
+		<arg-type>String</arg-type>
+	</replaced-method>
+</bean>
+
+<bean id="replacementComputeValue" class="a.b.c.ReplacementComputeValue"/>
+
+```
+
+- `<replaced-method/>` 요소 내에서 하나 이상의 `<arg-type/>` 요소를 사용하여 재정의되는 메서드의 메서드 시그니처를 나타낼 수 있음. 인수의 시그니처는 메서드가 오버로드되고 클래스 내에 여러 변형이 존재하는 경우에만 필요함. 편의상 인수의 타입 문자열은 정규화된 타입 이름의 하위 문자열일 수 있음. 예를 들어 다음은 모두 `java.lang.String`과 일치함:
+
+```java
+java.lang.String
+String
+Str
+```
+
+- 인수 개수가 종종 가능한 각 선택 사항을 구분하기에 충분하므로 이 단축키를 사용하면 인수 타입과 일치하는 가장 짧은 문자열만 입력하여 많은 입력을 줄일 수 있음.
+
+## The IoC Container - Bean Scopes
+
+- 빈 정의를 생성할 때, 해당 빈 정의에 의해 정의된 클래스의 실제 인스턴스를 생성하기 위한 레시피를 만듦. 빈 정의가 레시피라는 개념은 중요한데, 이는 클래스와 마찬가지로 단일 레시피에서 여러 개의 객체 인스턴스를 생성할 수 있음을 의미하기 때문임.
+- 특정 빈 정의에서 생성된 객체에 연결될 다양한 의존성과 구성 값뿐만 아니라 특정 빈 정의에서 생성된 객체의 범위도 제어할 수 있음. 이 접근 방식은 강력하고 유연한데, Java 클래스 수준에서 객체의 범위를 구워 넣는 대신 구성을 통해 생성하는 객체의 범위를 선택할 수 있기 때문임. 빈은 여러 범위 중 하나에 배포되도록 정의될 수 있음. 스프링 프레임워크는 6가지 범위를 지원하는데, 그 중 4가지는 웹 인식 `ApplicationContext`를 사용하는 경우에만 사용할 수 있음. 사용자 정의 범위를 생성할 수도 있음.
+- 다음 표는 지원되는 범위에 대해 설명함:
+
+| Scope         | Description                                                                                                                                                                                           |
+| ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `singleton`   | (기본값) 단일 스프링 IoC 컨테이너에 대해 단일 빈 정의를 단일 객체 인스턴스로 범위를 지정함.                                                                                                           |
+| `prototype`   | 단일 빈 정의를 임의의 수의 객체 인스턴스로 범위를 지정함.                                                                                                                                             |
+| `request`     | 단일 빈 정의를 단일 HTTP 요청의 생명주기로 범위를 지정함. 즉, 각 HTTP 요청마다 단일 빈 정의의 뒷면에서 생성된 빈의 자체 인스턴스를 가짐. 웹 인식 스프링 `ApplicationContext`의 컨텍스트에서만 유효함. |
+| `session`     | 단일 빈 정의를 HTTP 세션의 생명주기로 범위를 지정함. 웹 인식 스프링 `ApplicationContext`의 컨텍스트에서만 유효함.                                                                                     |
+| `application` | 단일 빈 정의를 `ServletContext`의 생명주기로 범위를 지정함. 웹 인식 스프링 `ApplicationContext`의 컨텍스트에서만 유효함.                                                                              |
+| `websocket`   | 단일 빈 정의를 `WebSocket`의 생명주기로 범위를 지정함. 웹 인식 스프링 `ApplicationContext`의 컨텍스트에서만 유효함.                                                                                   |
+
+> ##### Note
+>
+> - 스레드 범위를 사용할 수 있지만 기본적으로 등록되지 않음. 자세한 내용은 `SimpleThreadScope` 문서를 참조할 것. 이 범위 또는 다른 사용자 정의 범위를 등록하는 방법에 대한 지침은 사용자 정의 범위 사용을 참조할 것.
+
+### The Singleton Scope
+
+- 싱글톤 빈의 단일 공유 인스턴스만 관리되며, 해당 빈 정의와 일치하는 ID 또는 ID를 가진 빈에 대한 모든 요청은 스프링 컨테이너에 의해 반환되는 특정 빈 인스턴스 하나로 귀결됨.
+- 다른 말로 하면, 빈 정의를 정의하고 싱글톤으로 범위를 지정하면 스프링 IoC 컨테이너는 해당 빈 정의에 의해 정의된 객체의 인스턴스를 정확히 하나만 생성함. 이 단일 인스턴스는 그러한 싱글톤 빈의 캐시에 저장되며, 해당 이름의 빈에 대한 모든 후속 요청과 참조는 캐시된 객체를 반환함. 다음 이미지는 싱글톤 범위가 어떻게 작동하는지 보여줌:
+  ![The_Singleton_Scope](description_img/The_Singleton_Scope.png)
+- 스프링의 싱글톤 빈 개념은 Gang of Four(GoF) 패턴 책에 정의된 싱글톤 패턴과 다름. GoF 싱글톤은 ClassLoader당 특정 클래스의 인스턴스를 하나만 생성하도록 객체의 범위를 하드 코딩함. 스프링 싱글톤의 범위는 컨테이너당, 빈당으로 설명하는 것이 가장 좋음. 이는 단일 스프링 컨테이너에서 특정 클래스에 대해 하나의 빈을 정의하면 스프링 컨테이너가 해당 빈 정의에 의해 정의된 클래스의 인스턴스를 하나만 생성한다는 것을 의미함. 싱글톤 범위는 스프링의 기본 범위. XML에서 빈을 싱글톤으로 정의하려면 다음 예제와 같이 빈을 정의할 수 있음:
+
+```xml
+<bean id="accountService" class="com.something.DefaultAccountService"/>
+
+<!-- the following is equivalent, though redundant (singleton scope is the default) -->
+<bean id="accountService" class="com.something.DefaultAccountService" scope="singleton"/>
+```
+
+### The Prototype Scope
+
+- 빈 배포의 비싱글톤 프로토타입 범위는 특정 빈에 대한 요청이 있을 때마다 새로운 빈 인스턴스를 생성함. 즉, 빈이 다른 빈에 주입되거나 컨테이너의 getBean() 메서드 호출을 통해 요청됨. 일반적으로 모든 상태 저장 빈에는 프로토타입 범위를 사용하고 상태 비저장 빈에는 싱글톤 범위를 사용해야 함.
+- 다음 다이어그램은 스프링 프로토타입 범위를 보여줌:
+
+![The_Prototype_Scope](description_img/The_Prototype_Scope.png)
+
+- (데이터 액세스 객체(DAO)는 일반적으로 대화형 상태를 유지하지 않으므로 프로토타입으로 구성되지 않음. 싱글톤 다이어그램의 핵심을 재사용하는 것이 더 쉬웠음.)
+- 다음 예제는 XML에서 빈을 프로토타입으로 정의함:
+
+```xml
+<bean id="accountService" class="com.something.DefaultAccountService" scope="prototype"/>
+```
+
+- 다른 범위와 대조적으로 스프링은 프로토타입 빈의 전체 생명주기를 관리하지 않음. 컨테이너는 프로토타입 객체를 인스턴스화하고 구성하며 조립하여 클라이언트에 전달하며, 해당 프로토타입 인스턴스에 대한 더 이상의 기록은 없음. 따라서 범위에 관계없이 모든 객체에서 초기화 생명주기 콜백 메서드가 호출되지만, 프로토타입의 경우 구성된 소멸 생명주기 콜백은 호출되지 않음. 클라이언트 코드는 프로토타입 범위의 객체를 정리하고 프로토타입 빈이 보유한 고비용 리소스를 해제해야 함. 스프링 컨테이너가 프로토타입 범위의 빈이 보유한 리소스를 해제하도록 하려면 정리해야 하는 빈에 대한 참조를 보유하는 사용자 정의 빈 후처리기를 사용해 볼 것.
+- 어떤 면에서 프로토타입 범위의 빈에 대한 스프링 컨테이너의 역할은 Java의 `new` 연산자를 대체하는 것. 그 이후의 모든 생명주기 관리는 클라이언트가 처리해야 함. (스프링 컨테이너의 빈 생명주기에 대한 자세한 내용은 생명주기 콜백을 참조할 것.)
+
+### Singleton Beans with Prototype-bean Dependencies
+
+- 프로토타입 빈에 의존하는 싱글톤 범위의 빈을 사용할 때는 의존성이 인스턴스화 시점에 해결된다는 점을 알아둘 것. 따라서 프로토타입 범위의 빈을 싱글톤 범위의 빈에 의존성 주입하면 새로운 프로토타입 빈이 인스턴스화되어 싱글톤 빈에 의존성 주입됨. 프로토타입 인스턴스는 싱글톤 범위의 빈에 제공되는 유일한 인스턴스.
+- 그러나 런타임에 싱글톤 범위의 빈이 프로토타입 범위의 빈의 새 인스턴스를 반복적으로 획득하길 원한다고 가정해 보겠음. 스프링 컨테이너가 싱글톤 빈을 인스턴스화하고 의존성을 해결하고 주입할 때 한 번만 발생하므로 프로토타입 범위의 빈을 싱글톤 빈에 의존성 주입할 수 없음. 런타임에 프로토타입 빈의 새 인스턴스가 한 번 이상 필요한 경우 메서드 주입을 참조할 것.
+
+### Request, Session, Application, and WebSocket Scopes
+
+- `request`, `session`, `application`, `websocket` 범위는 웹 인식 스프링 `ApplicationContext` 구현(예: `XmlWebApplicationContext`)을 사용하는 경우에만 사용할 수 있음. `ClassPathXmlApplicationContext`와 같은 일반 스프링 IoC 컨테이너에서 이러한 범위를 사용하면 알 수 없는 빈 범위에 대해 불평하는 `IllegalStateException`이 발생합니다.
+
+#### Initial Web Configuration
+
+- `request`, `session`, `application`, `websocket` 수준(웹 범위 빈)에서 빈의 범위를 지정하려면 빈을 정의하기 전에 약간의 초기 구성이 필요함. (이 초기 설정은 표준 범위인 싱글톤과 프로토타입에는 필요하지 않음.)
+- 이 초기 설정을 수행하는 방법은 특정 서블릿 환경에 따라 다름.
+- 스프링 `DispatcherServlet`에 의해 처리되는 요청 내에서 스프링 웹 MVC 내에서 범위가 지정된 빈에 액세스하는 경우 특별한 설정이 필요하지 않음. `DispatcherServlet`은 이미 모든 관련 상태를 노출함.
+- 스프링의 `DispatcherServlet` 외부에서 처리되는 요청(예: JSF 사용 시)으로 서블릿 웹 컨테이너를 사용하는 경우 `org.springframework.web.context.request.RequestContextListener ServletRequestListener`를 등록해야 함. 이는 `WebApplicationInitializer` 인터페이스를 사용하여 프로그래밍 방식으로 수행할 수 있음. 또는 웹 애플리케이션의 `web.xml` 파일에 다음 선언을 추가할 것:
+
+```xml
+<web-app>
+	...
+	<listener>
+		<listener-class>
+			org.springframework.web.context.request.RequestContextListener
+		</listener-class>
+	</listener>
+	...
+</web-app>
+```
+
+- 또는 리스너 설정에 문제가 있는 경우 스프링의 `RequestContextFilter` 사용을 고려할 것. 필터 매핑은 주변 웹 애플리케이션 구성에 따라 다르므로 적절하게 변경해야 함. 다음 목록은 웹 애플리케이션의 필터 부분을 보여줌:
+
+```xml
+<web-app>
+	...
+	<filter>
+		<filter-name>requestContextFilter</filter-name>
+		<filter-class>org.springframework.web.filter.RequestContextFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>requestContextFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	...
+</web-app>
+```
+
+- `DispatcherServlet`, `RequestContextListener`, `RequestContextFilter`는 모두 정확히 동일한 작업을 수행하며, 즉 해당 요청을 처리하는 스레드에 HTTP 요청 객체를 바인딩함. 이렇게 하면 요청 및 세션 범위의 빈을 호출 체인 아래로 사용할 수 있음.
+
+#### Request scope
+
+- 다음 빈 정의에 대한 XML 구성을 고려해 볼 것:
+
+```xml
+<bean id="loginAction" class="com.something.LoginAction" scope="request"/>
+```
+
+- 스프링 컨테이너는 `loginAction` 빈 정의를 사용하여 모든 HTTP 요청에 대해 `LoginAction` 빈의 새 인스턴스를 생성함. 즉, `loginAction` 빈은 HTTP 요청 수준에서 범위가 지정됨. 생성된 인스턴스의 내부 상태를 원하는 만큼 변경할 수 있는데, 동일한 `loginAction` 빈 정의에서 생성된 다른 인스턴스는 이러한 상태 변경 사항을 보지 않기 때문임. 이는 개별 요청에 특정됨. 요청 처리가 완료되면 요청 범위의 빈은 폐기됨.
+- 애노테이션 기반 컴포넌트나 Java 구성을 사용할 때 `@RequestScope` 애노테이션을 사용하여 컴포넌트를 요청 범위에 할당할 수 있음. 다음 예제는 이를 수행하는 방법을 보여줌:
+
+```java
+@RequestScope
+@Component
+public class LoginAction {
+	// ...
+}
+```
+
+#### Session Scope
+
+- 다음 빈 정의에 대한 XML 구성을 고려해 볼 것:
+
+```xml
+<bean id="userPreferences" class="com.something.UserPreferences" scope="session"/>
+```
+
+- 스프링 컨테이너는 `userPreferences` 빈 정의를 사용하여 단일 HTTP 세션의 수명 동안 `UserPreferences` 빈의 새 인스턴스를 생성함. 즉, `userPreferences` 빈은 HTTP 세션 수준에서 효과적으로 범위가 지정됨. 요청 범위의 빈과 마찬가지로 생성된 인스턴스의 내부 상태를 원하는 만큼 변경할 수 있는데, 동일한 `userPreferences` 빈 정의에서 생성된 인스턴스를 사용하는 다른 HTTP 세션 인스턴스는 이러한 상태 변경 사항을 보지 않기 때문임. 이는 개별 HTTP 세션에 특정됨. HTTP 세션이 최종적으로 폐기되면 해당 HTTP 세션에 범위가 지정된 빈도 폐기됨.
+- 애노테이션 기반 컴포넌트나 Java 구성을 사용할 때 `@SessionScope` 애노테이션을 사용하여 컴포넌트를 세션 범위에 할당할 수 있음.
+
+```java
+@SessionScope
+@Component
+public class UserPreferences {
+	// ...
+}
+```
+
+#### Application Scope
+
+- 다음 빈 정의에 대한 XML 구성을 고려해 볼 것:
+
+```xml
+<bean id="appPreferences" class="com.something.AppPreferences" scope="application"/>
+```
+
+- 스프링 컨테이너는 `appPreferences` 빈 정의를 사용하여 전체 웹 애플리케이션에 대해 한 번 `AppPreferences` 빈의 새 인스턴스를 생성함. 즉, `appPreferences` 빈은 `ServletContext` 수준에서 범위가 지정되고 일반 `ServletContext` 속성으로 저장됨. 이는 스프링 싱글톤 빈과 다소 유사하지만 두 가지 중요한 차이점이 있음: 스프링 `ApplicationContext`당 싱글톤이 아니라 `ServletContext`당 싱글톤이며(주어진 웹 애플리케이션에 여러 개가 있을 수 있음), 실제로 노출되어 `ServletContext` 속성으로 표시됨.
+- 애노테이션 기반 컴포넌트나 Java 구성을 사용할 때 `@ApplicationScope` 애노테이션을 사용하여 컴포넌트를 애플리케이션 범위에 할당할 수 있음. 다음 예제는 이를 수행하는 방법을 보여줌:
+
+```java
+@ApplicationScope
+@Component
+public class AppPreferences {
+	// ...
+}
+```
+
+#### WebSocket Scope
+
+- WebSocket 범위는 WebSocket 세션의 수명 주기와 연결되며 WebSocket을 통한 STOMP 애플리케이션에 적용됨. 자세한 내용은 WebSocket 범위를 참조할 것.
+
+#### Scoped Beans as Dependencies
+
+- 스프링 IoC 컨테이너는 객체(빈)의 인스턴스화뿐만 아니라 협력자(또는 의존성)의 연결도 관리함. 예를 들어 HTTP 요청 범위의 빈을 더 오래 살아있는 범위의 다른 빈에 주입하려는 경우 범위가 지정된 빈 대신 AOP 프록시를 주입하도록 선택할 수 있음. 즉, 범위가 지정된 객체와 동일한 공개 인터페이스를 노출하지만 관련 범위(예: HTTP 요청)에서 실제 대상 객체를 검색하고 실제 객체에 메서드 호출을 위임할 수 있는 프록시 객체를 주입해야 함.
+
+> ##### Note
+>
+> - 싱글톤으로 범위가 지정된 빈 사이에 `<aop:scoped-proxy/>`를 사용할 수도 있음. 이 경우 직렬화 가능하고 따라서 역직렬화 시 대상 싱글톤 빈을 다시 얻을 수 있는 중간 프록시를 통해 참조가 전달됨.
+> - 프로토타입 범위의 빈에 대해 `<aop:scoped-proxy/>`를 선언하면 공유 프록시의 모든 메서드 호출이 새 대상 인스턴스 생성으로 이어지고 호출이 해당 인스턴스로 전달됨.
+> - 또한 범위가 지정된 프록시는 수명 주기에 안전한 방식으로 더 짧은 범위의 빈에 액세스하는 유일한 방법은 아님. 주입 지점(즉, 생성자나 `setter` 인수 또는 자동 연결 필드)을 `ObjectFactory<MyTargetBean>`으로 선언하여 필요할 때마다 `getObject()` 호출을 통해 현재 인스턴스를 요청할 수 있음. 이 경우 인스턴스를 보유하거나 별도로 저장하지 않음.
+> - 확장된 변형으로 `ObjectProvider<MyTargetBean>`를 선언할 수 있음. 이는 `getIfAvailable`과 `getIfUnique`를 포함하여 몇 가지 추가 액세스 변형을 제공함.
+> - 이것의 JSR-330 변형은 `Provider`라고 하며 `Provider<MyTargetBean>` 선언과 해당 `get()` 호출을 사용하여 모든 검색 시도에 사용됨. JSR-330에 대한 자세한 내용은 여기를 참조할 것.
+
+- 다음 예제의 구성은 한 줄에 불과하지만 그 이면의 "이유"와 "방법"을 이해하는 것이 중요함:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:aop="http://www.springframework.org/schema/aop"
+   xsi:schemaLocation="http://www.springframework.org/schema/beans
+       https://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/aop
+       https://www.springframework.org/schema/aop/spring-aop.xsd">
+
+   <!-- 프록시로 노출된 HTTP 세션 범위의 빈 -->
+   <bean id="userPreferences" class="com.something.UserPreferences" scope="session">
+       <!-- 컨테이너에 주변 빈을 프록시하도록 지시 -->
+       <aop:scoped-proxy/>
+   </bean>
+
+   <!-- 위의 빈에 대한 프록시가 주입된 싱글톤 범위 빈 -->
+   <bean id="userService" class="com.something.SimpleUserService">
+       <!-- 프록시된 userPreferences 빈에 대한 참조 -->
+       <property name="userPreferences" ref="userPreferences"/>
+   </bean>
+</beans>
+```
+
+- 이러한 프록시를 생성하려면 범위가 지정된 빈 정의에 자식 `<aop:scoped-proxy/>` 요소를 삽입함(생성할 프록시 유형 선택 및 XML 스키마 기반 구성 참조).
+- 일반적인 시나리오에서 요청, 세션 및 사용자 정의 범위 수준에서 범위가 지정된 빈의 정의에 `<aop:scoped-proxy/>` 요소가 필요한 이유는 무엇일까? 다음 싱글톤 빈 정의를 고려하고 앞서 언급한 범위에 대해 정의해야 할 내용과 대조해 볼 것(다음 `userPreferences` 빈 정의는 그대로 불완전함을 유의할 것):
+
+```xml
+<bean id="userPreferences" class="com.something.UserPreferences" scope="session"/>
+
+<bean id="userManager" class="com.something.UserManager">
+	<property name="userPreferences" ref="userPreferences"/>
+</bean>
+```
+
+- 앞의 예제에서 싱글톤 빈(`userManager`)은 HTTP 세션 범위의 빈(`userPreferences`)에 대한 참조와 함께 주입됨. 여기서 중요한 점은 `userManager` 빈이 싱글톤이라는 것. 컨테이너당 정확히 한 번 인스턴스화되며 의존성(이 경우 `userPreferences` 빈 하나만)도 한 번만 주입됨. 이는 `userManager` 빈이 정확히 동일한 `userPreferences` 객체(즉, 원래 주입된 객체)에서만 작동함을 의미함.
+- 이는 수명이 더 짧은 범위의 빈을 수명이 더 긴 범위의 빈에 주입할 때(예: HTTP 세션 범위의 협력 빈을 싱글톤 빈에 의존성으로 주입) 원하는 동작이 아님. 오히려 단일 `userManager` 객체와 HTTP 세션의 수명 동안 HTTP 세션에 특정한 `userPreferences` 객체가 필요함. 따라서 컨테이너는 `UserPreferences` 클래스와 정확히 동일한 공개 인터페이스를 노출하는 객체(이상적으로는 `UserPreferences` 인스턴스인 객체)를 생성하며, 이 객체는 범위 지정 메커니즘(HTTP 요청, 세션 등)에서 실제 `UserPreferences` 객체를 가져올 수 있음. 컨테이너는 이 프록시 객체를 `userManager` 빈에 주입하며, `userManager` 빈은 이 `UserPreferences` 참조가 프록시라는 사실을 모름. 이 예제에서 `UserManager` 인스턴스가 의존성 주입된 `UserPreferences` 객체에서 메서드를 호출하면 실제로는 프록시에서 메서드를 호출하는 것. 그런 다음 프록시는 (이 경우) HTTP 세션에서 실제 `UserPreferences` 객체를 가져와 검색된 실제 `UserPreferences` 객체에 메서드 호출을 위임함.
+- 따라서 다음 예제와 같이 요청 및 세션 범위의 빈을 협력 객체에 주입할 때 다음과 같은 (정확하고 완전한) 구성이 필요함:
+
+```xml
+<bean id="userPreferences" class="com.something.UserPreferences" scope="session">
+	<aop:scoped-proxy/>
+</bean>
+
+<bean id="userManager" class="com.something.UserManager">
+	<property name="userPreferences" ref="userPreferences"/>
+</bean>
+```
+
+#### Choosing the Type of Proxy to Create
+
+기본적으로 스프링 컨테이너가 `<aop:scoped-proxy/>` 요소로 표시된 빈에 대한 프록시를 생성하면 CGLIB 기반 클래스 프록시가 생성됨.
+
+> ##### Note
+>
+> - CGLIB 프록시는 `private` 메서드를 가로채지 않음. 이러한 프록시에서 `private` 메서드를 호출하려고 하면 실제 범위가 지정된 대상 객체에 위임되지 않음.
+
+- 또는 `<aop:scoped-proxy/>` 요소의 `proxy-target-class` 속성 값에 `false`를 지정하여 스프링 컨테이너가 이러한 범위가 지정된 빈에 대해 표준 JDK 인터페이스 기반 프록시를 생성하도록 구성할 수 있음. JDK 인터페이스 기반 프록시를 사용한다는 것은 이러한 프록싱을 수행하기 위해 애플리케이션 클래스 경로에 추가 라이브러리가 필요하지 않다는 것을 의미함. 그러나 범위가 지정된 빈의 클래스가 적어도 하나의 인터페이스를 구현해야 하며 범위가 지정된 빈이 주입되는 모든 협력자가 인터페이스 중 하나를 통해 빈을 참조해야 한다는 것도 의미함. 다음 예제는 인터페이스 기반 프록시를 보여줌:
+
+```xml
+<!-- DefaultUserPreferences는 UserPreferences 인터페이스를 구현함 -->
+<bean id="userPreferences" class="com.stuff.DefaultUserPreferences" scope="session">
+	<aop:scoped-proxy proxy-target-class="false"/>
+</bean>
+
+<bean id="userManager" class="com.stuff.UserManager">
+	<property name="userPreferences" ref="userPreferences"/>
+</bean>
+```
+
+- 클래스 기반 또는 인터페이스 기반 프록싱 선택에 대한 자세한 내용은 프록싱 메커니즘을 참조할 것.
+
+#### Injecting Request/Session References Directly
+
+- 팩토리 범위의 대안으로 스프링 `WebApplicationContext`는 `HttpServletRequest`, `HttpServletResponse`, `HttpSession`, `WebRequest` 및 (JSF가 있는 경우) `FacesContext`와 `ExternalContext`를 다른 빈에 대한 일반 주입 지점 옆에 있는 타입 기반 자동 연결을 통해 스프링이 관리하는 빈에 주입하는 것도 지원함. 스프링은 일반적으로 이러한 요청 및 세션 객체에 대한 프록시를 주입하는데, 이는 팩토리 범위 빈에 대한 범위가 지정된 프록시와 유사하게 싱글톤 빈과 직렬화 가능한 빈에서도 작동한다는 장점이 있음.
+
+### Custom Scopes
+
+- 빈 범위 지정 메커니즘은 확장 가능함. 자신만의 범위를 정의하거나 기존 범위를 재정의할 수 있지만, 후자는 나쁜 관행으로 간주되며 내장된 싱글톤 및 프로토타입 범위는 재정의할 수 없음.
+
+#### Creating a Custom Scope
+
+- 사용자 정의 범위를 스프링 컨테이너에 통합하려면 이 섹션에 설명된 `org.springframework.beans.factory.config.Scope` 인터페이스를 구현해야 함. 자신만의 범위를 구현하는 방법에 대한 아이디어는 스프링 프레임워크 자체와 함께 제공되는 `Scope` 구현 및 구현해야 할 메서드를 더 자세히 설명하는 `Scope` javadoc을 참조할 것.
+- `Scope` 인터페이스에는 범위에서 객체를 가져오고, 범위에서 객체를 제거하고, 객체가 파괴되도록 하는 네 가지 메서드가 있음.
+- 예를 들어 세션 범위 구현은 세션 범위 빈을 반환함(존재하지 않는 경우 향후 참조를 위해 세션에 바인딩한 후 빈의 새 인스턴스를 반환). 다음 메서드는 기본 범위에서 객체를 반환함:
+
+```java
+Object get(String name, ObjectFactory<?> objectFactory)
+```
+
+- 예를 들어 세션 범위 구현은 기본 세션에서 세션 범위 빈을 제거함. 객체를 반환해야 하지만 지정된 이름의 객체가 없으면 null을 반환할 수 있음. 다음 메서드는 기본 범위에서 객체를 제거함:
+
+```java
+Object remove(String name)
+```
+
+- 다음 메서드는 범위가 파괴될 때 또는 범위의 지정된 객체가 파괴될 때 범위가 호출해야 하는 콜백을 등록함:
+
+```java
+void registerDestructionCallback(String name, Runnable destructionCallback)
+```
+
+- 소멸 콜백에 대한 자세한 내용은 javadoc 또는 스프링 범위 구현을 참조할 것.
+- 다음 메서드는 기본 범위에 대한 대화 식별자를 얻음:
+
+```java
+String getConversationId()
+```
+
+- 이 식별자는 각 범위마다 다름. 세션 범위 구현의 경우 이 식별자는 세션 식별자일 수 있음.
+
+#### Using a Custom Scope
+
+- 하나 이상의 사용자 정의 `Scope` 구현을 작성하고 테스트한 후에는 스프링 컨테이너에 새 범위를 알려야 함. 다음 메서드는 스프링 컨테이너에 새 `Scope`를 등록하는 중심 메서드:
+
+```java
+void registerScope(String scopeName, Scope scope);
+```
+
+- 이 메서드는 `ConfigurableBeanFactory` 인터페이스에 선언되어 있으며, 스프링과 함께 제공되는 대부분의 구체적인 `ApplicationContext` 구현체의 `BeanFactory` 속성을 통해 사용할 수 있음.
+- `registerScope(..)` 메서드의 첫 번째 인자는 범위와 연결된 고유한 이름임. 스프링 컨테이너 자체에서 이러한 이름의 예로는 `singleton`과 `prototype`이 있음. `registerScope(..)` 메서드의 두 번째 인자는 등록하고 사용하려는 사용자 정의 `Scope` 구현체의 실제 인스턴스.
+- 사용자 정의 `Scope` 구현체를 작성한 다음, 다음 예제와 같이 등록한다고 가정해 보겠음.
+
+> ##### Note
+>
+> - 다음 예제에서는 스프링에 포함되어 있지만 기본적으로 등록되지 않는 `SimpleThreadScope`를 사용함. 지침은 사용자 자신의 사용자 정의 `Scope` 구현과 동일함.
+
+```java
+Scope threadScope = new SimpleThreadScope();
+beanFactory.registerScope("thread", threadScope);
+```
+
+- 그런 다음 다음과 같이 사용자 정의 Scope의 범위 지정 규칙을 준수하는 빈 정의를 생성할 수 있음:
+
+```xml
+<bean id="..." class="..." scope="thread">
+```
+
+- 사용자 정의 `Scope` 구현을 사용하면 범위의 프로그래밍 방식 등록에 국한되지 않음. 다음 예제와 같이 `CustomScopeConfigurer` 클래스를 사용하여 선언적으로 `Scope` 등록을 수행할 수도 있음:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop
+		https://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
+		<property name="scopes">
+			<map>
+				<entry key="thread">
+					<bean class="org.springframework.context.support.SimpleThreadScope"/>
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="thing2" class="x.y.Thing2" scope="thread">
+		<property name="name" value="Rick"/>
+		<aop:scoped-proxy/>
+	</bean>
+
+	<bean id="thing1" class="x.y.Thing1">
+		<property name="thing2" ref="thing2"/>
+	</bean>
+
+</beans>
 ```
 
 > ##### Note
 >
-> - depends-on 속성은 초기화 시점의 의존성과 싱글톤 빈의 경우에만 해당하는 소멸 시점의 의존성을 모두 지정할 수 있음. 주어진 빈과 depends-on 관계를 정의하는 의존 빈은 주어진 빈 자체가 소멸되기 전에 먼저 소멸됨. 따라서 depends-on은 종료 순서도 제어할 수 있음.
-
-## The IoC Container - Dependencies - Lazy-initialized Beans
-
-## The IoC Container - Dependencies - Autowiring Collaborators
-
-- Limitations and Disadvantages of Autowiring
-- Excluding a Bean from Autowiring
-
-## The IoC Container - Dependencies - Method Injection
-
-- Lookup Method Injection
-- Arbitrary Method Replacement
-
-## The IoC Container - Bean Scopes
-
-- The Singleton Scope
-- The Prototype Scope
-- Singleton Beans with Prototype-bean Dependencies
-- Request, Session, Application, and WebSocket Scopes
-- Initial Web Configuration
-- Request scope
-- Session Scope
-- Application Scope
-- WebSocket Scope
-- Scoped Beans as Dependencies
-- Choosing the Type of Proxy to Create
-- Injecting Request/Session References Directly
-- Custom Scopes
-- Creating a Custom Scope
-- Using a Custom Scope
+> - `FactoryBean` 구현에 대한 `<bean>` 선언 내에 `<aop:scoped-proxy/>`를 배치하면 `getObject()`에서 반환된 객체가 아니라 팩토리 빈 자체가 범위가 지정됨.
 
 ## The IoC Container - Customizing the Nature of a Bean
 
-- Lifecycle Callbacks
-- Initialization Callbacks
-- Destruction Callbacks
-- Default Initialization and Destroy Methods
-- Combining Lifecycle Mechanisms
-- Startup and Shutdown Callbacks
-- Shutting Down the Spring IoC Container Gracefully in Non-Web Applications
-- Thread Safety and Visibility
-- ApplicationContextAware and BeanNameAware
-- Other Aware Interfaces
+### Lifecycle Callbacks
+
+#### Initialization Callbacks
+
+#### Destruction Callbacks
+
+#### Default Initialization and Destroy Methods
+
+#### Combining Lifecycle Mechanisms
+
+#### Startup and Shutdown Callbacks
+
+#### Shutting Down the Spring IoC Container Gracefully in Non-Web Applications
+
+#### Thread Safety and Visibility
+
+### ApplicationContextAware and BeanNameAware
+
+### Other Aware Interfaces
 
 ## The IoC Container - Bean Definition Inheritance
 
